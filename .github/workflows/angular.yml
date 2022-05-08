@@ -6,11 +6,15 @@ name: SEP 6 - Angualr application build
 on:
     push:
         paths:
+            - ".github/workflows/angular.yaml"
             - "apps/movies-frontend/**"
 
 jobs:
     build:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: "apps/movie-frontend"
 
         strategy:
             matrix:
@@ -24,8 +28,6 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: "npm"
-            - name: Switching directory to Angular application
-              run: cd ".\\apps\\movies-frontend"
             - name: Installing dependencies
               run: npm install
             - name: Building application
