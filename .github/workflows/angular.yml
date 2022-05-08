@@ -6,7 +6,7 @@ name: SEP 6 - Angualr application build
 on:
     push:
         paths:
-            - ".github/workflows/angular.yaml"
+            - ".github/workflows/angular.yml"
             - "apps/movies-frontend/**"
 
 jobs:
