@@ -6,11 +6,15 @@ name: SEP 6 - NestJs application build
 on:
     push:
         paths:
+            - ".github/workflows/nest.yml"
             - "apps/movies-backend/**"
 
 jobs:
     build:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: "apps/movies-backend"
 
         strategy:
             matrix:
@@ -24,8 +28,6 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: "npm"
-            - name: Switching directory to NestJs application
-              run: cd .\apps\movies-backend
             - name: Installing dependencies
               run: npm install
             - name: Building application
