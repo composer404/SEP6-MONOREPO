@@ -1,6 +1,6 @@
 {
   "name": "movies-frontend",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "scripts": {
     "ng": "npx ng",
     "start": "npx ng serve",
