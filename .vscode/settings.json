@@ -1,0 +1,64 @@
+{
+    // Editor and explorer.
+    "editor.bracketPairColorization.enabled": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.detectIndentation": false,
+    "editor.fontLigatures": true,
+    "editor.formatOnSave": true,
+    "editor.guides.bracketPairs": "active",
+    "editor.insertSpaces": true,
+    "editor.rulers": [150],
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 150,
+    "search.exclude": {
+        "**/dist": true,
+        "**/package-lock.json": true,
+        "**/www": true
+    },
+    "window.title": "${folderName}",
+
+    // Consistency.
+    "files.eol": "\n",
+    "files.trimTrailingWhitespace": true,
+
+    // Git.
+    "git.autofetch": true,
+    "git.inputValidationSubjectLength": 128,
+
+    // JavaScript.
+    "javascript.suggestionActions.enabled": false,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+
+    // TypeScript.
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "typescript.preferences.quoteStyle": "single",
+    "typescript.tsdk": "node_modules/typescript/lib",
+
+    // Type-specific.
+    "[dockercompose]": {
+        "editor.tabSize": 4
+    },
+    "[dockerfile]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[dotenv]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[ignore]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[shellscript]": {
+        "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[yaml]": {
+        "editor.tabSize": 4
+    }
+}
