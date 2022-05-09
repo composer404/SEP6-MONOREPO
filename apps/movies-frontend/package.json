@@ -6,7 +6,7 @@
     "start": "npx ng serve",
     "build": "npx ng build",
     "watch": "npx ng build --watch --configuration development",
-    "test": "npx ng test"
+    "test": "npx ng test --browsers ChromeHeadlessNoSandbox --watch=false"
   },
   "private": true,
   "dependencies": {
