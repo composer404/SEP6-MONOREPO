@@ -36,7 +36,6 @@ export class UsersService {
     /* ----------------------------- CREATE ACTIONS ----------------------------- */
 
     async createUser(input: SignUpInput): Promise<User> {
-        console.log(`input`, input);
         return this.database.create({
             data: {
                 ...input,
