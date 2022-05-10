@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+    movies-api:
+        container_name: movies-api
+        image: movies-api
+        env_file: apps/movies-backend/.env
+        build:
+            context: ./apps/movies-backend
+            dockerfile: ./dockerfile
+        ports:
+            - "3000:3000"
+    movies-frontend:
+        container_name: movies-frontend
+        image: movies-frontend
+        build:
+            context: ./apps/movies-frontend
+            dockerfile: ./dockerfile
+        ports:
+            - "4200:4200"
