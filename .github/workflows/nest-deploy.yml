@@ -34,4 +34,4 @@ jobs:
           run: docker build . -t gcr.io/sep-349920/movies-api
 
         - name: Deploy Docker image
-          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image gcr.io/sep-349920/movies-api --region us-central1 --platform managed
+          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image gcr.io/sep-349920/movies-api:latest --region us-central1 --platform managed
