@@ -2,7 +2,7 @@ name: cloudrun-deploy
 on:
     push:
         branches:
-            - main
+            - release
 jobs:
     deploy:
         name: Setup Google Cloud
