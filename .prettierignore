@@ -4,3 +4,4 @@ dist
 
 # Prettier isn't too good with .ejs templates.
 *.ejs
+*.yml
