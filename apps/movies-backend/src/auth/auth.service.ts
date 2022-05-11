@@ -14,7 +14,6 @@ export class AuthService {
     ) {}
 
     async validateUser(login: string, password: string): Promise<User> {
-        console.log(`auth service validate user`);
         /* ----------------------------- USER VALIDATION ---------------------------- */
 
         const user = await this.userService.findUserByLogin(login);
@@ -33,7 +32,6 @@ export class AuthService {
     }
 
     async login(user: any) {
-        console.log(`auth service login`, user);
         /* -------------------------- GENERATING JWT TOKEN -------------------------- */
 
         const payload = {
