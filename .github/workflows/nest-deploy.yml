@@ -33,9 +33,6 @@ jobs:
         - name: Build Docker image
           run: docker build . -t movies-api
 
-        - name: Test Docker image
-          run: docker run movies-api sh -c "go test -v"
-
         - name: Push Docker image
           run: docker push movies-api
 
