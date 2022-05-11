@@ -33,8 +33,5 @@ jobs:
         - name: Build Docker image
           run: docker build . -t movies-api
 
-        - name: Push Docker image
-          run: docker push movies-api
-
         - name: Deploy Docker image
           run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image movies-api --region us-central1 --platform managed
