@@ -37,4 +37,4 @@ jobs:
           run: docker push $IMAGE_NAME
 
         - name: Deploy Docker image
-          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region us-central1 --platform managed
+          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --set-env-vars DATABASE_URL=${{ secrets.DATABASE_URL }},AUTH_JWT_SECRET=${{ secrets.AUTH_JWT_SECRET }},AUTH_JWT_EXPIRES_IN=${{ secrets.AUTH_JWT_EXPIRES_IN }} --region us-central1 --platform managed
