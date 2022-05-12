@@ -37,4 +37,4 @@ jobs:
           run: docker push $IMAGE_NAME
 
         - name: Deploy Docker image
-          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --add-cloudsql-instance ${{ secret.INSTANCE_CONNECTION_NAME }}  --region us-central1 --platform managed
+          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --add-cloudsql-instance ${{ secrets.INSTANCE_CONNECTION_NAME }}  --region us-central1 --platform managed
