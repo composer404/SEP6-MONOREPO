@@ -14,7 +14,7 @@ jobs:
             run:
                 working-directory: "apps/movies-backend"
         env:
-          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}
+          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_API_NAME }}
         steps:
         - uses: actions/checkout@v3
         - name: Login
