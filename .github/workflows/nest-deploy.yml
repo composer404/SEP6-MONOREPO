@@ -1,0 +1,40 @@
+name: NestJs deploy docker image on Google Cloud
+
+on:
+  push:
+    branches: [ release ]
+
+jobs:
+
+    deploy:
+
+        name: Setup Gcloud Account
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: "apps/movies-backend"
+        env:
+          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_API_NAME }}
+        steps:
+        - uses: actions/checkout@v3
+        - name: Login
+          uses: google-github-actions/setup-gcloud@v0
+          with:
+            project_id: ${{ secrets.GCP_PROJECT_ID }}
+            service_account_email: ${{ secrets.GCP_EMAIL }}
+            service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+
+        - name: Configure Docker
+          run: gcloud auth configure-docker --quiet
+
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Build Docker image
+          run: docker build . -t $IMAGE_NAME --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg AUTH_JWT_SECRET=${{ secrets.AUTH_JWT_SECRET }} --build-arg AUTH_JWT_EXPIRES_IN=${{ secrets.AUTH_JWT_EXPIRES_IN }} --build-arg INSTANCE_CONNECTION_NAME=${{ secrets.INSTANCE_CONNECTION_NAME }}
+
+        - name: Push Docker image
+          run: docker push $IMAGE_NAME
+
+        - name: Deploy Docker image
+          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --add-cloudsql-instances ${{ secrets.INSTANCE_CONNECTION_NAME }}  --region us-central1 --platform managed --port 3000
