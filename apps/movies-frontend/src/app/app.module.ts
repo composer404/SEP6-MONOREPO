@@ -1,21 +1,22 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { BrowserModule } from '@angular/platform-browser';
 import { ButtonModule } from 'primeng/button';
-import { RippleModule } from "primeng/ripple";
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { RippleModule } from 'primeng/ripple';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ButtonModule,
-    RippleModule
+    RippleModule,
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
