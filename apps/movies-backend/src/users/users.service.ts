@@ -2,7 +2,7 @@ import * as argon2 from 'argon2';
 
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-import { SignUpInput } from 'src/interfaces/interfaces';
+import { SignUpInput, UserUpdateInput } from 'src/interfaces/interfaces';
 import { PrismaService } from 'src/prisma';
 
 @Injectable()
@@ -42,5 +42,38 @@ export class UsersService {
                 password: await argon2.hash(input.password),
             },
         });
+    }
+
+    /* ------------------------------- UPDATE USER ------------------------------ */
+
+    async updateUser(userId: string, input: UserUpdateInput): Promise<boolean> {
+        await this.database
+            .update({
+                where: {
+                    id: userId,
+                },
+                data: {
+                    ...input,
+                },
+            })
+            .catch(() => {
+                return false;
+            });
+        return true;
+    }
+
+    /* ------------------------------- DELETE USER ------------------------------ */
+
+    async deleteUser(userId: string): Promise<boolean> {
+        await this.database
+            .delete({
+                where: {
+                    id: userId,
+                },
+            })
+            .catch(() => {
+                return false;
+            });
+        return true;
     }
 }
