@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {HomeModule} from "./home/home.module";
-import {LoginModule} from "./login/login.module";
-import {SignupModule} from "./signup/signup.module";
+import {HomeModule} from "./pages/home/home.module";
+import {LoginModule} from "./pages/login/login.module";
+import {SignupModule} from "./pages/signup/signup.module";
+import {AuthGuard} from "./core/guard/auth.guard";
 
 const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => {
       return HomeModule;
-    }
+    },
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -25,7 +27,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'login'
   }
 ];
 
