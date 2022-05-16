@@ -1,0 +1,27 @@
+<div class="login-wrapper">
+  <p-card>
+    <div class="main-wrapper">
+      <div>
+        <div class="input-box">
+          <label for="username">Username</label>
+          <input [(ngModel)]="username" pInputText id="username" type="text" />
+        </div>
+        <div class="input-box">
+          <label for="password">Password</label>
+          <input [(ngModel)]="password" pInputText id="password" type="password" />
+        </div>
+        <div class="input-box">
+          <p-button (click)="onLogin()" label="Login"></p-button>
+        </div>
+      </div>
+      <div>
+        <p-divider layout="vertical">
+          <b>OR</b>
+        </p-divider>
+      </div>
+      <div>
+        <p-button (click)="onClickSignUp()" label="Sign Up" icon="pi pi-user-plus" styleClass="p-button-success"></p-button>
+      </div>
+    </div>
+  </p-card>
+</div>
