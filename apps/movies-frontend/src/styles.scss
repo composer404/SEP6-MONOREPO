@@ -1,94 +1,97 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @font-face {
-  font-family: Oswald-Bold;
-  src: url("assets/fonts/Oswald-Bold.ttf") format('truetype');
+    font-family: Oswald-Bold;
+    src: url('assets/fonts/Oswald-Bold.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Oswald-SemiBold;
-  src: url("assets/fonts/Oswald-SemiBold.ttf") format('truetype');
+    font-family: Oswald-SemiBold;
+    src: url('assets/fonts/Oswald-SemiBold.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Oswald-Regular;
-  src: url("assets/fonts/Oswald-Regular.ttf") format('truetype');
+    font-family: Oswald-Regular;
+    src: url('assets/fonts/Oswald-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Oswald-Medium;
-  src: url("assets/fonts/Oswald-Medium.ttf") format('truetype');
+    font-family: Oswald-Medium;
+    src: url('assets/fonts/Oswald-Medium.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Oswald-Light;
-  src: url("assets/fonts/Oswald-Light.ttf") format('truetype');
+    font-family: Oswald-Light;
+    src: url('assets/fonts/Oswald-Light.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Oswald-ExtraLight;
-  src: url("assets/fonts/Oswald-ExtraLight.ttf") format('truetype');
+    font-family: Oswald-ExtraLight;
+    src: url('assets/fonts/Oswald-ExtraLight.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: BebasNeue;
-  src: url("assets/fonts/BebasNeue-Regular.ttf") format('truetype');
+    font-family: BebasNeue;
+    src: url('assets/fonts/BebasNeue-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: FjallaOne;
-  src: url("assets/fonts/FjallaOne-Regular.ttf") format('truetype');
+    font-family: FjallaOne;
+    src: url('assets/fonts/FjallaOne-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Ubuntu-Regular;
-  src: url("assets/fonts/Ubuntu-Regular.ttf") format('truetype');
+    font-family: Ubuntu-Regular;
+    src: url('assets/fonts/Ubuntu-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Ubuntu-Bold;
-  src: url("assets/fonts/Ubuntu-Bold.ttf") format('truetype');
+    font-family: Ubuntu-Bold;
+    src: url('assets/fonts/Ubuntu-Bold.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Ubuntu-BoldItalic;
-  src: url("assets/fonts/Ubuntu-BoldItalic.ttf") format('truetype');
+    font-family: Ubuntu-BoldItalic;
+    src: url('assets/fonts/Ubuntu-BoldItalic.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Ubuntu-Italic;
-  src: url("assets/fonts/Ubuntu-Italic.ttf") format('truetype');
+    font-family: Ubuntu-Italic;
+    src: url('assets/fonts/Ubuntu-Italic.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Ubuntu-Light;
-  src: url("assets/fonts/Ubuntu-Light.ttf") format('truetype');
+    font-family: Ubuntu-Light;
+    src: url('assets/fonts/Ubuntu-Light.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Ubuntu-LightItalic;
-  src: url("assets/fonts/Ubuntu-LightItalic.ttf") format('truetype');
+    font-family: Ubuntu-LightItalic;
+    src: url('assets/fonts/Ubuntu-LightItalic.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: Ubuntu-Medium;
-  src: url("assets/fonts/Ubuntu-MediumItalic.ttf") format('truetype');
+    font-family: Ubuntu-Medium;
+    src: url('assets/fonts/Ubuntu-MediumItalic.ttf') format('truetype');
 }
 
 h1 {
-  font-family: FjallaOne, serif;
-  color: dimgrey;
-  text-align: center;
+    font-family: FjallaOne, serif;
+    color: dimgrey;
+    text-align: center;
 }
 
 body {
-  background: lightgrey;
+    background: lightgrey;
 }
 
 .input-box {
-  display: flex;
-  flex-direction: column;
-  width: 15rem;
-  gap: 0.5rem;
-  margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    width: 15rem;
+    gap: 0.5rem;
+    margin-top: 2rem;
 }
