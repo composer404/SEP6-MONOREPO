@@ -1,9 +1,11 @@
-import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { AuthGuard } from './guard/auth.guard';
 import { HomeModule } from './pages/home/home.module';
 import { LoginModule } from './pages/login/login.module';
+import { MovieListModule } from './movie-list/movie-list.module';
+import { NgModule } from '@angular/core';
 import { SignupModule } from './pages/signup/signup.module';
-import { AuthGuard } from './guard/auth.guard';
 import { UserBoardModule } from './pages/user-board/user-board.module';
 
 const routes: Routes = [
@@ -24,6 +26,12 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: () => {
             return UserBoardModule;
+        },
+    },
+    {
+        path: 'movie-list',
+        loadChildren: () => {
+            return MovieListModule;
         },
     },
     {
