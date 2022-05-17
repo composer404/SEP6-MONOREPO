@@ -2,7 +2,11 @@ import * as argon2 from 'argon2';
 
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-import { SignUpInput, UserUpdateInput } from 'src/interfaces/interfaces';
+import {
+    SignUpInput,
+    SEPUser,
+    UserUpdateInput,
+} from 'src/interfaces/interfaces';
 import { PrismaService } from 'src/prisma';
 
 @Injectable()
@@ -15,7 +19,7 @@ export class UsersService {
         this.database = this.prismaService.user;
     }
 
-    /* ----------------------------- SELECT ACTIONS ----------------------------- */
+    /* ----------------------------- SELECT USER ----------------------------- */
 
     async findUserByLogin(login: string): Promise<User> {
         return this.database.findFirst({
@@ -25,23 +29,33 @@ export class UsersService {
         });
     }
 
-    async findUserByEmail(email: string): Promise<User> {
-        return this.database.findFirst({
+    async findUserById(id: string): Promise<SEPUser> {
+        const prismaUser = await this.database.findFirst({
+            where: {
+                id,
+            },
+        });
+        return this.createOutputUser(prismaUser);
+    }
+    async findUserByEmail(email: string): Promise<SEPUser> {
+        const prismaUser = await this.database.findFirst({
             where: {
                 email,
             },
         });
+        return this.createOutputUser(prismaUser);
     }
 
-    /* ----------------------------- CREATE ACTIONS ----------------------------- */
+    /* ----------------------------- CREATE USER ----------------------------- */
 
-    async createUser(input: SignUpInput): Promise<User> {
-        return this.database.create({
+    async createUser(input: SignUpInput): Promise<SEPUser> {
+        const prismaUser = await this.database.create({
             data: {
                 ...input,
                 password: await argon2.hash(input.password),
             },
         });
+        return this.createOutputUser(prismaUser);
     }
 
     /* ------------------------------- UPDATE USER ------------------------------ */
@@ -54,6 +68,7 @@ export class UsersService {
                 },
                 data: {
                     ...input,
+                    password: await argon2.hash(input.password),
                 },
             })
             .catch(() => {
@@ -75,5 +90,18 @@ export class UsersService {
                 return false;
             });
         return true;
+    }
+
+    private createOutputUser(prismaUser: User): SEPUser {
+        return {
+            id: prismaUser.id,
+            firstName: prismaUser.firstName,
+            login: prismaUser.login,
+            email: prismaUser.email,
+            lastName: prismaUser.lastName,
+            avatar: prismaUser.avatar,
+            createdAt: prismaUser.createdAt,
+            updatedAt: prismaUser.updatedAt,
+        };
     }
 }

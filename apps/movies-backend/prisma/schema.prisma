@@ -10,19 +10,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ---------------------------------- User --------------------------------- */
-
 model User {
   id                                String @id @default(uuid())
 
   login                             String @unique
   password                          String
   email                             String @unique
-  firstName                         String
-  lastName                          String
-  avatar                            String
+  firstName                         String?
+  lastName                          String?
+  avatar                            String?
 
   topLists                          TopList[]
+  commands                          Command[]
+  ratings                           Rating[]
+
+  mainUserId                        String?
+  mainUser                          User? @relation("Friends", fields: [mainUserId], references: [id])
+  friends                           User[]  @relation("Friends")
 
   createdAt                         DateTime @default(now())
   updatedAt                         DateTime @updatedAt
@@ -30,19 +34,57 @@ model User {
 
 model TopList {
     id                              String @id @default(uuid())
+    name                            String
+    description                     String
+    movies                          Movie[]
+
     user                            User @relation(fields: [userId], references: [id])
     userId                          String
-    movies                          Movie[]
+
+    createdAt                       DateTime @default(now())
+    updatedAt                       DateTime @updatedAt
 }
 
 model Movie {
-  id                                String @id @default(uuid()) 
-  apiId                             Int
-  title                             String
-  posterPath                        String  
+    id                              String @id @default(uuid())
+    apiId                           Int @unique()
+    title                           String
+    posterPath                      String
 
-   topList                              String @id @default(uuid())
+    topLists                        TopList[]
+    commands                        Command[]
+    ratings                         Rating[]
 
+    createdAt                       DateTime @default(now())
+    updatedAt                       DateTime @updatedAt
+}
+
+model Command {
+    id                              String @id @default(uuid())
+    content                         String
+
+    author                          User @relation(fields: [authorId], references: [id])
+    authorId                        String
+
+    movie                           Movie @relation(fields: [movieId], references: [id])
+    movieId                         String
+
+    createdAt                       DateTime @default(now())
+    updatedAt                       DateTime @updatedAt
+}
+
+model Rating {
+    id                              String @id @default(uuid())
+    rating                          Int
+
+    author                          User @relation(fields: [authorId], references: [id])
+    authorId                        String
+
+    movie                           Movie @relation(fields: [movieId], references: [id])
+    movieId                         String
+
+    createdAt                       DateTime @default(now())
+    updatedAt                       DateTime @updatedAt
 }
 
 

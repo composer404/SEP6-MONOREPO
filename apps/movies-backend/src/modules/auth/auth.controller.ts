@@ -1,5 +1,12 @@
-import { Controller, Post, UseGuards, Get, Body, Request } from '@nestjs/common';
-import { SignUpInput } from 'src/interfaces/interfaces';
+import {
+    Controller,
+    Post,
+    UseGuards,
+    Get,
+    Body,
+    Request,
+} from '@nestjs/common';
+import { SEPRequest, SignUpInput, UserOutput } from 'src/interfaces/interfaces';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard, LocalAuthGuard } from './guards';
 
@@ -10,13 +17,12 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post('login')
     async login(@Request() req) {
-        console.log(`req`, req);
-        return this.authService.login(req.user);
+        return this.authService.login(req.user as UserOutput);
     }
 
     @UseGuards(JwtAuthGuard)
     @Get('profile')
-    getProfile(@Body() req) {
+    getProfile(@Request() req: SEPRequest) {
         return req.user;
     }
 

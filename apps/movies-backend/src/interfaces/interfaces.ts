@@ -1,15 +1,27 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
-// export interface SignUpInput {
-//     @ApiProperty()
-//     login: string;
+/* ------------------------------- INTERFACES ------------------------------- */
 
-//     email: string;
-//     password: string;
-//     firstName: string;
-//     lastName: string;
-//     avatar: string;
-// }
+export interface SEPRequest {
+    user: UserOutput;
+}
+export interface UserOutput {
+    id: string;
+    login: string;
+}
+
+export interface SEPUser {
+    id: string;
+    login: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+/* --------------------------------- CLASSES -------------------------------- */
 
 export class SignInInput {
     @ApiProperty()
@@ -42,4 +54,20 @@ export class UserUpdateInput {
     lastName: string;
     @ApiProperty()
     avatar: string;
+}
+
+export class SEPMovieInput {
+    @ApiProperty()
+    apiId: number;
+    @ApiProperty()
+    title: string;
+    @ApiProperty()
+    posterPath: string;
+}
+
+export class SEPTopListInput {
+    @ApiProperty()
+    name: string;
+    @ApiProperty()
+    description: string;
 }
