@@ -55,28 +55,26 @@ export class AuthService {
         return true;
     }
 
-    public logout(): void {
-        this.isLoggedIn = false;
-        localStorage.setItem(`token`, ``);
+  public async signup(): Promise<string> {
+    const response = await firstValueFrom(
+      this.httpClient.post<Token>(`${environment.localApiUrl}${LOCAL_API_SERVICES.authLogin}`, {
+        "login": "test",
+        "email": "test@test.pl",
+        "firstName": "test",
+        "lastName": "test",
+        "password": "test",
+        "avatar": ""
+      }),
+    );
+
+    if (response.accessToken) {
+      localStorage.setItem('token', response.accessToken);
     }
+    return response.accessToken;
+  }
 
-    // public register(email: string, password: string, langKey: string): Promise<Token> {
-    // return this.http.post<Token>(`http://localhost:3000/api/auth/registry`, {
-    //   "email": email,
-    //   "login": email,
-    //   "password": password,
-    //   "retype": password,
-    //   "langKey": langKey
-    // })
-    //   .pipe(map(token => {
-    //     localStorage.setItem('token', JSON.stringify(token));
-    //     this.tokenSubject.next(token);
-    //     return token;
-    //   }));
-    // }
-
-    // public logout() {
-    //   localStorage.removeItem('token');
-    //   this.tokenSubject.next(null);
-    // }
+  public logout(): void {
+      this.isLoggedIn = false;
+      localStorage.setItem(`token`, ``);
+  }
 }
