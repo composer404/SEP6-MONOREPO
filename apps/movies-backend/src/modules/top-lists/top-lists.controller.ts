@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { TopList } from '@prisma/client';
-import { SEPMovieInput, SEPRequest, SEPTopListInput } from '../../interfaces/interfaces';
+import { SEPMovieInput, SEPRequest, SEPTopListInput } from '../../models';
 import { JwtAuthGuard } from '../auth/guards';
 import { TopListsService } from './top-lists.service';
 

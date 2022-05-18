@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, TopList } from '@prisma/client';
-import { SEPMovieInput, SEPTopListInput } from '../../interfaces/interfaces';
+import { SEPMovieInput, SEPTopListInput } from '../../models';
 import { PrismaService } from '../../prisma';
 import { MoviesService } from '../movies';
 

@@ -2,18 +2,12 @@ import * as argon2 from 'argon2';
 
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-import {
-    SignUpInput,
-    SEPUser,
-    UserUpdateInput,
-} from 'src/interfaces/interfaces';
 import { PrismaService } from 'src/prisma';
+import { SEPUser, SignUpInput, UserUpdateInput } from '../../models';
 
 @Injectable()
 export class UsersService {
-    private database: Prisma.UserDelegate<
-        Prisma.RejectOnNotFound | Prisma.RejectPerOperation
-    >;
+    private database: Prisma.UserDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation>;
 
     constructor(private readonly prismaService: PrismaService) {
         this.database = this.prismaService.user;

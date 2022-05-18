@@ -1,12 +1,5 @@
-import {
-    Controller,
-    Post,
-    UseGuards,
-    Get,
-    Body,
-    Request,
-} from '@nestjs/common';
-import { SEPRequest, SignUpInput, UserOutput } from 'src/interfaces/interfaces';
+import { Controller, Post, UseGuards, Get, Body, Request } from '@nestjs/common';
+import { SEPRequest, SignUpInput, UserOutput } from '../../models';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard, LocalAuthGuard } from './guards';
 

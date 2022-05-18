@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Movie, Prisma } from '@prisma/client';
-import { SEPMovieInput } from '../../interfaces/interfaces';
+import { SEPMovieInput } from '../../models';
 import { PrismaService } from '../../prisma';
 
 @Injectable()
@@ -34,7 +34,7 @@ export class MoviesService {
                     id,
                 },
                 include: {
-                    commands: true,
+                    comments: true,
                     ratings: true,
                 },
             })
@@ -61,7 +61,7 @@ export class MoviesService {
                     apiId,
                 },
                 include: {
-                    commands: true,
+                    comments: true,
                     ratings: true,
                 },
             })

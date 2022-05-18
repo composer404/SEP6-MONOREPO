@@ -1,17 +1,5 @@
-import {
-    Controller,
-    UseGuards,
-    Request,
-    Delete,
-    Patch,
-    Body,
-    Get,
-} from '@nestjs/common';
-import {
-    SEPRequest,
-    SEPUser,
-    UserUpdateInput,
-} from '../../interfaces/interfaces';
+import { Controller, UseGuards, Request, Delete, Patch, Body, Get } from '@nestjs/common';
+import { SEPRequest, SEPUser, UserUpdateInput } from '../../models';
 import { JwtAuthGuard } from '../auth/guards';
 import { UsersService } from './users.service';
 
@@ -27,10 +15,7 @@ export class UsersController {
 
     @UseGuards(JwtAuthGuard)
     @Patch('logged')
-    async updateUser(
-        @Request() req: SEPRequest,
-        @Body() user: UserUpdateInput,
-    ): Promise<boolean> {
+    async updateUser(@Request() req: SEPRequest, @Body() user: UserUpdateInput): Promise<boolean> {
         return this.usersService.updateUser(req.user.id, user);
     }
 
