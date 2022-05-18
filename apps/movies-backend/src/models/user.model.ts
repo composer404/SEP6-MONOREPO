@@ -34,3 +34,7 @@ export class UserUpdateInput {
     @ApiProperty()
     avatar: string;
 }
+
+export class SEPFollowInput {
+    followingId: string;
+}

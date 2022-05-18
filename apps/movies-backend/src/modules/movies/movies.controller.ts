@@ -1,9 +1,12 @@
-import { Controller, Get, Post } from '@nestjs/common';
-import { PrismaService } from '../../prisma';
+import { Controller, Get, Param } from '@nestjs/common';
+import { MoviesService } from './movies.service';
 
 @Controller('movies')
 export class MoviesController {
-    constructor(private readonly prismaService: PrismaService) {}
-    //     @Post()
-    //     async createMovie
+    constructor(private readonly movieService: MoviesService) {}
+
+    @Get(`:apiId`)
+    async getFullMovie(@Param() params: any) {
+        return this.movieService.selectFullMovieByApiId(params.apiId);
+    }
 }

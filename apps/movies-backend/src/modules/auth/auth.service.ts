@@ -10,7 +10,7 @@ import { SignUpInput } from '../../models';
 export class AuthService {
     constructor(private readonly jwtService: JwtService, private readonly userService: UsersService) {}
 
-    async validateUser(login: string, password: string): Promise<User> {
+    async validateUser(login: string, password: string): Promise<User | null> {
         /* ----------------------------- USER VALIDATION ---------------------------- */
 
         const user = await this.userService.findUserByLogin(login);
@@ -28,8 +28,11 @@ export class AuthService {
         return { password, ...user };
     }
 
-    async login(user: any) {
+    async login(user: any): Promise<any> {
         /* -------------------------- GENERATING JWT TOKEN -------------------------- */
+        if (!user) {
+            return null;
+        }
 
         const payload = {
             login: user.login,
@@ -40,8 +43,7 @@ export class AuthService {
         };
     }
 
-    async registry(userInput: SignUpInput) {
-        await this.userService.createUser(userInput);
-        return true;
+    async registry(userInput: SignUpInput): Promise<string | null> {
+        return this.userService.createUser(userInput);
     }
 }

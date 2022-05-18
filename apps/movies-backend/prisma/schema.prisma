@@ -24,12 +24,20 @@ model User {
   commands                          Comment[]
   ratings                           Rating[]
 
-  mainUserId                        String?
-  mainUser                          User? @relation("Friends", fields: [mainUserId], references: [id])
-  friends                           User[]  @relation("Friends")
+  followers                         Follows[] @relation("follower")
+  following                         Follows[] @relation("following")
 
   createdAt                         DateTime @default(now())
   updatedAt                         DateTime @updatedAt
+}
+
+model Follows {
+  follower                          User @relation("follower", fields: [followerId], references: [id])
+  followerId                        String
+  following                         User @relation("following", fields: [followingId], references: [id])
+  followingId                       String
+
+  @@id([followerId, followingId])
 }
 
 model TopList {
