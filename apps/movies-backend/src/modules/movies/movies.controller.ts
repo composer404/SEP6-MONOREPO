@@ -1,7 +1,12 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
+import { MoviesService } from './movies.service';
 
 @Controller('movies')
 export class MoviesController {
-    //     @Post()
-    //     async createMovie
+    constructor(private readonly movieService: MoviesService) {}
+
+    @Get(`:apiId`)
+    async getFullMovie(@Param() params: any) {
+        return this.movieService.selectFullMovieByApiId(params.apiId);
+    }
 }

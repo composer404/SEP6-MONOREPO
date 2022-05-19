@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, TopList } from '@prisma/client';
-import { SEPMovieInput, SEPTopListInput } from '../../interfaces/interfaces';
+import { SEPMovieInput, SEPTopListInput } from '../../models';
 import { PrismaService } from '../../prisma';
 import { MoviesService } from '../movies';
 
@@ -12,21 +12,25 @@ export class TopListsService {
         this.database = this.prismaService.topList;
     }
 
-    async getTopListsByUserId(userId: string): Promise<TopList[]> {
-        console.log(`HERE`, userId);
-        return this.database
+    async getTopListsByUserId(userId: string): Promise<TopList[] | null> {
+        const result = await this.database
             .findMany({
                 where: {
                     userId,
                 },
             })
-            .catch(() => {
+            .catch((err) => {
+                console.error(`[API]`, err);
                 return null;
             });
+        if (!result) {
+            return null;
+        }
+        return result;
     }
 
-    async getTopListById(id: string): Promise<TopList> {
-        return this.database
+    async getTopListById(id: string): Promise<TopList | null> {
+        const result = await this.database
             .findFirst({
                 where: {
                     id,
@@ -35,12 +39,18 @@ export class TopListsService {
                     movies: true,
                 },
             })
-            .catch(() => {
+            .catch((err) => {
+                console.error(`[API]`, err);
                 return null;
             });
+
+        if (!result) {
+            return null;
+        }
+        return result;
     }
 
-    async createNewTopList(userId: string, topListInput: SEPTopListInput): Promise<string> {
+    async createNewTopList(userId: string, topListInput: SEPTopListInput): Promise<string | null> {
         const created = await this.database
             .create({
                 data: {
@@ -48,17 +58,40 @@ export class TopListsService {
                     userId,
                 },
             })
-            .catch(() => {
+            .catch((err) => {
+                console.error(`[API]`, err);
                 return null;
             });
-        return created?.id;
+
+        if (!created) {
+            return null;
+        }
+        return created.id;
     }
 
-    async deleteTopList(id: string, userId: string) {
+    async deleteTopList(id: string, userId: string): Promise<boolean> {
         const result = await this.database
             .deleteMany({
                 where: {
                     id,
+                    userId,
+                },
+            })
+            .catch((err) => {
+                console.error(`[API]`, err);
+                return null;
+            });
+
+        if (!result) {
+            return false;
+        }
+        return true;
+    }
+
+    async deleteAllTopListsForUser(userId: string): Promise<boolean> {
+        const result = await this.database
+            .deleteMany({
+                where: {
                     userId,
                 },
             })

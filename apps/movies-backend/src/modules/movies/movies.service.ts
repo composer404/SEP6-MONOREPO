@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Movie, Prisma } from '@prisma/client';
-import { SEPMovieInput } from '../../interfaces/interfaces';
+import { SEPMovieInput } from '../../models';
 import { PrismaService } from '../../prisma';
 
 @Injectable()
@@ -27,20 +27,24 @@ export class MoviesService {
             });
     }
 
-    async selectMovieById(id: string): Promise<Movie> {
-        return this.database
+    async selectMovieById(id: string): Promise<Movie | null> {
+        const result = await this.database
             .findFirst({
                 where: {
                     id,
                 },
                 include: {
-                    commands: true,
+                    comments: true,
                     ratings: true,
                 },
             })
             .catch(() => {
                 return null;
             });
+        if (!result) {
+            return null;
+        }
+        return result;
     }
 
     async getMovie(movie: SEPMovieInput): Promise<Movie> {
@@ -54,24 +58,29 @@ export class MoviesService {
         return this.selectMovieById(createdId);
     }
 
-    async selectFullMovieByApiId(apiId: number): Promise<Movie> {
-        return this.database
+    async selectFullMovieByApiId(apiId: number): Promise<Movie | null> {
+        const result = await this.database
             .findFirst({
                 where: {
                     apiId,
                 },
                 include: {
-                    commands: true,
+                    comments: true,
                     ratings: true,
                 },
             })
-            .catch(() => {
+            .catch((err) => {
+                console.log(`[API]`, err);
                 return null;
             });
+        if (!result) {
+            return null;
+        }
+        return result;
     }
 
-    async selectMovieByApiId(apiId: number): Promise<Movie> {
-        return this.database
+    async selectMovieByApiId(apiId: number): Promise<Movie | null> {
+        const result = await this.database
             .findUnique({
                 where: {
                     apiId: parseInt(apiId as any),
@@ -81,14 +90,27 @@ export class MoviesService {
                 console.log(`[API]`, error);
                 return null;
             });
+
+        if (!result) {
+            return null;
+        }
+        return result;
     }
 
-    async createMovie(movie: SEPMovieInput): Promise<string> {
-        const movieResult = await this.database.create({
-            data: {
-                ...movie,
-            },
-        });
+    async createMovie(movie: SEPMovieInput): Promise<string | null> {
+        const movieResult = await this.database
+            .create({
+                data: {
+                    ...movie,
+                },
+            })
+            .catch((error) => {
+                console.log(`[API]`, error);
+                return null;
+            });
+        if (!movieResult) {
+            return null;
+        }
         return movieResult.id;
     }
 }
