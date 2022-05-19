@@ -84,14 +84,15 @@ h1 {
     text-align: center;
 }
 
-body {
-    background: lightgrey;
-}
-
 .input-box {
     display: flex;
     flex-direction: column;
-    width: 15rem;
     gap: 0.5rem;
     margin-top: 2rem;
 }
+
+label {
+  font-family: Ubuntu-Regular, serif;
+  color: grey;
+}
+
