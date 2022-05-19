@@ -1,75 +1,65 @@
 <div class="card">
-  <h5>Programmatic Control</h5>
-  <div class="mb-3">
-    <p-button
-      type="button"
-      icon="pi pi-chevron-left"
-      (click)="prev()"
-      [disabled]="isFirstPage()"
-      styleClass="p-button-text"
-    ></p-button>
-    <p-button
-      type="button"
-      icon="pi pi-refresh"
-      (click)="reset()"
-      styleClass="p-button-text"
-    ></p-button>
-    <p-button
-      type="button"
-      icon="pi pi-chevron-right"
-      (click)="next()"
-      [disabled]="isLastPage()"
-      styleClass="p-button-text"
-    ></p-button>
-  </div>
-  <p-table
-    [value]="movies"
-    [paginator]="true"
-    [rows]="rows"
-    [showCurrentPageReport]="true"
-    [(first)]="first"
-    responsiveLayout="scroll"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [rowsPerPageOptions]="[10, 25, 50]"
-  >
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Title</th>
-        <th>Popularity</th>
-        <th>Original Language</th>
-        <th>Vote Count</th>
-        <th>
-          <input
-            pInputText
-            type="text"
-            (input)="applyFilterGlobal($event, 'title')"
-            placeholder="Search by Title"
-            class="p-column-filter"
-          />
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-movies>
-      <tr>
-        <td>{{ movies.title }}</td>
-        <td>{{ movies.popularity }}</td>
-        <td>{{ movies.original_language }}</td>
-        <td>{{ movies.vote_count }}</td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="paginatorleft">
-      <p-button
-        type="button"
-        icon="pi pi-plus"
-        styleClass="p-button-text"
-      ></p-button>
-    </ng-template>
-    <ng-template pTemplate="paginatorright">
-      <p-button
-        type="button"
-        icon="pi pi-cloud"
-        styleClass="p-button-text"
-      ></p-button>
-    </ng-template>
-  </p-table>
+    <input
+        pInputText
+        type="text"
+        [(ngModel)]="searchVal"
+        (ngModelChange)="onTitleChange()"
+        placeholder="Search by Title"
+        class="form-control"
+    />
+    <h5>Programmatic Control</h5>
+    <div class="mb-3">
+        <p-button
+            type="button"
+            icon="pi pi-chevron-left"
+            (click)="prev()"
+            [disabled]="isFirstPage()"
+            styleClass="p-button-text"
+        ></p-button>
+        <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+        <p-button
+            type="button"
+            icon="pi pi-chevron-right"
+            (click)="next()"
+            [disabled]="isLastPage()"
+            styleClass="p-button-text"
+        ></p-button>
+    </div>
+    <p-table
+        [value]="movies"
+        [paginator]="true"
+        [rows]="rows"
+        [showCurrentPageReport]="true"
+        [(first)]="first"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        selectionMode="single"
+        dataKey="code"
+        [(selection)]="selectedMovie"
+        (onRowSelect)="onDetails()"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Title</th>
+                <th>Popularity</th>
+                <th>Original Language</th>
+                <th>Vote Count</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-movies>
+            <tr [pSelectableRow]="movies">
+                <td>{{ movies.title }}</td>
+                <td>{{ movies.popularity }}</td>
+                <td>{{ movies.original_language }}</td>
+                <td>{{ movies.vote_count }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
 </div>
