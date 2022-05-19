@@ -9,6 +9,8 @@ import { ButtonModule } from "primeng/button";
 import { RippleModule } from "primeng/ripple";
 import {FormsModule} from "@angular/forms";
 import {ReactiveFormsModule} from "@angular/forms";
+import {ToastModule} from 'primeng/toast';
+import {MessageService} from "primeng/api";
 
 const routes: Routes = [
   {
@@ -29,8 +31,9 @@ const routes: Routes = [
     DividerModule,
     InputTextModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastModule
   ],
-  providers: [],
+  providers: [MessageService],
 })
 export class LoginModule { }
