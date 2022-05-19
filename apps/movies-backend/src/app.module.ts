@@ -1,15 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { MoviesController } from './movies/movies.controller';
-import { UsersModule } from './users/users.module';
-import { PrismaModule } from './prisma/prisma.module';
-import { AuthModule } from './auth/auth.module';
-import { AuthController } from './auth/auth.controller';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { MoviesModule } from './modules/movies/movies.module';
+import { TopListsModule } from './modules/top-lists/top-lists.module';
 
 @Module({
-    imports: [UsersModule, AuthModule],
-    controllers: [AppController, MoviesController, AuthController],
-    providers: [AppService],
+    imports: [UsersModule, AuthModule, MoviesModule, TopListsModule],
 })
 export class AppModule {}
