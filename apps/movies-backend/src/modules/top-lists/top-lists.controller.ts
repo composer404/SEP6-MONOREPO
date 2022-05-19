@@ -36,6 +36,11 @@ export class TopListsController {
         return this.topListsService.getTopListsByUserId(params.id);
     }
 
+    @Get('full/user/:id')
+    async getTopListsFullByUser(@Param() params): Promise<TopList[]> {
+        return this.topListsService.getTopListsFullByUserId(params.id);
+    }
+
     @Put(':id/movie/add')
     async addMovieToTopList(@Param() params, @Body() input: SEPMovieInput): Promise<boolean> {
         return this.topListsService.addMovieToTopList(params.id, input);

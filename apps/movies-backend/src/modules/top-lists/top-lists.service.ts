@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, TopList } from '@prisma/client';
+import { resolve } from 'path';
 import { SEPMovieInput, SEPTopListInput } from '../../models';
 import { PrismaService } from '../../prisma';
 import { MoviesService } from '../movies';
@@ -17,6 +18,38 @@ export class TopListsService {
             .findMany({
                 where: {
                     userId,
+                },
+                include: {
+                    movies: true,
+                },
+            })
+            .catch((err) => {
+                console.error(`[API]`, err);
+                return null;
+            });
+        if (!result) {
+            return null;
+        }
+
+        const promises = result.map((toplist) => {
+            return new Promise<void>((resolve) => {
+                toplist.numberOfMovies = toplist.length;
+                delete toplist.movies;
+                resolve();
+            });
+        });
+        await Promise.all(promises);
+        return result;
+    }
+
+    async getTopListsFullByUserId(userId: string): Promise<TopList[] | null> {
+        const result = await this.database
+            .findMany({
+                where: {
+                    userId,
+                },
+                include: {
+                    movies: true,
                 },
             })
             .catch((err) => {

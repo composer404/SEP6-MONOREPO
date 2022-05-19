@@ -61,6 +61,16 @@ export class AuthService {
         );
     }
 
+    public async isProfileOwner(id: string): Promise<boolean> {
+        const profile = await this.getProfile();
+
+        if (profile.id !== id) {
+            return false;
+        }
+
+        return true;
+    }
+
     public logout(): void {
         this.isLoggedIn = false;
         localStorage.setItem(`token`, ``);

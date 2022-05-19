@@ -1,0 +1,18 @@
+button {
+    background-color: #320B0B;
+}
+
+button:hover {
+    background-color: #430F0F;
+}
+
+.text-dark-red {
+    color: #320B0B; 
+}
+
+.background-img {
+    background-image: url("../../../assets/photos/user-bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}

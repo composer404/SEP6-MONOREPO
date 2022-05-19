@@ -21,7 +21,7 @@ model User {
   avatar                            String?
 
   topLists                          TopList[]
-  commands                          Comment[]
+  comments                          Comment[]
   ratings                           Rating[]
 
   followers                         Follows[] @relation("follower")

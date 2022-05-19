@@ -36,5 +36,6 @@ export class UserUpdateInput {
 }
 
 export class SEPFollowInput {
+    @ApiProperty()
     followingId: string;
 }
