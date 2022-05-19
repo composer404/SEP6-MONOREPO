@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Token, UserProfile } from '../../interfaces/interfaces';
+import {SignUpInput, Token, UserProfile} from '../../interfaces/interfaces';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LOCAL_API_SERVICES } from '../../interfaces/local-api-endpoints';
@@ -55,22 +55,9 @@ export class AuthService {
         return true;
     }
 
-  public async signup(): Promise<string> {
-    const response = await firstValueFrom(
-      this.httpClient.post<Token>(`${environment.localApiUrl}${LOCAL_API_SERVICES.authLogin}`, {
-        "login": "test",
-        "email": "test@test.pl",
-        "firstName": "test",
-        "lastName": "test",
-        "password": "test",
-        "avatar": ""
-      }),
-    );
-
-    if (response.accessToken) {
-      localStorage.setItem('token', response.accessToken);
-    }
-    return response.accessToken;
+  public async signup(body: SignUpInput): Promise<string> {
+    return firstValueFrom(
+      this.httpClient.post<string | null>(`${environment.localApiUrl}${LOCAL_API_SERVICES.authLogin}`, body));
   }
 
   public logout(): void {
