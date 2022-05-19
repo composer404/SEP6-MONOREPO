@@ -1,8 +1,8 @@
-<div class="bg-[url('/assets/photos/background.png')] w-screen h-screen">
-  <div class="pt-10"></div>
-<div class="bg-white shadow-md hover:shadow-inner ml-20 mr-20 pb-10 border-2 rounded-md flex justify-center items-center">
+<div class="bg-[url('/assets/photos/background.png')] xl:w-screen xl:h-screen overflow-scroll flex justify-center items-center">
+  <p-toast (onClose)="clear()" position="top-right"></p-toast>
+<div class="bg-white shadow-md hover:shadow-inner xl:w-1/2 p-10 mt-16 mb-16 border-2 rounded-md flex justify-center items-center">
       <form [formGroup]="signupForm" (ngSubmit)="onSignUp()">
-        <div class="input-box">
+        <div class="flex flex-col gap-2 mb-6">
           <label for="username">Login</label>
           <input formControlName="login" pInputText id="username" type="text" />
           <small
@@ -18,7 +18,7 @@
             </div>
           </small>
         </div>
-        <div class="input-box">
+        <div class="flex flex-col gap-2 mb-6">
           <label for="email">E-mail</label>
           <input formControlName="email" pInputText id="email" type="text" />
           <small
@@ -31,7 +31,7 @@
           ><div *ngIf="signupForm.get('email').errors?.required">An email is required.</div>
           </small>
         </div>
-        <div class="input-box">
+        <div class="flex flex-col gap-2 mb-6">
           <label for="password">Password</label>
           <input formControlName="password" pInputText id="password" type="password" />
           <small
@@ -48,23 +48,23 @@
           </small>
         </div>
 
-      <div class="input-box">
+      <div class="flex flex-col gap-2 mb-6">
         <label for="username">First Name</label>
         <input formControlName="firstName" pInputText id="firstName" type="text" />
       </div>
-      <div class="input-box">
+      <div class="flex flex-col gap-2 mb-6">
         <label for="username">Last Name</label>
         <input formControlName="lastName" pInputText id="lastName" type="text" />
       </div>
       <div class="flex flex-col mt-8 mb-8 gap-4">
         <label>Choose a picture for an avatar</label>
         <p-avatar styleClass="mr-2" size="xlarge">
-          <img [src]="url" *ngIf="url">
+          <img [src]="avatar" *ngIf="avatar">
         </p-avatar>
         <input formControlName="avatar" type="file" id="avatar" accept="image/png, image/jpeg" (change)="selectFile($event)">
       </div>
-      <div class="signup-button-wrapper">
-        <p-button styleClass="button-block" [disabled]="signupForm.invalid" type="submit" label="Sign Up"></p-button>
+      <div class="flex items-center justify-center">
+        <p-button styleClass="w-72" [disabled]="signupForm.invalid" type="submit" label="Sign Up"></p-button>
       </div>
       </form>
 </div>

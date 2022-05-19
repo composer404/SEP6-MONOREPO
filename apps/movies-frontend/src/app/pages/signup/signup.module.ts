@@ -10,6 +10,8 @@ import { RippleModule } from "primeng/ripple";
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ToastModule} from 'primeng/toast';
+import {MessageService} from "primeng/api";
 
 const routes: Routes = [
   {
@@ -32,8 +34,9 @@ const routes: Routes = [
     AvatarModule,
     AvatarGroupModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastModule
   ],
-  providers: [],
+  providers: [MessageService],
 })
 export class SignupModule { }

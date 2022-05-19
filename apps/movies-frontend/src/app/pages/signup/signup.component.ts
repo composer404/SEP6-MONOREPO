@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth/auth.service";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-signup',
@@ -11,11 +12,12 @@ import {AuthService} from "../../services/auth/auth.service";
 export class SignupComponent implements OnInit {
 
   public signupForm: FormGroup;
-  url: any;
+  avatar: any;
   msg = "";
 
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService,
+              private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.signupForm = new FormGroup({
@@ -46,23 +48,37 @@ export class SignupComponent implements OnInit {
 
     reader.onload = (_event) => {
       this.msg = "";
-      this.url = reader.result;
+      this.avatar = reader.result;
+      console.log(this.avatar);
     }
   }
 
+  public clear(): void {
+    this.messageService.clear();
+  }
+
   public async onSignUp() {
-    this.signupForm.get(`login`);
-    this.signupForm.get(`email`);
-    this.signupForm.get(`password`);
-    this.signupForm.get(`firstName`);
-    this.signupForm.get(`lastName`);
-    this.signupForm.get(`avatar`);
-
-    const token = await this.authService.signup();
-
-    if (token) {
-      const profile = await this.authService.getProfile();
-      this.router.navigateByUrl(`/board/${profile.id}`);
+    const response = await this.authService.signup({
+      login: this.signupForm.get('login').value,
+      email: this.signupForm.get('email').value,
+      password: this.signupForm.get('password').value,
+      firstName: this.signupForm.get('firstName').value,
+      lastName: this.signupForm.get('lastName').value,
+      avatar: this.avatar
+    });
+    if(response) {
+      void this.router.navigateByUrl(`/login`);
+      this.addSuccess();
+      return;
     }
+    this.addError();
+  }
+
+  private addSuccess(): void {
+    this.messageService.add({severity:'success', summary:'Success', detail:'You have been signed up properly'});
+  }
+
+  private addError(): void {
+    this.messageService.add({severity:'error', summary:'Error', detail:'You have not been signed up properly'});
   }
 }
