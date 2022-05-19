@@ -6,7 +6,6 @@ import { MovieListModule } from './movie-list/movie-list.module';
 import { NgModule } from '@angular/core';
 import { SignupModule } from './pages/signup/signup.module';
 import { UserBoardModule } from './pages/user-board/user-board.module';
-import {RankingModule} from "./pages/ranking/ranking.module";
 
 const routes: Routes = [
     {
@@ -20,12 +19,6 @@ const routes: Routes = [
         loadChildren: () => {
             return SignupModule;
         },
-    },
-    {
-      path: 'ranking',
-      loadChildren: () => {
-        return RankingModule;
-      },
     },
     {
         path: `board/:id`,
