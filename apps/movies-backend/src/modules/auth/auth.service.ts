@@ -2,9 +2,9 @@ import * as argon2 from 'argon2';
 
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users';
 import { User } from '@prisma/client';
 import { SignUpInput } from 'src/interfaces/interfaces';
+import { UsersService } from '../users';
 
 @Injectable()
 export class AuthService {
