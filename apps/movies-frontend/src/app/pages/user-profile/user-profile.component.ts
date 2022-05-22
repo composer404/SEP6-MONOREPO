@@ -6,6 +6,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { firstValueFrom } from 'rxjs';
 import {
     SEPComment,
+    SEPRating,
     SEPToplist,
     SEPUser,
     SEP_FOLLOWS_TYPES,
@@ -32,6 +33,7 @@ export class UserProfileComponent implements OnInit {
 
     toplists: SEPToplist[];
     comments: SEPComment[];
+    ratings: SEPRating[];
 
     items: MenuItem[];
 
@@ -65,7 +67,8 @@ export class UserProfileComponent implements OnInit {
                 this.getNumberOfFollowers();
                 this.getNumberOfFollowing();
                 this.getToplistForUser();
-                this.getCommnetsForUser();
+                this.getCommentsForUser();
+                this.getRatingsForUser();
             }
         });
     }
@@ -95,7 +98,16 @@ export class UserProfileComponent implements OnInit {
         });
     }
 
-    async getCommnetsForUser(): Promise<void> {
+    async getRatingsForUser(): Promise<void> {
+        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.ratings}/${this.user.id}`;
+        this.httpClient.get<SEPRating[] | null>(url).subscribe((ratings) => {
+            if (ratings) {
+                this.ratings = ratings;
+            }
+        });
+    }
+
+    async getCommentsForUser(): Promise<void> {
         const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.comments}/${this.user.id}`;
         this.httpClient.get<SEPComment[] | null>(url).subscribe((comments) => {
             if (comments) {

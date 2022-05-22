@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, Rating } from '@prisma/client';
 import { SEPRatingInput } from '../../models/ratings.model';
 import { PrismaService } from '../../prisma';
 import { MoviesService } from '../movies';
@@ -34,7 +34,27 @@ export class RatingsService {
         return result.id;
     }
 
-    async removeAllRatingsForUser(userId: string) {
+    async getRatingsForUser(id: string): Promise<Rating[] | null> {
+        const result = await this.database
+            .findMany({
+                where: {
+                    authorId: id,
+                },
+                include: {
+                    movie: true,
+                },
+            })
+            .catch((err) => {
+                console.log(`[API]`, err);
+                return null;
+            });
+        if (!result) {
+            return null;
+        }
+        return result;
+    }
+
+    async removeAllRatingsForUser(userId: string): Promise<boolean> {
         const result = await this.database
             .deleteMany({
                 where: {

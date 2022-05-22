@@ -70,10 +70,15 @@
                     [comments]="comments"
                     [isProfileOwner]="isProfileOwner"
                 ></app-comments-section>
-                <app-ratings-section *ngIf="activeSection == sections.ratings"></app-ratings-section>
+                <app-ratings-section
+                    *ngIf="activeSection == sections.ratings"
+                    [ratings]="ratings"
+                    [isProfileOwner]="isProfileOwner"
+                ></app-ratings-section>
                 <app-statistics-section
                     [toplists]="toplists"
                     [comments]="comments"
+                    [ratings]="ratings"
                     *ngIf="activeSection == sections.statistics"
                 ></app-statistics-section>
             </div>

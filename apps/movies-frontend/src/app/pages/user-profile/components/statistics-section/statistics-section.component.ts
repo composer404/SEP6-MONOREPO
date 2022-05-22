@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SEPComment, SEPToplist } from '../../../../interfaces/interfaces';
+import { SEPComment, SEPRating, SEPToplist } from '../../../../interfaces/interfaces';
 
 @Component({
     selector: 'app-statistics-section',
@@ -13,8 +13,10 @@ export class StatisticsSectionComponent {
     @Input()
     comments: SEPComment[];
 
+    @Input()
+    ratings: SEPRating[];
+
     basicData: any;
-    basicOptions: any;
 
     async ngOnInit(): Promise<void> {
         this.getArrayWithValues(this.toplists as any);
@@ -48,35 +50,14 @@ export class StatisticsSectionComponent {
                     borderColor: '#000',
                     tension: 0.4,
                 },
+                {
+                    label: 'Ratings',
+                    data: await this.getArrayWithValues(this.ratings),
+                    fill: false,
+                    borderColor: '#373636',
+                    tension: 0.4,
+                },
             ],
-        };
-
-        this.basicOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: '#495057',
-                    },
-                },
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: '#495057',
-                    },
-                    grid: {
-                        color: '#ebedef',
-                    },
-                },
-                y: {
-                    ticks: {
-                        color: '#495057',
-                    },
-                    grid: {
-                        color: '#ebedef',
-                    },
-                },
-            },
         };
     }
 

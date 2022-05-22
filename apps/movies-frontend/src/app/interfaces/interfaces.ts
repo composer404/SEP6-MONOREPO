@@ -55,6 +55,14 @@ export interface SEPComment {
     updateAt: string;
 }
 
+export interface SEPRating {
+    authorId: string;
+    movie: SEPMovie;
+    rating: number;
+    createdAt: string;
+    updateAt: string;
+}
+
 export interface SEPToplist {
     name: string;
     description: string;

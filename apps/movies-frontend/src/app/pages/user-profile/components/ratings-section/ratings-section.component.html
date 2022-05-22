@@ -1,0 +1,9 @@
+<ng-container *ngIf="ratings && ratings.length; else noRatings">
+    <div class="mt-3" *ngFor="let rating of ratings">
+        <app-rating-item [rating]="rating"></app-rating-item>
+    </div>
+</ng-container>
+<ng-template #noRatings>
+    <div>No ratings added</div>
+    <button *ngIf="isProfileOwner">Search for movie</button>
+</ng-template>
