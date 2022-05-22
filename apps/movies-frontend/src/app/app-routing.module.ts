@@ -5,8 +5,8 @@ import { LoginModule } from './pages/login/login.module';
 import { MovieListModule } from './movie-list/movie-list.module';
 import { NgModule } from '@angular/core';
 import { SignupModule } from './pages/signup/signup.module';
-import { UserBoardModule } from './pages/user-board/user-board.module';
-import {RankingModule} from "./pages/ranking/ranking.module";
+import { RankingModule } from './pages/ranking/ranking.module';
+import { UserProfileModule } from './pages/user-profile';
 
 const routes: Routes = [
     {
@@ -22,16 +22,16 @@ const routes: Routes = [
         },
     },
     {
-      path: 'ranking',
-      loadChildren: () => {
-        return RankingModule;
-      },
+        path: 'ranking',
+        loadChildren: () => {
+            return RankingModule;
+        },
     },
     {
-        path: `board/:id`,
+        path: `profile/:id`,
         canActivate: [AuthGuard],
         loadChildren: () => {
-            return UserBoardModule;
+            return UserProfileModule;
         },
     },
     {

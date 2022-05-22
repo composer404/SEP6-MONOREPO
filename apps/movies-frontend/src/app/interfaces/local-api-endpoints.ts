@@ -14,5 +14,8 @@ export enum LOCAL_API_SERVICES {
     following = `/users/following`,
 
     /* -------------------------------- TOPLISTS -------------------------------- */
-    toplistUser = `/toplists/user`
+    toplistUser = `/toplists/user`,
+
+    /* -------------------------------- COMMENTS -------------------------------- */
+    comments = `/comments`,
 }

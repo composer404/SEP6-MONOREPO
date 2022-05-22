@@ -74,6 +74,26 @@ export class CommentsService {
         return true;
     }
 
+    async getCommentsForUser(id: string): Promise<Comment[] | null> {
+        const result = await this.database
+            .findMany({
+                where: {
+                    authorId: id,
+                },
+                include: {
+                    movie: true,
+                },
+            })
+            .catch((err) => {
+                console.log(`[API]`, err);
+                return null;
+            });
+        if (!result) {
+            return null;
+        }
+        return result;
+    }
+
     async removeAllCommentsForUser(userId: string) {
         const result = await this.database
             .deleteMany({

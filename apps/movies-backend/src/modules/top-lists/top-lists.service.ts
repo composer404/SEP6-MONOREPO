@@ -33,7 +33,7 @@ export class TopListsService {
 
         const promises = result.map((toplist) => {
             return new Promise<void>((resolve) => {
-                toplist.numberOfMovies = toplist.length;
+                toplist.numberOfMovies = toplist.movies.length;
                 delete toplist.movies;
                 resolve();
             });

@@ -1,0 +1,26 @@
+:host ::ng-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
+    border-color: rgb(127 29 29 / var(--tw-bg-opacity));
+}
+
+:host ::ng-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:not(.p-disabled):focus {
+    box-shadow: none !important;
+}
+
+button {
+    background-color: #320b0b;
+}
+
+button:hover {
+    background-color: #430f0f;
+}
+
+.text-dark-red {
+    color: #320b0b;
+}
+
+.background-img {
+    background-image: url('../../../assets/photos/user-bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}

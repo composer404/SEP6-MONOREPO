@@ -92,7 +92,10 @@ h1 {
 }
 
 label {
-  font-family: Ubuntu-Regular, serif;
-  color: grey;
+    font-family: Ubuntu-Regular, serif;
+    color: grey;
 }
 
+body .menu-item .p-menuitem-link {
+    color: rgb(127 29 29 / var(--tw-bg-opacity)) !important;
+}

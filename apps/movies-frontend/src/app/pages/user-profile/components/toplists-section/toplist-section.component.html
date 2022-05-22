@@ -1,0 +1,9 @@
+<ng-container *ngIf="toplists.length; else noTopLists">
+    <div class="mt-3" *ngFor="let toplist of toplists">
+        <app-toplist-card [toplist]="toplist"></app-toplist-card>
+    </div>
+</ng-container>
+<ng-template #noTopLists>
+    <div>No toplists created</div>
+    <button *ngIf="isProfileOwner">Create</button>
+</ng-template>

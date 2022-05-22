@@ -1,0 +1,7 @@
+<p-card class="relative">
+    <div class="test-md font-bold mb-2">{{ comment.movie.title }}</div>
+    <div>{{ comment.content }}</div>
+    <div class="text-xs uppercase font-thin absolute inset-x-0 bottom-0 w-full text-right p-3">
+        Created at: {{ comment.createdAt | date: 'dd/MM/yyyy' }}
+    </div>
+</p-card>
