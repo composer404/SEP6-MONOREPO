@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth/auth.service";
-import {MessageService} from "primeng/api";
+import {MessageService, PrimeNGConfig} from "primeng/api";
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  styleUrls: ['./signup.component.scss'],
+  providers: [MessageService]
 })
 export class SignupComponent implements OnInit {
 
@@ -17,9 +18,10 @@ export class SignupComponent implements OnInit {
 
 
   constructor(private router: Router, private authService: AuthService,
-              private messageService: MessageService) { }
+              private messageService: MessageService, private primengConfig: PrimeNGConfig) { }
 
   ngOnInit(): void {
+    this.primengConfig.ripple = true;
     this.signupForm = new FormGroup({
       login: new FormControl(``, [Validators.required, Validators.minLength(4)]),
       email: new FormControl(``, [Validators.required]),
@@ -53,10 +55,6 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  public clear(): void {
-    this.messageService.clear();
-  }
-
   public async onSignUp() {
     const response = await this.authService.signup({
       login: this.signupForm.get('login').value,
@@ -68,17 +66,21 @@ export class SignupComponent implements OnInit {
     });
     if(response) {
       void this.router.navigateByUrl(`/login`);
-      this.addSuccess();
+      this.showSuccess();
       return;
     }
-    this.addError();
+    this.showError();
   }
 
-  private addSuccess(): void {
+  public clear() {
+    this.messageService.clear();
+  }
+
+  showSuccess() {
     this.messageService.add({severity:'success', summary:'Success', detail:'You have been signed up properly'});
   }
 
-  private addError(): void {
+  showError() {
     this.messageService.add({severity:'error', summary:'Error', detail:'You have not been signed up properly'});
   }
 }
