@@ -6,6 +6,10 @@
     box-shadow: none !important;
 }
 
+::ng-deep .p-tabmenu .p-tabmenu-nav {
+    border-radius: 3px;
+}
+
 button {
     background-color: #320b0b;
 }
