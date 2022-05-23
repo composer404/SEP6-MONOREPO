@@ -1,0 +1,7 @@
+<p-card class="relative">
+    <div class="test-md font-bold mb-2">{{ rating.movie.title }}</div>
+    <p-rating [ngModel]="rating.rating" readonly="true" stars="10" [cancel]="false"></p-rating>
+    <div class="text-xs uppercase font-thin absolute inset-x-0 bottom-0 w-full text-right p-3">
+        Created at: {{ rating.createdAt | date: 'dd/MM/yyyy' }}
+    </div>
+</p-card>

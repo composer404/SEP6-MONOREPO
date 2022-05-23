@@ -1,0 +1,94 @@
+<ng-container *ngIf="user && toplists">
+    <div class="flex flex-col mx-auto h-screen w-4/5 space-y-3 p-4">
+        <div class="w-full h-2/6 background-img rounded-md"></div>
+        <div class="flex flex-row w-full h-4/6 space-x-3">
+            <div class="relative w-1/4 bg-red-900 rounded-md">
+                <img
+                    *ngIf="user.avatar; else noAvatar"
+                    [src]="user.avatar"
+                    class="border-4 border-gray-300 relative -top-24 left-1/5 mx-auto w-48 h-48 rounded-full"
+                />
+                <ng-template #noAvatar>
+                    <div
+                        class="flex items-center justify-center bg-black border-4 border-gray-300 relative -top-24 left-1/5 mx-auto w-48 h-48 rounded-full"
+                    >
+                        <i class="pi pi-user" style="font-size: 5rem; color: white"></i>
+                    </div>
+                </ng-template>
+                <div class="relative -top-20 w-full text-gray-100">
+                    <div class="text-center font-bold text-2xl">{{ user.firstName }} {{ user.lastName }}</div>
+                    <div class="text-center text-gray-200">
+                        {{ user.email }} <i>({{ user.login }})</i>
+                    </div>
+                    <div class="px-6 mt-4">
+                        <div class="uppercase text-sm font-bold text-dark-red">Created toplists</div>
+                        <div class="text-2xl">
+                            {{ (toplists?.length | number) || 'Cannot load data' }}
+                        </div>
+                    </div>
+                    <div (click)="showFollowers()" class="px-6 mt-3 cursor-pointer">
+                        <div class="uppercase text-sm font-bold text-dark-red">followers</div>
+                        <div class="text-2xl">
+                            {{ (followersNumber | number) || 'Cannot load data' }}
+                        </div>
+                    </div>
+                    <div (click)="showFollowing()" class="px-6 mt-3 cursor-pointer">
+                        <div class="uppercase text-sm font-bold text-dark-red">following</div>
+                        <div class="text-2xl">
+                            {{ (followingNumber | number) || 'Cannot load data' }}
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute inset-x-0 bottom-0 w-100 text-center p-4">
+                    <button
+                        (click)="openUpdateProfileModal()"
+                        *ngIf="isProfileOwner"
+                        class="w-3/4 text-gray-100 mb-2 h-10 rounded-md"
+                    >
+                        Manage
+                    </button>
+                    <button
+                        *ngIf="!isProfileOwner && !isFollowing"
+                        (click)="followUser()"
+                        class="w-3/4 text-gray-100 mb-2 h-10 rounded-md"
+                    >
+                        Follow
+                    </button>
+                    <button
+                        *ngIf="!isProfileOwner && isFollowing"
+                        (click)="unfollowUser()"
+                        class="w-3/4 text-gray-100 mb-2 h-10 rounded-md"
+                    >
+                        Unfollow
+                    </button>
+                    <div class="text-sm text-dark-red">CREATED AT: {{ user.createdAt | date: 'dd/MM/yyyy' }}</div>
+                </div>
+            </div>
+            <div class="w-3/4 rounded-md">
+                <p-tabMenu [model]="items" [activeItem]="items[0]"></p-tabMenu>
+                <app-toplists-section
+                    *ngIf="activeSection == sections.toplists"
+                    [toplists]="toplists"
+                    [isProfileOwner]="isProfileOwner"
+                    (onRemove)="onRemoveToplist($event)"
+                ></app-toplists-section>
+                <app-comments-section
+                    *ngIf="activeSection == sections.comments"
+                    [comments]="comments"
+                    [isProfileOwner]="isProfileOwner"
+                ></app-comments-section>
+                <app-ratings-section
+                    *ngIf="activeSection == sections.ratings"
+                    [ratings]="ratings"
+                    [isProfileOwner]="isProfileOwner"
+                ></app-ratings-section>
+                <app-statistics-section
+                    [toplists]="toplists"
+                    [comments]="comments"
+                    [ratings]="ratings"
+                    *ngIf="activeSection == sections.statistics"
+                ></app-statistics-section>
+            </div>
+        </div>
+    </div>
+</ng-container>

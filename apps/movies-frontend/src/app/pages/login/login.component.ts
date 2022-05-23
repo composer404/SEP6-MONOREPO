@@ -1,24 +1,20 @@
-
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
-import {MessageService, PrimeNGConfig} from "primeng/api";
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    providers: [MessageService]
 })
 export class LoginComponent implements OnInit {
     public loginForm: FormGroup;
 
-    constructor(private router: Router, private authService: AuthService,
-                private messageService: MessageService, private primengConfig: PrimeNGConfig) {}
+    constructor(private router: Router, private authService: AuthService, private messageService: MessageService) {}
 
     ngOnInit(): void {
-      this.primengConfig.ripple = true;
         this.loginForm = new FormGroup({
             login: new FormControl(``, [Validators.required, Validators.minLength(4)]),
             password: new FormControl(``, [Validators.required, Validators.minLength(4)]),
@@ -33,14 +29,14 @@ export class LoginComponent implements OnInit {
 
         if (token) {
             const profile = await this.authService.getProfile();
-            this.router.navigateByUrl(`/board/${profile.id}`);
-            this.showSuccess();
+            this.router.navigateByUrl(`/profile/${profile.id}`);
+            this.addSuccess();
             return;
         }
-        this.showError();
+        // this.showError();
     }
 
-    public clear() {
+    public clear(): void {
         this.messageService.clear();
     }
 
@@ -48,11 +44,19 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/signup');
     }
 
-    showSuccess() {
-        this.messageService.add({severity:'success', summary:'Success', detail:'You have been logged in properly'});
+    private addSuccess(): void {
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'You have been logged in properly',
+        });
     }
 
-    showError() {
-        this.messageService.add({severity:'error', summary:'Error', detail:'You have not been logged in properly'});
+    private addError(): void {
+        this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'You have not been logged in properly',
+        });
     }
 }
