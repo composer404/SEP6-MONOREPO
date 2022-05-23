@@ -10,18 +10,104 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ---------------------------------- User --------------------------------- */
-
 model User {
-  id                                  String @id @default(uuid())
+  id                                String @id @default(uuid())
 
-  login                               String @unique
-  password                            String
-  email                               String @unique
-  firstName                           String
-  lastName                            String
-  avatar                              String
+  login                             String @unique
+  password                          String
+  email                             String @unique
+  firstName                         String?
+  lastName                          String?
+  avatar                            String?
 
-  createdAt                           DateTime @default(now())
-  updatedAt                           DateTime @updatedAt
+  topLists                          TopList[]
+  commands                          Comment[]
+  ratings                           Rating[]
+
+  followers                         Follows[] @relation("follower")
+  following                         Follows[] @relation("following")
+
+  createdAt                         DateTime @default(now())
+  updatedAt                         DateTime @updatedAt
 }
+
+model Follows {
+  follower                          User @relation("follower", fields: [followerId], references: [id])
+  followerId                        String
+  following                         User @relation("following", fields: [followingId], references: [id])
+  followingId                       String
+
+  @@id([followerId, followingId])
+}
+
+model TopList {
+    id                              String @id @default(uuid())
+    name                            String
+    description                     String
+    movies                          Movie[]
+
+    user                            User @relation(fields: [userId], references: [id])
+    userId                          String
+
+    createdAt                       DateTime @default(now())
+    updatedAt                       DateTime @updatedAt
+}
+
+model Movie {
+    id                              String @id @default(uuid())
+    apiId                           Int @unique()
+    title                           String
+    posterPath                      String
+
+    topLists                        TopList[]
+    comments                        Comment[]
+    ratings                         Rating[]
+
+    createdAt                       DateTime @default(now())
+    updatedAt                       DateTime @updatedAt
+}
+
+model Comment {
+    id                              String @id @default(uuid())
+    content                         String
+
+    author                          User @relation(fields: [authorId], references: [id])
+    authorId                        String
+
+    movie                           Movie @relation(fields: [movieId], references: [id])
+    movieId                         String
+
+    createdAt                       DateTime @default(now())
+    updatedAt                       DateTime @updatedAt
+}
+
+model Rating {
+    id                              String @id @default(uuid())
+    rating                          Int
+
+    author                          User @relation(fields: [authorId], references: [id])
+    authorId                        String
+
+    movie                           Movie @relation(fields: [movieId], references: [id])
+    movieId                         String
+
+    createdAt                       DateTime @default(now())
+    updatedAt                       DateTime @updatedAt
+}
+
+
+
+//  id: string;
+//     adult: boolean;
+//     overview: string;
+//     release_date: string;
+//     genre_ids: number[];
+//     original_title: string;
+//     original_language: string;
+//     title: string;
+//     backdrop_path: string | undefined;
+//     popularity: number;
+//     vote_count: number;
+//     video: boolean;
+//     vode_average: number;
+//     poster_path: string | undefined;

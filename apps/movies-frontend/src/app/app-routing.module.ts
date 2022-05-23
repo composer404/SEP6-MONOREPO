@@ -1,7 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './guard/auth.guard';
-import { HomeModule } from './pages/home/home.module';
 import { LoginModule } from './pages/login/login.module';
 import { MovieActorsDetailsModule } from './movie-actors-details/movie-actors-details.module';
 import { MovieActorsModule } from './movie-actors/movie-actors.module';
@@ -10,6 +9,7 @@ import { MovieListModule } from './movie-list/movie-list.module';
 import { NgModule } from '@angular/core';
 import { SignupModule } from './pages/signup/signup.module';
 import { UserBoardModule } from './pages/user-board/user-board.module';
+import {RankingModule} from "./pages/ranking/ranking.module";
 
 const routes: Routes = [
     {
@@ -23,6 +23,12 @@ const routes: Routes = [
         loadChildren: () => {
             return SignupModule;
         },
+    },
+    {
+      path: 'ranking',
+      loadChildren: () => {
+        return RankingModule;
+      },
     },
     {
         path: `board/:id`,

@@ -1,26 +1,71 @@
-<div class="signup-wrapper">
-  <p-card>
-    <div class="main-wrapper">
-        <div class="input-box">
-          <label for="username">Username</label>
-          <input pInputText id="username" type="text" />
+<div class="bg-[url('/assets/photos/background.png')] xl:w-screen xl:h-screen overflow-hidden flex justify-center items-center">
+  <p-toast></p-toast>
+<div class="bg-white shadow-md hover:shadow-inner xl:w-1/2 p-10 mt-16 mb-16 border-2 rounded-md flex justify-center items-center">
+      <form [formGroup]="signupForm" (ngSubmit)="onSignUp()">
+        <div class="flex flex-col gap-2 mb-6">
+          <label for="username">Login</label>
+          <input formControlName="login" pInputText id="username" type="text" />
+          <small
+            *ngIf="
+                   signupForm.get('login').invalid &&
+                   (signupForm.get('login').dirty || signupForm.get('login').touched)
+                   "
+            id="login-help"
+            class="p-error"
+            ><div *ngIf="signupForm.get('login').errors?.required">Login is required.</div>
+            <div *ngIf="signupForm.get('login').errors?.minlength">
+              Login must be at least 4 characters long.
+            </div>
+          </small>
         </div>
-        <div class="input-box">
+        <div class="flex flex-col gap-2 mb-6">
           <label for="email">E-mail</label>
-          <input pInputText id="email" type="text" />
+          <input formControlName="email" pInputText id="email" type="text" />
+          <small
+            *ngIf="
+                   signupForm.get('email').invalid &&
+                   (signupForm.get('email').dirty || signupForm.get('email').touched)
+                   "
+            id="email-help"
+            class="p-error"
+          ><div *ngIf="signupForm.get('email').errors?.required">An email is required.</div>
+          </small>
         </div>
-        <div class="input-box">
+        <div class="flex flex-col gap-2 mb-6">
           <label for="password">Password</label>
-          <input pInputText id="password" type="password" />
+          <input formControlName="password" pInputText id="password" type="password" />
+          <small
+            *ngIf="
+                   signupForm.get('password').invalid &&
+                   (signupForm.get('password').dirty || signupForm.get('password').touched)
+                   "
+            id="password-help"
+            class="p-error"
+          ><div *ngIf="signupForm.get('password').errors?.required">Password is required.</div>
+            <div *ngIf="signupForm.get('password').errors?.minlength">
+              Password must be at least 4 characters long.
+            </div>
+          </small>
         </div>
-        <div class="input-box">
-          <label for="password">Re-type password</label>
-          <input pInputText id="passwordRetype" type="password" />
-        </div>
-        <div class="input-box">
-          <p-button label="Sign Up"></p-button>
-        </div>
-    </div>
-  </p-card>
-</div>
 
+      <div class="flex flex-col gap-2 mb-6">
+        <label for="username">First Name</label>
+        <input formControlName="firstName" pInputText id="firstName" type="text" />
+      </div>
+      <div class="flex flex-col gap-2 mb-6">
+        <label for="username">Last Name</label>
+        <input formControlName="lastName" pInputText id="lastName" type="text" />
+      </div>
+      <div class="flex flex-col mt-8 mb-8 gap-4">
+        <label>Choose a picture for an avatar</label>
+        <p-avatar styleClass="mr-2" size="xlarge">
+          <img [src]="avatar" *ngIf="avatar">
+        </p-avatar>
+        <input formControlName="avatar" type="file" id="avatar" accept="image/png, image/jpeg" (change)="selectFile($event)">
+      </div>
+      <div class="flex items-center justify-center">
+        <p-button styleClass="w-72" [disabled]="signupForm.invalid" type="submit" label="Sign Up"></p-button>
+      </div>
+      </form>
+</div>
+</div>

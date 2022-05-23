@@ -1,26 +1,8 @@
-<div class="login-wrapper">
-    <p-card>
-        <div class="main-wrapper">
-            <!-- <div>
-        <div class="input-box">
-          <label for="username">Username</label>
-          <input [(ngModel)]="username" pInputText id="username" type="text" />
-        </div>
-        <div class="input-box">
-          <label for="password">Password</label>
-          <input
-            [(ngModel)]="password"
-            pInputText
-            id="password"
-            type="password"
-          />
-        </div>
-        <div class="input-box">
-          <p-button (click)="onLogin()" label="Login"></p-button>
-        </div>
-      </div> -->
+<div class="bg-[url('/assets/photos/background.png')] xl:w-screen xl:h-screen overflow-hidden flex justify-center items-center">
+  <p-toast></p-toast>
+<div class="bg-white shadow-md hover:shadow-inner xl:w-1/2 border-2 p-10 mt-60 mb-60 rounded-md flex justify-center items-center">
             <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-                <div class="input-box">
+                <div class="flex flex-col gap-2 mb-6">
                     <label for="login">Username</label>
                     <input formControlName="login" pInputText id="login" type="text" />
                     <small
@@ -36,7 +18,7 @@
                         </div>
                     </small>
                 </div>
-                <div class="input-box">
+                <div class="flex gap-2 flex-col">
                     <label for="password">Password</label>
                     <input formControlName="password" pInputText id="password" type="password" />
                     <small
@@ -46,29 +28,24 @@
                         "
                         id="password-help"
                         class="p-error"
-                        ><div *ngIf="loginForm.get('password').errors?.required">Login is required.</div>
+                        ><div *ngIf="loginForm.get('password').errors?.required">Password is required</div>
                         <div *ngIf="loginForm.get('password').errors?.minlength">
-                            Login must be at least 4 characters long.
+                            Password must be at least 4 characters long.
                         </div>
                     </small>
                 </div>
-                <div class="mt-2">
-                    <p-button [disabled]="loginForm.invalid" type="submit" label="Login"></p-button>
+                <div class="mt-10">
+                    <p-button styleClass="w-72" [disabled]="loginForm.invalid" type="submit" label="Login"></p-button>
+                    <p-divider layout="vertical">
+                      <b>OR</b>
+                    </p-divider>
+                    <p-button
+                      (click)="onClickSignUp()"
+                      label="Sign In"
+                      icon="pi pi-user-plus"
+                      styleClass="w-72 p-button-success"
+                    ></p-button>
                 </div>
             </form>
-            <div>
-                <p-divider layout="vertical">
-                    <b>OR</b>
-                </p-divider>
-            </div>
-            <div>
-                <p-button
-                    (click)="onClickSignUp()"
-                    label="Sign In"
-                    icon="pi pi-user-plus"
-                    styleClass="p-button-success"
-                ></p-button>
-            </div>
-        </div>
-    </p-card>
+</div>
 </div>
