@@ -1,13 +1,37 @@
-<div class="bg-[url('/assets/photos/background.png')] w-1920 xl:h-screen overflow-scroll p-10">
+<div class="bg-[url('/assets/photos/background.png')] w-1920 xl:h-screen overflow-y-scroll p-10">
     <div class="bg-white shadow-md hover:shadow-inner border-2 rounded-md xl:w-1/2">
-      <form>
+      <form [formGroup]="topListForm" (ngSubmit)="onCreateMovie()">
         <div class="m-10 gap-5">
           <div class="flex flex-col gap-2">
-            <label for="title">Title</label>
-            <input pInputText id="title" />
+            <label for="name">Name</label>
+            <input formControlName="name" pInputText id="name" type="text" />
+            <small
+              *ngIf="
+                            topListForm.get('name').invalid &&
+                            (topListForm.get('name').dirty || topListForm.get('name').touched)
+                        "
+              id="ranking-help"
+              class="p-error"
+            ><div *ngIf="topListForm.get('name').errors?.required">A name of the movie is required.</div>
+              <div *ngIf="topListForm.get('name').errors?.minlength">
+                A title must be at least 1 character long.
+              </div>
+            </small>
             <div class="flex mt-2"></div>
             <label for="description">Description</label>
-            <textarea pInputTextarea [rows]="5" [(ngModel)]="property" id="description" name="text"></textarea>
+            <textarea formControlName="description" pInputTextarea [rows]="5" [(ngModel)]="property" id="description" name="text"></textarea>
+            <small
+              *ngIf="
+                            topListForm.get('description').invalid &&
+                            (topListForm.get('description').dirty || topListForm.get('description').touched)
+                        "
+              id="login-help"
+              class="p-error"
+            ><div *ngIf="topListForm.get('description').errors?.required">The description is required.</div>
+              <div *ngIf="topListForm.get('description').errors?.minlength">
+                The description must be at least 10 characters long.
+              </div>
+            </small>
           </div>
           <div class="flex gap-2 mt-6">
             <p-button type="submit" label="Save"></p-button>
@@ -16,5 +40,9 @@
         </div>
       </form>
     </div>
-    <app-card></app-card>
+    <app-card *ngFor="let movie of movieList"
+              [title]="movie.title"
+              [description]="movie.description"
+              [imageSrc]="movie.image"
+    ></app-card>
 </div>

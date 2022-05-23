@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { MessageService } from 'primeng/api';
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
             this.addSuccess();
             return;
         }
-        this.addError();
+        // this.showError();
     }
 
     public clear(): void {

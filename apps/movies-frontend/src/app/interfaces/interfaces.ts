@@ -77,3 +77,8 @@ export interface SEPRating {
     author: SEPUser;
     rating: number;
 }
+
+export interface TopListInput {
+  name: string;
+  description: string;
+}
