@@ -1,5 +1,7 @@
+import { NumberValueAccessor } from '@angular/forms';
+
 export interface SEPMovie {
-    id: string;
+    id: number;
     adult: boolean;
     overview: string;
     release_date: string;
@@ -28,34 +30,155 @@ export interface SEPQueryParam {
 }
 
 export interface SEPMovieDetails {
-    //     adult: false
-    // backdrop_path:
-    // belongs_to_collection: {id: 720879, name: 'Sonic the Hedgehog Collection', poster_path: '/rEC1pkQ1UbX7USRkVIrt2Nk7hlC.jpg', backdrop_path: '/8jfHKno4tRZ621Uzw4heEaJPgRM.jpg'}
-    // budget: 110000000
-    // genres: SEPGenre[]
-    // homepage: "https://www.sonicthehedgehogmovie.com"
-    // id: 675353
-    // imdb_id: "tt12412888"
-    // original_language: "en"
-    // original_title: "Sonic the Hedgehog 2"
-    // overview: "After settling in Green Hills, Sonic is eager to prove he has what it takes to be a true hero. His test comes when Dr. Robotnik returns, this time with a new partner, Knuckles, in search for an emerald that has the power to destroy civilizations. Sonic teams up with his own sidekick, Tails, and together they embark on a globe-trotting journey to find the emerald before it falls into the wrong hands."
-    // popularity: 6852.303
-    // poster_path: "/6DrHO1jr3qVrViUO6s6kFiAGM7.jpg"
-    // production_companies: (5) [{…}, {…}, {…}, {…}, {…}]
-    // production_countries: (2) [{…}, {…}]
-    // release_date: "2022-03-30"
-    // revenue: 355200000
-    // runtime: 122
-    // spoken_languages: (2) [{…}, {…}]
-    // status: "Released"
-    // tagline: "Welcome to the next level."
-    // title: "Sonic the Hedgehog 2"
-    // video: false
-    // vote_average: 7.7
-    // vote_count: 1459
+    adult: false;
+    backdrop_path: string | undefined;
+    belongs_to_collection: SEPColection[];
+    budget: number;
+    genres: SEPGenre[];
+    homepage: string | undefined;
+    id: number;
+    imdb_id: string;
+    original_language: string;
+    original_title: string;
+    overview: string;
+    popularity: number;
+    poster_path: string | undefined;
+    production_companies: SEPCompanies[];
+    production_countries: SEPCountries;
+    release_date: string;
+    revenue: number;
+    runtime: number;
+    spoken_languages: SEPLanguages[];
+    status: string;
+    tagline: string;
+    title: string;
+    video: false;
+    vote_average: number;
+    vote_count: number;
 }
 
 export interface SEPGenre {
     id: number;
     name: string;
+}
+
+export interface SEPColection {
+    backdrop_path: string | undefined;
+    id: number;
+    name: string;
+    poster_path: string | undefined;
+}
+
+export interface SEPCompanies {
+    id: number;
+    logo_path: string | undefined;
+    name: string;
+    origin_country: string;
+}
+
+export interface SEPCountries {
+    iso_3166_1: string;
+    name: string;
+}
+
+export interface SEPLanguages {
+    english_name: string;
+    iso_639_1: string;
+    name: string;
+}
+
+export interface SEPActorsDetails {
+    adult: boolean;
+    also_known_as: {
+        name: string;
+    };
+    biography: string;
+    birthday: string;
+    deathday: string;
+    gender: number;
+    homepage: string;
+    id: number;
+    imdb_id: string;
+    name: string;
+    place_of_birth: string;
+    popularity: number;
+    profile_path: string;
+}
+
+export interface SEPActors {
+    adult: false;
+    gender: number;
+    id: number;
+    known_for: SEPKnownFor[];
+    known_for_department: string;
+    name: string;
+    popularity: number;
+    profile_path: string;
+}
+
+export interface SEPKnownFor {
+    adult: false;
+    backdrop_path: string | undefined;
+    first_air_date: string;
+    genre_ids: number;
+    id: number;
+    media_type: string;
+    name: string;
+    origin_country: string;
+    original_language: string;
+    original_name: string;
+    overview: string;
+    poster_path: string | undefined;
+    vote_average: number;
+    vote_count: number;
+}
+
+export interface SEPCredits {
+    credit_type: string;
+    department: string;
+    job: string;
+    media: SEPMedia[];
+    seasons: SEPSeason[];
+    media_type: string;
+    id: number;
+    person: SEPPerson[];
+}
+
+export interface SEPPerson {
+    name: string;
+    id: number;
+}
+
+export interface SEPSeason {
+    air_date: string;
+    poster_path: string;
+    season_number: number;
+}
+
+export interface SEPMedia {
+    id: number;
+    name: string;
+    original_name: string;
+    character: string;
+    episodes: number;
+}
+
+export interface SEPCastList {
+    cast: SEPCast[];
+    id: number;
+}
+
+export interface SEPCast {
+    adult: false;
+    cast_id: number;
+    character: string;
+    credit_id: string;
+    gender: number;
+    id: number;
+    known_for_department: string;
+    name: string;
+    order: number;
+    original_name: string;
+    popularity: number;
+    profile_path: string | undefined;
 }

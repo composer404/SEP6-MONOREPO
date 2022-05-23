@@ -1,8 +1,8 @@
-import { API_RESOURCES, buildUrl } from '../shared/utils/api-config';
-import { ActivatedRoute, Router } from '@angular/router';
+import { API_RESOURCES, buildPersonUrl, buildUrl } from '../shared/utils/api-config';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
     SEPActors,
+    SEPActorsDetails,
     SEPCast,
     SEPCastList,
     SEPCredits,
@@ -11,64 +11,60 @@ import {
     SEPMovieDetails,
 } from '../shared/interfaces/interfaces';
 
+import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { PrimeNGConfig } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
-    selector: 'app-movie-details',
-    templateUrl: './movie-details.component.html',
-    styleUrls: ['./movie-details.component.scss'],
+    selector: 'app-movie-actors-details',
+    templateUrl: './movie-actors-details.component.html',
+    styleUrls: ['./movie-actors-details.component.scss'],
 })
-export class MovieDetailsComponent implements OnInit {
-    movieDetails: SEPMovieDetails;
+export class MovieActorsDetailsComponent implements OnInit {
+    actorDetails: SEPActorsDetails;
     loading: boolean = true;
+    moviesByActor: SEPMovie;
     credits: SEPCastList;
-    actor: SEPCast[];
-    selectedCast: SEPCast;
+    @ViewChild('dt') table: Table;
     first = 0;
     rows = 10;
-    selectedMovie: SEPMovie;
-    selectedActor: SEPActors;
-
-    @ViewChild('dt') table: Table;
+    actorMov: SEPCast[];
 
     constructor(
         private readonly httpClient: HttpClient,
         private primengConfig: PrimeNGConfig,
         private readonly route: ActivatedRoute,
-        private router: Router,
     ) {}
     searchVal: string = '';
 
     ngOnInit(): void {
         this.primengConfig.ripple = true;
         this.route.params.subscribe(async (params) => {
-            await this.getDetails(params.id);
+            await this.getActorsDetails(params.id);
         });
         this.route.params.subscribe(async (params) => {
-            await this.getActorMovies(params.id);
+            await this.getMoviesByActor(params.id);
         });
     }
 
-    public async getDetails(id: number): Promise<void> {
+    public async getActorsDetails(id: number): Promise<void> {
         console.log(id);
-        const firstPart = API_RESOURCES.DETAILS + `/${id}`;
+        const firstPart = API_RESOURCES.ACTORDETAILS + `/${id}`;
         const url = `${buildUrl(firstPart as any)}`;
-        const response = await firstValueFrom(this.httpClient.get<SEPMovieDetails>(url));
+        const response = await firstValueFrom(this.httpClient.get<SEPActorsDetails>(url));
         console.log(response);
-        this.movieDetails = response;
+        this.actorDetails = response;
     }
 
-    public async getActorMovies(id: number): Promise<void> {
-        const firstPart = API_RESOURCES.DETAILS + `/${id}` + API_RESOURCES.CREDITS;
+    public async getMoviesByActor(id: number): Promise<void> {
+        const firstPart = API_RESOURCES.ACTORDETAILS + `/${id}` + API_RESOURCES.MOVIECREDITS;
         const url = `${buildUrl(firstPart as any)}`;
         const response = await firstValueFrom(this.httpClient.get<SEPCastList>(url));
         console.log(response);
         this.credits = response;
     }
-
     next() {
         this.first = this.first + this.rows;
     }
@@ -82,20 +78,13 @@ export class MovieDetailsComponent implements OnInit {
     }
 
     isLastPage(): boolean {
-        return this.actor ? this.first === this.actor.length - this.rows : true;
+        return this.actorMov ? this.first === this.actorMov.length - this.rows : true;
     }
 
     isFirstPage(): boolean {
-        return this.actor ? this.first === 0 : true;
+        return this.actorMov ? this.first === 0 : true;
     }
     onMovieChange(event) {
-        this.table.filter(event.value, 'actor', 'in');
-    }
-
-    public async onCastDetails() {
-        console.log(this.selectedCast);
-        this.router.navigateByUrl(
-            `movie-details/${this.selectedCast.id}/movie-actors-details/${this.selectedActor.id}`,
-        );
+        this.table.filter(event.value, 'movieByActor', 'in');
     }
 }

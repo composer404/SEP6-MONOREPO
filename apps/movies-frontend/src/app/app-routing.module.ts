@@ -2,6 +2,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './guard/auth.guard';
 import { LoginModule } from './pages/login/login.module';
+import { MovieActorsDetailsModule } from './movie-actors-details/movie-actors-details.module';
+import { MovieActorsModule } from './movie-actors/movie-actors.module';
 import { MovieDetailsModule } from './movie-details/movie-details.module';
 import { MovieListModule } from './movie-list/movie-list.module';
 import { NgModule } from '@angular/core';
@@ -45,6 +47,24 @@ const routes: Routes = [
         path: `movie-list/movie-details/:id`,
         loadChildren: () => {
             return MovieDetailsModule;
+        },
+    },
+    {
+        path: 'movie-actors',
+        loadChildren: () => {
+            return MovieActorsModule;
+        },
+    },
+    {
+        path: `movie-actors/movie-actors-details/:id`,
+        loadChildren: () => {
+            return MovieActorsDetailsModule;
+        },
+    },
+    {
+        path: `movie-list/movie-details/:id'/movie-actors-details/:id`,
+        loadChildren: () => {
+            return MovieActorsDetailsModule;
         },
     },
     {

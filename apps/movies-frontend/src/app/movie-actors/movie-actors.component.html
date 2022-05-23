@@ -2,22 +2,13 @@
     <input
         pInputText
         type="text"
-        [(ngModel)]="searchVal"
-        (ngModelChange)="onTitleChange()"
-        placeholder="Search by Title"
+        [(ngModel)]="searchActor"
+        (ngModelChange)="onNameChange()"
+        placeholder="Search by Name"
         class="form-control"
     />
     <p></p>
-    <!-- <div class="card">
-        <input
-            pInputText
-            type="text"
-            [(ngModel)]="searchActor"
-            (ngModelChange)="getMovieByActor($event)"
-            placeholder="Search by Actor"
-            class="form-control"
-        /> -->
-    <h5>Movie List</h5>
+    <h5>Actor List</h5>
     <div class="mb-3">
         <p-button
             type="button"
@@ -36,7 +27,7 @@
         ></p-button>
     </div>
     <p-table
-        [value]="movies"
+        [value]="actors"
         [paginator]="true"
         [rows]="rows"
         [showCurrentPageReport]="true"
@@ -46,23 +37,23 @@
         [rowsPerPageOptions]="[10, 25, 50]"
         selectionMode="single"
         dataKey="code"
-        [(selection)]="selectedMovie"
-        (onRowSelect)="onDetails()"
+        [(selection)]="selectedActor"
+        (onRowSelect)="onActorDetails()"
     >
         <ng-template pTemplate="header">
             <tr>
-                <th>Title</th>
+                <th>Name</th>
                 <th>Popularity</th>
                 <th>Original Language</th>
-                <th>Vote Count</th>
+                <th>Department</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-movies>
-            <tr [pSelectableRow]="movies">
-                <td>{{ movies.title }}</td>
-                <td>{{ movies.popularity }}</td>
-                <td>{{ movies.original_language }}</td>
-                <td>{{ movies.vote_count }}</td>
+        <ng-template pTemplate="body" let-actors>
+            <tr [pSelectableRow]="actors">
+                <td>{{ actors.name }}</td>
+                <td>{{ actors.popularity }}</td>
+                <td>{{ actors.id }}</td>
+                <td>{{ actors.known_for_department }}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="paginatorleft">

@@ -1,25 +1,15 @@
 <p-card>
-    {{ movieDetails.title }}
-    <p-card>
-        <p-image
-            src="https://image.tmdb.org/t/p/original/{{ movieDetails.poster_path }}"
-            alt="Image"
-            width="250"
-        ></p-image>
-    </p-card>
+    {{ actorDetails.name }}
 </p-card>
 <p></p>
 <p-card>
     Description:
     <p></p>
-    {{ movieDetails.overview }}
-    <p>Language: {{ movieDetails.original_language }}</p>
-    <p>Votes: {{ movieDetails.vote_count }}</p>
-    <p>{{ movieDetails.revenue }}</p>
+    {{ actorDetails.biography }}
+    <p>Language: {{ actorDetails.place_of_birth }}</p>
+    <p>Votes: {{ actorDetails.popularity }}</p>
 </p-card>
-<P></P>
-<!-- <p-card *ngFor="let actor of credits.cast"> {{ actor.name }} </p-card> -->
-<h5>Actor List</h5>
+<h5>Movie List</h5>
 <div class="mb-3">
     <p-button
         type="button"
@@ -47,24 +37,19 @@
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
     [rowsPerPageOptions]="[10, 25, 50]"
     selectionMode="single"
-    dataKey="code"
-    [(selection)]="selectedCast"
-    (onRowSelect)="onCastDetails()"
 >
     <ng-template pTemplate="header">
         <tr>
             <th>Name</th>
             <th>Popularity</th>
             <th>Original Language</th>
-            <th>Department</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-actor>
         <tr [pSelectableRow]="actor">
-            <td>{{ actor.name }}</td>
+            <td>{{ actor.original_title }}</td>
             <td>{{ actor.popularity }}</td>
             <td>{{ actor.id }}</td>
-            <td>{{ actor.known_for_department }}</td>
         </tr>
     </ng-template>
     <ng-template pTemplate="paginatorleft">
