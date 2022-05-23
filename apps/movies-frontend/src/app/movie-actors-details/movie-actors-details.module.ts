@@ -5,19 +5,20 @@ import { CardModule } from 'primeng/card';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImageModule } from 'primeng/image';
-import { MovieDetailsComponent } from './movie-details.component';
+import { MovieActorsComponent } from '../movie-actors/movie-actors.comonent';
+import { MovieActorsDetailsComponent } from './movie-actors-details.component';
 import { NgModule } from '@angular/core';
 import { TableModule } from 'primeng/table';
 
 const routes: Routes = [
     {
         path: '',
-        component: MovieDetailsComponent,
+        component: MovieActorsDetailsComponent,
     },
 ];
 @NgModule({
-    declarations: [MovieDetailsComponent],
+    declarations: [MovieActorsDetailsComponent],
     imports: [CommonModule, RouterModule.forChild(routes), TableModule, ButtonModule, CardModule, ImageModule],
     providers: [],
 })
-export class MovieDetailsModule {}
+export class MovieActorsDetailsModule {}
