@@ -15,3 +15,8 @@ export interface SignUpInput {
   password: string,
   avatar: string
 }
+
+export interface TopListInput {
+  name: string;
+  description: string;
+}
