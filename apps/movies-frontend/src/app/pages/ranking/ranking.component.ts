@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth/auth.service";
 import {MessageService, PrimeNGConfig} from "primeng/api";
-import {Token} from "../../interfaces/interfaces";
 import {environment} from "../../../environments/environment";
 import {LOCAL_API_SERVICES} from "../../interfaces/local-api-endpoints";
 import {HttpClient} from "@angular/common/http";
