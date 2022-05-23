@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, TopList } from '@prisma/client';
 import { resolve } from 'path';
-import { SEPMovieInput, SEPTopListInput } from '../../models';
+import { CreatedObjectResponse, SEPMovieInput, SEPTopListInput } from '../../models';
 import { PrismaService } from '../../prisma';
 import { MoviesService } from '../movies';
 
@@ -62,7 +62,7 @@ export class TopListsService {
         return result;
     }
 
-    async getTopListById(id: string): Promise<TopList | null> {
+    async getTopListFullById(id: string): Promise<TopList | null> {
         const result = await this.database
             .findFirst({
                 where: {
@@ -83,7 +83,25 @@ export class TopListsService {
         return result;
     }
 
-    async createNewTopList(userId: string, topListInput: SEPTopListInput): Promise<string | null> {
+    async getTopListById(id: string): Promise<TopList | null> {
+        const result = await this.database
+            .findFirst({
+                where: {
+                    id,
+                },
+            })
+            .catch((err) => {
+                console.error(`[API]`, err);
+                return null;
+            });
+
+        if (!result) {
+            return null;
+        }
+        return result;
+    }
+
+    async createNewTopList(userId: string, topListInput: SEPTopListInput): Promise<CreatedObjectResponse | null> {
         const created = await this.database
             .create({
                 data: {
@@ -99,7 +117,9 @@ export class TopListsService {
         if (!created) {
             return null;
         }
-        return created.id;
+        return {
+            id: created.id,
+        };
     }
 
     async deleteTopList(id: string, userId: string): Promise<boolean> {

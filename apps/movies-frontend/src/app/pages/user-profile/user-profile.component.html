@@ -64,6 +64,7 @@
                     *ngIf="activeSection == sections.toplists"
                     [toplists]="toplists"
                     [isProfileOwner]="isProfileOwner"
+                    (onRemove)="onRemoveToplist($event)"
                 ></app-toplists-section>
                 <app-comments-section
                     *ngIf="activeSection == sections.comments"

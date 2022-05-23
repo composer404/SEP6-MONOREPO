@@ -4,4 +4,7 @@
     <div class="text-xs uppercase font-thin absolute inset-x-0 bottom-0 w-full text-right p-3">
         Number of movies: {{ toplist.numberOfMovies }}
     </div>
+    <div class="absolute inset-x-0 top-0 w-full text-right p-3">
+        <i (click)="onRemoveClick()" class="pi pi-trash cursor-pointer" style="font-size: 1rem"></i>
+    </div>
 </p-card>

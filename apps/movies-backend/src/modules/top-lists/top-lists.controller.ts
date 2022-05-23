@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { TopList } from '@prisma/client';
-import { SEPMovieInput, SEPRequest, SEPTopListInput } from '../../models';
+import { CreatedObjectResponse, SEPMovieInput, SEPRequest, SEPTopListInput } from '../../models';
 import { JwtAuthGuard } from '../auth/guards';
 import { TopListsService } from './top-lists.service';
 
@@ -10,7 +10,7 @@ export class TopListsController {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    async createTopList(@Request() req: SEPRequest, @Body() input: SEPTopListInput): Promise<string> {
+    async createTopList(@Request() req: SEPRequest, @Body() input: SEPTopListInput): Promise<CreatedObjectResponse> {
         return this.topListsService.createNewTopList(req.user.id, input);
     }
 
@@ -23,6 +23,11 @@ export class TopListsController {
     @Get(':id')
     async getTopList(@Param() params): Promise<TopList> {
         return this.topListsService.getTopListById(params.id);
+    }
+
+    @Get('full/:id')
+    async getTopListFull(@Param() params): Promise<TopList> {
+        return this.topListsService.getTopListFullById(params.id);
     }
 
     @UseGuards(JwtAuthGuard)

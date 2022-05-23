@@ -11,6 +11,10 @@ import { RatingsSectionComponent } from './components/ratings-section/ratings-se
 import { StatisticsSectionComponent } from './components/statistics-section/statistics-section.component';
 import { TopListSectionComponent } from './components/toplists-section/toplist-section.component';
 import { ChartModule } from 'primeng/chart';
+import { CreateToplistModalComponent } from './components/create-toplist-modal/create-toplist-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 const routes: Routes = [
     {
@@ -26,6 +30,7 @@ const routes: Routes = [
         StatisticsSectionComponent,
         RatingsSectionComponent,
         CommentsSectionComponent,
+        CreateToplistModalComponent,
     ],
     imports: [
         CommonModule,
@@ -33,7 +38,10 @@ const routes: Routes = [
         DynamicDialogModule,
         TabMenuModule,
         SEPSharedModule,
+        ReactiveFormsModule,
         ChartModule,
+        InputTextModule,
+        InputTextareaModule,
     ],
     providers: [],
 })

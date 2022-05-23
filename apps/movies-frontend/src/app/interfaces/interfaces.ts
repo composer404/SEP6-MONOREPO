@@ -30,6 +30,11 @@ export enum SEP_PROFILE_SECTIONS {
     statistics = `statistics`,
 }
 
+export enum SEP_USER_ACTIONS {
+    confirm = `confirm`,
+    cancel = `cancel`,
+}
+
 export interface SEPUser {
     id: string;
     createdAt: string;
@@ -64,9 +69,12 @@ export interface SEPRating {
 }
 
 export interface SEPToplist {
+    id: string;
     name: string;
     description: string;
     numberOfMovies: number;
+    createdAt: string;
+    updateAt: string;
 }
 
 export interface SEPToplistDetails extends SEPToplist {
@@ -79,6 +87,6 @@ export interface SEPRating {
 }
 
 export interface TopListInput {
-  name: string;
-  description: string;
+    name: string;
+    description: string;
 }

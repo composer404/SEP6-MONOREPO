@@ -3,7 +3,7 @@ import * as argon2 from 'argon2';
 import { Injectable } from '@nestjs/common';
 import { Follows, Prisma, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma';
-import { SignUpInput, UserUpdateInput } from '../../models';
+import { CreatedObjectResponse, SignUpInput, UserUpdateInput } from '../../models';
 import { CommentsService } from '../comments';
 import { RatingsService } from '../ratings';
 
@@ -69,7 +69,7 @@ export class UsersService {
 
     /* ----------------------------- CREATE USER ----------------------------- */
 
-    async createUser(input: SignUpInput): Promise<string | null> {
+    async createUser(input: SignUpInput): Promise<CreatedObjectResponse | null> {
         const prismaUser = await this.database
             .create({
                 data: {
@@ -86,7 +86,9 @@ export class UsersService {
             return null;
         }
 
-        return prismaUser.id;
+        return {
+            id: prismaUser.id,
+        };
     }
 
     /* ------------------------------- UPDATE USER ------------------------------ */

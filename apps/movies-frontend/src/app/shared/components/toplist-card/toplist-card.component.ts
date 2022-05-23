@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SEPToplist } from '../../../interfaces/interfaces';
 
 @Component({
@@ -9,4 +9,11 @@ import { SEPToplist } from '../../../interfaces/interfaces';
 export class SEPToplistCardComponent {
     @Input()
     toplist: SEPToplist;
+
+    @Output()
+    onRemove = new EventEmitter<string>();
+
+    onRemoveClick() {
+        this.onRemove.emit(this.toplist.id);
+    }
 }

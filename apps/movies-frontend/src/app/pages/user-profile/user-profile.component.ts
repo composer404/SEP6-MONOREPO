@@ -116,6 +116,12 @@ export class UserProfileComponent implements OnInit {
         });
     }
 
+    onRemoveToplist(id: string): void {
+        this.toplists = this.toplists.filter((element) => {
+            return element.id !== id;
+        });
+    }
+
     async checkIsFollowing(userId: string): Promise<void> {
         const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.checkFollowing}/${userId}`;
         const result = await firstValueFrom(this.httpClient.get<boolean>(url));
