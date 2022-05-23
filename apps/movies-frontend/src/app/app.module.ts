@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
 import { TabViewModule } from 'primeng/tabview';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
     declarations: [AppComponent],
@@ -20,6 +21,7 @@ import { TabViewModule } from 'primeng/tabview';
         MenubarModule,
         ButtonModule,
         TabViewModule,
+        ToastModule,
     ],
     providers: [
         {

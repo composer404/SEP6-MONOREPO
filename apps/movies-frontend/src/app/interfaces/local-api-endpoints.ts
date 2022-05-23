@@ -6,6 +6,7 @@ export enum LOCAL_API_SERVICES {
 
     /* ---------------------------------- USERS --------------------------------- */
     users = `/users`,
+    usersPassword = `/users/password`,
     followersNumber = `/users/number/followers`,
     followingNumber = `/users/number/following`,
     checkFollowing = `/users/check/following`,

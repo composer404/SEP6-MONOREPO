@@ -15,6 +15,9 @@ import { CreateToplistModalComponent } from './components/create-toplist-modal/c
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { UpdateUserModalComponent } from './components/update-user-modal/update-user-modal.component';
+import { AvatarModule } from 'primeng/avatar';
+import { PasswordModule } from 'primeng/password';
 
 const routes: Routes = [
     {
@@ -31,6 +34,7 @@ const routes: Routes = [
         RatingsSectionComponent,
         CommentsSectionComponent,
         CreateToplistModalComponent,
+        UpdateUserModalComponent,
     ],
     imports: [
         CommonModule,
@@ -42,6 +46,8 @@ const routes: Routes = [
         ChartModule,
         InputTextModule,
         InputTextareaModule,
+        AvatarModule,
+        PasswordModule,
     ],
     providers: [],
 })

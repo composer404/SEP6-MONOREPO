@@ -40,7 +40,13 @@
                     </div>
                 </div>
                 <div class="absolute inset-x-0 bottom-0 w-100 text-center p-4">
-                    <button *ngIf="isProfileOwner" class="w-3/4 text-gray-100 mb-2 h-10 rounded-md">Manage</button>
+                    <button
+                        (click)="openUpdateProfileModal()"
+                        *ngIf="isProfileOwner"
+                        class="w-3/4 text-gray-100 mb-2 h-10 rounded-md"
+                    >
+                        Manage
+                    </button>
                     <button
                         *ngIf="!isProfileOwner && !isFollowing"
                         (click)="followUser()"

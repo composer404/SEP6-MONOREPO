@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { AuthService } from './services/auth/auth.service';
 
@@ -8,6 +8,7 @@ import { AuthService } from './services/auth/auth.service';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
+    providers: [MessageService],
 })
 export class AppComponent implements OnInit, OnDestroy {
     menuItems: MenuItem[];

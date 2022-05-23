@@ -1,6 +1,6 @@
 import { Controller, UseGuards, Request, Delete, Body, Get, Put, Post, Param } from '@nestjs/common';
 import { Follows, User } from '@prisma/client';
-import { SEPFollowInput, SEPRequest, SEPUser, UserUpdateInput } from '../../models';
+import { PasswordInput, SEPFollowInput, SEPRequest, SEPUser, UserUpdateInput } from '../../models';
 import { JwtAuthGuard } from '../auth/guards';
 import { UsersService } from './users.service';
 
@@ -18,6 +18,12 @@ export class UsersController {
     @Put()
     async updateUser(@Request() req: SEPRequest, @Body() user: UserUpdateInput): Promise<boolean> {
         return this.usersService.updateUser(req.user.id, user);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Put(`/password`)
+    async updateUserPassword(@Request() req: SEPRequest, @Body() user: PasswordInput): Promise<boolean> {
+        return this.usersService.updatePassword(req.user.id, user);
     }
 
     @UseGuards(JwtAuthGuard)

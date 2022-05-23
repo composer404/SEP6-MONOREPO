@@ -35,6 +35,11 @@ export class UserUpdateInput {
     avatar: string;
 }
 
+export class PasswordInput {
+    @ApiProperty()
+    password: string;
+}
+
 export class SEPFollowInput {
     @ApiProperty()
     followingId: string;

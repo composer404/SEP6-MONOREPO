@@ -3,7 +3,7 @@ import * as argon2 from 'argon2';
 import { Injectable } from '@nestjs/common';
 import { Follows, Prisma, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma';
-import { CreatedObjectResponse, SignUpInput, UserUpdateInput } from '../../models';
+import { CreatedObjectResponse, PasswordInput, SignUpInput, UserUpdateInput } from '../../models';
 import { CommentsService } from '../comments';
 import { RatingsService } from '../ratings';
 
@@ -93,6 +93,27 @@ export class UsersService {
 
     /* ------------------------------- UPDATE USER ------------------------------ */
 
+    async updatePassword(userId: string, input: PasswordInput): Promise<boolean> {
+        const result = await this.database
+            .update({
+                where: {
+                    id: userId,
+                },
+                data: {
+                    password: await argon2.hash(input.password),
+                },
+            })
+            .catch((err) => {
+                console.log(`[API]`, err);
+                return false;
+            });
+
+        if (!result) {
+            return false;
+        }
+        return true;
+    }
+
     async updateUser(userId: string, input: UserUpdateInput): Promise<boolean> {
         const result = await this.database
             .update({
@@ -101,7 +122,6 @@ export class UsersService {
                 },
                 data: {
                     ...input,
-                    password: await argon2.hash(input.password),
                 },
             })
             .catch((err) => {
