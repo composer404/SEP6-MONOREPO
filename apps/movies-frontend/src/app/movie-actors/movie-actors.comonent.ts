@@ -10,52 +10,50 @@ import { environment } from '../../environments/environment';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
-    selector: 'app-movie-list',
-    templateUrl: './movie-list.component.html',
-    styleUrls: ['./movie-list.component.scss'],
+    selector: 'app-movie-actors',
+    templateUrl: './movie-actors.component.html',
+    styleUrls: ['./movie-actors.component.scss'],
 })
-export class MovieListComponent implements OnInit {
-    movies: SEPMovie[];
+export class MovieActorsComponent implements OnInit {
+    actors: SEPActors[];
     loading: boolean = true;
     first = 0;
     rows = 10;
-    selectedMovie: SEPMovie;
-    externalIds: Object = {};
-
+    selectedActor: SEPActors;
+    searchActor: string = '';
     @ViewChild('dt') table: Table;
-
     constructor(
-        private router: Router,
         private readonly httpClient: HttpClient,
         private primengConfig: PrimeNGConfig,
+
         private readonly route: ActivatedRoute,
+        private router: Router,
     ) {}
-    searchVal: string = '';
 
     ngOnInit(): void {
-        void this.getPopularMovies();
         this.primengConfig.ripple = true;
+        void this.getActors();
     }
 
-    async getPopularMovies(): Promise<void> {
-        const url = buildUrl(API_RESOURCES.POPULAR);
-        const response = await firstValueFrom(this.httpClient.get<SEPList<SEPMovie>>(url));
-        this.movies = response.results;
+    async getActors(): Promise<void> {
+        const url = buildUrl(API_RESOURCES.ACTOR);
+        const response = await firstValueFrom(this.httpClient.get<SEPList<SEPActors>>(url));
+        this.actors = response.results;
         console.log(response);
     }
 
-    async onTitleChange(): Promise<void> {
-        if (this.searchVal.length >= 3) {
-            const url = buildUrl(API_RESOURCES.SEARCH);
+    async onNameChange(): Promise<void> {
+        if (this.searchActor.length >= 3) {
+            const url = buildUrl(API_RESOURCES.SEARCHACTOR);
             const response = await firstValueFrom(
-                this.httpClient.get<SEPList<SEPMovie>>(url, {
+                this.httpClient.get<SEPList<SEPActors>>(url, {
                     params: {
-                        query: this.searchVal,
+                        query: this.searchActor,
                     },
                 }),
             );
             console.log(response);
-            this.movies = response.results;
+            this.actors = response.results;
         }
     }
 
@@ -72,18 +70,18 @@ export class MovieListComponent implements OnInit {
     }
 
     isLastPage(): boolean {
-        return this.movies ? this.first === this.movies.length - this.rows : true;
+        return this.actors ? this.first === this.actors.length - this.rows : true;
     }
 
     isFirstPage(): boolean {
-        return this.movies ? this.first === 0 : true;
+        return this.actors ? this.first === 0 : true;
     }
     onMovieChange(event) {
         this.table.filter(event.value, 'movies', 'in');
     }
 
-    public async onDetails() {
-        console.log(this.selectedMovie);
-        this.router.navigateByUrl(`movie-list/movie-details/${this.selectedMovie.id}`); //for the routing to another page
+    public async onActorDetails() {
+        console.log(this.selectedActor);
+        this.router.navigateByUrl(`movie-actors/movie-actors-details/${this.selectedActor.id}`);
     }
 }
