@@ -8,7 +8,6 @@ import { MovieDetailsModule } from './movie-details/movie-details.module';
 import { MovieListModule } from './movie-list/movie-list.module';
 import { NgModule } from '@angular/core';
 import { SignupModule } from './pages/signup/signup.module';
-import { RankingModule } from './pages/ranking/ranking.module';
 import { UserProfileModule } from './pages/user-profile';
 
 const routes: Routes = [
@@ -22,12 +21,6 @@ const routes: Routes = [
         path: 'signup',
         loadChildren: () => {
             return SignupModule;
-        },
-    },
-    {
-        path: 'ranking',
-        loadChildren: () => {
-            return RankingModule;
         },
     },
     {
