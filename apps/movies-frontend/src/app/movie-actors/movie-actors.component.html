@@ -42,6 +42,7 @@
     >
         <ng-template pTemplate="header">
             <tr>
+                <th>Image</th>
                 <th>Name</th>
                 <th>Popularity</th>
                 <th>Original Language</th>
@@ -50,6 +51,9 @@
         </ng-template>
         <ng-template pTemplate="body" let-actors>
             <tr [pSelectableRow]="actors">
+                <td>
+                    <img src="https://image.tmdb.org/t/p/original/{{ actors.profile_path }}" alt="Image" width="50" />
+                </td>
                 <td>{{ actors.name }}</td>
                 <td>{{ actors.popularity }}</td>
                 <td>{{ actors.id }}</td>

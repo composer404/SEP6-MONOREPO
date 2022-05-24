@@ -1,6 +1,7 @@
 import { API_RESOURCES, buildUrl } from '../shared/utils/api-config';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
     SEPActors,
     SEPCast,
@@ -12,8 +13,10 @@ import {
 } from '../shared/interfaces/interfaces';
 
 import { HttpClient } from '@angular/common/http';
+import { LOCAL_API_SERVICES } from '../interfaces/local-api-endpoints';
 import { PrimeNGConfig } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { environment } from '../../environments/environment';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -31,6 +34,7 @@ export class MovieDetailsComponent implements OnInit {
     rows = 10;
     selectedMovie: SEPMovie;
     selectedActor: SEPActors;
+    rating: number;
 
     @ViewChild('dt') table: Table;
 
@@ -67,6 +71,24 @@ export class MovieDetailsComponent implements OnInit {
         const response = await firstValueFrom(this.httpClient.get<SEPCastList>(url));
         console.log(response);
         this.credits = response;
+    }
+
+    createRating(): void {
+        this.httpClient
+            .post<{ id: string }>(`${environment.localApiUrl}${LOCAL_API_SERVICES.ratings}`, {
+                rating: this.rating,
+                movie: {
+                    apiId: this.movieDetails.id,
+                    title: this.movieDetails.title,
+                    posterPath: this.movieDetails.poster_path,
+                },
+            })
+            .subscribe((response) => {
+                if (!response?.id) {
+                    //error
+                    return;
+                }
+            });
     }
 
     next() {
