@@ -8,6 +8,11 @@
     {{ actorDetails.biography }}
     <p>Language: {{ actorDetails.place_of_birth }}</p>
     <p>Votes: {{ actorDetails.popularity }}</p>
+    <p-image
+        src="https://image.tmdb.org/t/p/original/{{ actorDetails.profile_path }}"
+        alt="Image"
+        width="250"
+    ></p-image>
 </p-card>
 <h5>Movie List</h5>
 <div class="mb-3">

@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
+
+import { HttpClient } from '@angular/common/http';
 import { LOCAL_API_SERVICES } from 'src/app/interfaces/local-api-endpoints';
 import { environment } from 'src/environments/environment';
 

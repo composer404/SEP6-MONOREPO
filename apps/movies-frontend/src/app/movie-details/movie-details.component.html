@@ -1,5 +1,6 @@
 <p-card>
     {{ movieDetails.title }}
+    <p-rating (click)="createRating()" [(ngModel)]="rating"></p-rating>
     <p-card>
         <p-image
             src="https://image.tmdb.org/t/p/original/{{ movieDetails.poster_path }}"

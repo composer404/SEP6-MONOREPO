@@ -1,4 +1,4 @@
-import { API_RESOURCES, buildPersonUrl, buildUrl } from '../shared/utils/api-config';
+import { API_IMAGE_SIZE, API_RESOURCES, buildImageUrl, buildPersonUrl, buildUrl } from '../shared/utils/api-config';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
     SEPActors,
@@ -55,6 +55,7 @@ export class MovieActorsDetailsComponent implements OnInit {
         const url = `${buildUrl(firstPart as any)}`;
         const response = await firstValueFrom(this.httpClient.get<SEPActorsDetails>(url));
         console.log(response);
+        response.profile_path = buildImageUrl(response.profile_path, API_IMAGE_SIZE.ORIGINAL);
         this.actorDetails = response;
     }
 
@@ -65,6 +66,7 @@ export class MovieActorsDetailsComponent implements OnInit {
         console.log(response);
         this.credits = response;
     }
+
     next() {
         this.first = this.first + this.rows;
     }
