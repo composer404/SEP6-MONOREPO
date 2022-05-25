@@ -10,6 +10,8 @@ import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
 import { TabViewModule } from 'primeng/tabview';
 import { ToastModule } from 'primeng/toast';
+import { DialogService } from 'primeng/dynamicdialog';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
     declarations: [AppComponent],
@@ -24,6 +26,8 @@ import { ToastModule } from 'primeng/toast';
         ToastModule,
     ],
     providers: [
+        DialogService,
+        MessageService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptorService,

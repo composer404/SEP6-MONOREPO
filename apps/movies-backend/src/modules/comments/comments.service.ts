@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { SEPCommentEditInput, SEPCommentInput } from '../../models';
+import { CreatedObjectResponse, SEPCommentEditInput, SEPCommentInput } from '../../models';
 import { PrismaService } from '../../prisma';
 import { MoviesService } from '../movies';
 
@@ -12,7 +12,7 @@ export class CommentsService {
         this.database = this.prismaService.comment;
     }
 
-    async addCommentToMovie(userId: string, input: SEPCommentInput): Promise<string | null> {
+    async addCommentToMovie(userId: string, input: SEPCommentInput): Promise<CreatedObjectResponse | null> {
         const foundMovie = await this.movieSerivce.getMovie(input.movie);
 
         const result = await this.database
@@ -31,7 +31,9 @@ export class CommentsService {
         if (!result) {
             return null;
         }
-        return result.id;
+        return {
+            id: result.id,
+        };
     }
 
     async editComment(userId: string, input: SEPCommentEditInput): Promise<boolean> {
@@ -82,6 +84,26 @@ export class CommentsService {
                 },
                 include: {
                     movie: true,
+                },
+            })
+            .catch((err) => {
+                console.log(`[API]`, err);
+                return null;
+            });
+        if (!result) {
+            return null;
+        }
+        return result;
+    }
+
+    async getCommentById(id: string): Promise<Comment | null> {
+        const result = await this.database
+            .findFirst({
+                where: {
+                    id,
+                },
+                include: {
+                    author: true,
                 },
             })
             .catch((err) => {

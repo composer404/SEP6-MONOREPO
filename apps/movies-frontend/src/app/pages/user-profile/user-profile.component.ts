@@ -22,7 +22,6 @@ import { UpdateUserModalComponent } from './components/update-user-modal/update-
     selector: 'app-user-profile',
     templateUrl: './user-profile.component.html',
     styleUrls: ['./user-profile.component.scss'],
-    providers: [DialogService],
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
     user: SEPUser;

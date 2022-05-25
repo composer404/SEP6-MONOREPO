@@ -1,20 +1,15 @@
 import { NumberValueAccessor } from '@angular/forms';
+import { SEPComment, SEPRating } from '../../interfaces/interfaces';
 
 export interface SEPMovie {
     id: number;
-    adult: boolean;
-    overview: string;
-    release_date: string;
-    genre_ids: number[];
-    original_title: string;
-    original_language: string;
+    apiId: string;
     title: string;
-    backdrop_path: string | undefined;
-    popularity: number;
-    vote_count: number;
-    video: boolean;
-    vode_average: number;
-    poster_path: string | undefined;
+    posterPath: string;
+    updatedAt: string;
+    comments: SEPComment[];
+    ratings: SEPRating[];
+    createdAt: string;
 }
 
 export interface SEPList<T> {

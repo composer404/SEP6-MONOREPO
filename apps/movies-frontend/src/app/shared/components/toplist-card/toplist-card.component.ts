@@ -13,7 +13,17 @@ export class SEPToplistCardComponent {
     @Output()
     onRemove = new EventEmitter<string>();
 
+    @Output()
+    onClick = new EventEmitter<any>();
+
     onRemoveClick() {
         this.onRemove.emit(this.toplist.id);
+    }
+
+    onClickEvent() {
+        this.onClick.emit({
+            name: this.toplist.name,
+            id: this.toplist.id,
+        });
     }
 }

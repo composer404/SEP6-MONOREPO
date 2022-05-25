@@ -62,11 +62,19 @@ export class MoviesService {
         const result = await this.database
             .findFirst({
                 where: {
-                    apiId,
+                    apiId: parseInt(apiId as any),
                 },
                 include: {
-                    comments: true,
-                    ratings: true,
+                    comments: {
+                        include: {
+                            author: true,
+                        },
+                    },
+                    ratings: {
+                        include: {
+                            author: true,
+                        },
+                    },
                 },
             })
             .catch((err) => {

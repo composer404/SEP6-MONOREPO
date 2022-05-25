@@ -18,6 +18,11 @@ import { PrimeNGConfig } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { environment } from '../../environments/environment';
 import { firstValueFrom } from 'rxjs';
+import { DialogService } from 'primeng/dynamicdialog';
+import { AddToToplistModalComponent } from './components/add-to-toplist-modal/add-to-toplist-modal.component';
+import { SEPApiCreatedObject, SEPComment, SEPDatabaseObject, UserProfile } from '../interfaces/interfaces';
+import { InfoService } from '../services/info.service';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
     selector: 'app-movie-details',
@@ -26,6 +31,12 @@ import { firstValueFrom } from 'rxjs';
 })
 export class MovieDetailsComponent implements OnInit {
     movieDetails: SEPMovieDetails;
+    localMovie: SEPMovie;
+
+    comments: SEPComment[];
+    userProfile: UserProfile;
+    isProfileOwner: boolean;
+
     loading: boolean = true;
     credits: SEPCastList;
     actor: SEPCast[];
@@ -35,21 +46,27 @@ export class MovieDetailsComponent implements OnInit {
     selectedMovie: SEPMovie;
     selectedActor: SEPActors;
     rating: number;
+    commentText: string;
 
     @ViewChild('dt') table: Table;
 
     constructor(
         private readonly httpClient: HttpClient,
-        private primengConfig: PrimeNGConfig,
         private readonly route: ActivatedRoute,
+        private readonly dialogService: DialogService,
         private router: Router,
+        private infoService: InfoService,
+        private authService: AuthService,
     ) {}
     searchVal: string = '';
 
-    ngOnInit(): void {
-        this.primengConfig.ripple = true;
+    async ngOnInit(): Promise<void> {
+        this.userProfile = await this.authService.getProfile();
+        this.isProfileOwner = await this.authService.isProfileOwner(this.userProfile.id);
+
         this.route.params.subscribe(async (params) => {
             await this.getDetails(params.id);
+            this.loadLocalMovie(params.id);
         });
         this.route.params.subscribe(async (params) => {
             await this.getActorMovies(params.id);
@@ -119,5 +136,72 @@ export class MovieDetailsComponent implements OnInit {
         this.router.navigateByUrl(
             `movie-details/${this.selectedCast.id}/movie-actors-details/${this.selectedActor.id}`,
         );
+    }
+
+    private loadLocalMovie(apiId: number) {
+        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.movies}/${apiId}`;
+        this.httpClient.get<SEPMovie | undefined>(url).subscribe((response) => {
+            if (response) {
+                this.localMovie = response;
+                this.comments = response.comments;
+            }
+        });
+    }
+
+    addToToplist() {
+        this.dialogService.open(AddToToplistModalComponent, {
+            header: `Add movie to your toplist`,
+            width: `30%`,
+            data: {
+                movieApiId: this.movieDetails.id,
+                title: this.movieDetails.title,
+                posterPath: this.movieDetails.poster_path,
+            },
+        });
+    }
+
+    async addComment(): Promise<void> {
+        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.comments}`;
+        const response = await firstValueFrom(
+            this.httpClient.post<SEPApiCreatedObject>(url, {
+                content: this.commentText,
+                movie: {
+                    apiId: this.movieDetails.id,
+                    title: this.movieDetails.title,
+                    posterPath: this.movieDetails.poster_path,
+                },
+            }),
+        );
+
+        if (!response) {
+            this.infoService.error(`Cannot create a comment. Try again later`);
+            return;
+        }
+        this.loadCommentById(response.id);
+    }
+
+    async removeComment(commentId: string): Promise<void> {
+        this.comments = this.comments.filter((element) => {
+            return element.id !== commentId;
+        });
+    }
+
+    async loadCommentById(commentId: string): Promise<void> {
+        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.commentsFull}/${commentId}`;
+        const response = await firstValueFrom(this.httpClient.get<SEPComment>(url));
+
+        if (!response) {
+            this.infoService.error(`Cannot load a comment. Try again later`);
+            return;
+        }
+        console.log(response);
+        this.comments.push(response);
+    }
+
+    async getCommentById(id: string) {
+        const [comment] = this.comments.filter((element) => {
+            return element.id === id;
+        });
+        return comment;
     }
 }

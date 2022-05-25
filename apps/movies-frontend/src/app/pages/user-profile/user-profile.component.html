@@ -71,6 +71,7 @@
                     [toplists]="toplists"
                     [isProfileOwner]="isProfileOwner"
                     (onRemove)="onRemoveToplist($event)"
+                    (onChanges)="getToplistForUser()"
                 ></app-toplists-section>
                 <app-comments-section
                     *ngIf="activeSection == sections.comments"

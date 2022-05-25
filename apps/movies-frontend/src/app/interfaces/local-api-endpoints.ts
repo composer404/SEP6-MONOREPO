@@ -17,11 +17,17 @@ export enum LOCAL_API_SERVICES {
     /* -------------------------------- TOPLISTS -------------------------------- */
     toplistUser = `/toplists/user`,
     topList = `/toplists`,
+    toplistFull = `/toplists/full`,
 
     /* -------------------------------- COMMENTS -------------------------------- */
     comments = `/comments`,
+    commentsFull = `/comments/full`,
 
     /* --------------------------------- RATINGS -------------------------------- */
 
     ratings = `/ratings`,
+
+    /* --------------------------------- MOVIES --------------------------------- */
+
+    movies = `/movies`,
 }

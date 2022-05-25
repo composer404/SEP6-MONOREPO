@@ -18,10 +18,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
     constructor(private readonly authService: AuthService, private readonly router: Router) {}
 
-    async ngOnInit(): Promise<void> {
-        this.subscribeForLoginEvents();
-        await this.getUserProfle();
+    ngOnInit(): void {
         this.prepareMenuItems();
+        this.subscribeForLoginEvents();
+        void this.getUserProfle();
     }
 
     ngOnDestroy(): void {

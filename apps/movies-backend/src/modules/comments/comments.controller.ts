@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
-import { SEPCommentEditInput, SEPCommentInput, SEPRequest } from '../../models';
+import { CreatedObjectResponse, SEPCommentEditInput, SEPCommentInput, SEPRequest } from '../../models';
 import { JwtAuthGuard } from '../auth/guards';
 import { CommentsService } from './comments.service';
 
@@ -9,7 +9,10 @@ export class CommentsController {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    async addCommentToMovie(@Request() req: SEPRequest, @Body() input: SEPCommentInput): Promise<string | null> {
+    async addCommentToMovie(
+        @Request() req: SEPRequest,
+        @Body() input: SEPCommentInput,
+    ): Promise<CreatedObjectResponse | null> {
         return this.commentsSerivce.addCommentToMovie(req.user.id, input);
     }
 
@@ -29,5 +32,11 @@ export class CommentsController {
     @Get(`:id`)
     async getCommentsForUser(@Param() params: any): Promise<Comment[] | null> {
         return this.commentsSerivce.getCommentsForUser(params.id);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get(`full/:id`)
+    async getCommentsById(@Param() params: any): Promise<Comment | null> {
+        return this.commentsSerivce.getCommentById(params.id);
     }
 }
