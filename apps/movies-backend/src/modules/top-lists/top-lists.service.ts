@@ -30,9 +30,14 @@ export class TopListsService {
         if (!result) {
             return null;
         }
-
         const promises = result.map((toplist) => {
             return new Promise<void>((resolve) => {
+                toplist.movieLocalIds = toplist.movies.map((element) => {
+                    return element.id;
+                });
+                toplist.movieApiIds = toplist.movies.map((element) => {
+                    return element.apiId;
+                });
                 toplist.numberOfMovies = toplist.movies.length;
                 delete toplist.movies;
                 resolve();

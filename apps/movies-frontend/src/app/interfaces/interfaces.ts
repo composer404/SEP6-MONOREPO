@@ -35,6 +35,10 @@ export enum SEP_USER_ACTIONS {
     cancel = `cancel`,
 }
 
+export interface SEPApiCreatedObject {
+    id: string;
+}
+
 export interface SEPUser {
     id: string;
     createdAt: string;
@@ -53,19 +57,23 @@ export interface SEPDatabaseObject<T> {
 }
 
 export interface SEPComment {
-    authorId: string;
-    movie: SEPMovie;
-    content: string;
-    createdAt: string;
-    updateAt: string;
+    id?: string;
+    authorId?: string;
+    movie?: SEPMovie;
+    content?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    author?: SEPUser;
 }
 
 export interface SEPRating {
+    id?: string;
     authorId: string;
     movie: SEPMovie;
     rating: number;
     createdAt: string;
     updateAt: string;
+    author: SEPUser;
 }
 
 export interface SEPToplist {
@@ -73,6 +81,8 @@ export interface SEPToplist {
     name: string;
     description: string;
     numberOfMovies: number;
+    movieApiIds: number[];
+    movieLocalIds: string[];
     createdAt: string;
     updateAt: string;
 }

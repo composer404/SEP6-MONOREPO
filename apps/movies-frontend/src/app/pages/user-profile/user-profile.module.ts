@@ -18,6 +18,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { UpdateUserModalComponent } from './components/update-user-modal/update-user-modal.component';
 import { AvatarModule } from 'primeng/avatar';
 import { PasswordModule } from 'primeng/password';
+import { MovieListModalComponent } from './components/movie-list-modal/movie-list-modal.component';
+import { CardModule } from 'primeng/card';
 
 const routes: Routes = [
     {
@@ -35,6 +37,7 @@ const routes: Routes = [
         CommentsSectionComponent,
         CreateToplistModalComponent,
         UpdateUserModalComponent,
+        MovieListModalComponent,
     ],
     imports: [
         CommonModule,
@@ -47,6 +50,7 @@ const routes: Routes = [
         InputTextModule,
         InputTextareaModule,
         AvatarModule,
+        CardModule,
         PasswordModule,
     ],
     providers: [],

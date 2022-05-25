@@ -7,6 +7,7 @@ import { SEPToplist, SEP_USER_ACTIONS } from '../../../../interfaces/interfaces'
 import { LOCAL_API_SERVICES } from '../../../../interfaces/local-api-endpoints';
 import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
 import { CreateToplistModalComponent } from '../create-toplist-modal/create-toplist-modal.component';
+import { MovieListModalComponent } from '../movie-list-modal/movie-list-modal.component';
 
 @Component({
     selector: 'app-toplists-section',
@@ -22,6 +23,9 @@ export class TopListSectionComponent implements OnDestroy {
 
     @Output()
     onRemove = new EventEmitter<string>();
+
+    @Output()
+    onChanges = new EventEmitter<void>();
 
     subscriptions: Subscription[] = [];
 
@@ -47,8 +51,26 @@ export class TopListSectionComponent implements OnDestroy {
         );
     }
 
+    onClickToplist(data: any) {
+        const ref = this.dialogService.open(MovieListModalComponent, {
+            header: `${data.name}`,
+            width: `80%`,
+            data: {
+                toplistId: data.id,
+                isProfileOwner: this.isProfileOwner,
+            },
+        });
+
+        this.subscriptions.push(
+            ref.onClose.subscribe(() => {
+                this.onChanges.emit();
+            }),
+        );
+    }
+
     onRemoveToplist(id: string) {
         const ref = this.dialogService.open(ConfirmationModalComponent, {
+            header: `Confirm action`,
             width: `40%`,
         });
 
@@ -76,6 +98,7 @@ export class TopListSectionComponent implements OnDestroy {
         this.subscriptions.push(
             this.httpClient.get<SEPToplist>(url).subscribe((response) => {
                 if (response) {
+                    response.numberOfMovies = 0;
                     this.toplists.push(response);
                     return;
                 }
