@@ -1,13 +1,13 @@
 <div class="card w-4/5 mx-auto">
+    <h1 class="text" style="text-align: center">Movie List</h1>
     <input
         pInputText
         type="text"
         [(ngModel)]="searchVal"
         (ngModelChange)="onTitleChange(1)"
         placeholder="Search by Title"
-        class="form-control"
+        class="form-control input"
     />
-    <h5>Movie List</h5>
     <p-table
         [value]="movies"
         [lazy]="true"
