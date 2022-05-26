@@ -1,0 +1,119 @@
+<div class="modal-header">
+    <div
+        (click)="updateProfileState = !updateProfileState"
+        class="cursor-pointer"
+        *ngIf="updateProfileState; else updatePassword"
+    >
+        Update password
+    </div>
+    <ng-template #updatePassword>
+        <div (click)="updateProfileState = !updateProfileState" class="cursor-pointer">Update profile</div>
+    </ng-template>
+</div>
+<hr class="mb-5" />
+
+<ng-container *ngIf="updateProfileState; else updatePasswordFormTemplate">
+    <form [formGroup]="updateUserForm" (ngSubmit)="onSave()">
+        <div class="flex flex-col gap-2 mb-6">
+            <label for="login">Login</label>
+            <input disabled="true" formControlName="login" pInputText id="login" type="text" />
+        </div>
+        <div class="flex flex-col gap-2 mb-6">
+            <label for="email">E-mail</label>
+            <input disabled="true" formControlName="email" pInputText id="email" type="text" />
+        </div>
+
+        <div class="flex flex-col gap-2 mb-6">
+            <label for="username">First Name</label>
+            <input formControlName="firstName" pInputText id="firstName" type="text" />
+        </div>
+        <div class="flex flex-col gap-2 mb-6">
+            <label for="username">Last Name</label>
+            <input formControlName="lastName" pInputText id="lastName" type="text" />
+        </div>
+        <div class="flex flex-col mt-8 mb-8 gap-4">
+            <label>Choose a picture for an avatar</label>
+            <p-avatar styleClass="mr-2" size="xlarge">
+                <img [src]="avatar" *ngIf="avatar" />
+            </p-avatar>
+            <input
+                formControlName="avatar"
+                type="file"
+                id="avatar"
+                accept="image/png, image/jpeg"
+                (change)="selectFile($event)"
+            />
+        </div>
+        <div class="text-right">
+            <button class="w-24 py-2 px-4 text-white rounded-md mr-2" [disabled]="updateUserForm.invalid" type="submit">
+                Save
+            </button>
+            <button (click)="close()" class="w-24 py-2 px-4 text-white rounded-md" type="submit">Cancel</button>
+        </div>
+    </form>
+</ng-container>
+
+<ng-template #updatePasswordFormTemplate>
+    <form [formGroup]="updatePasswordForm" (ngSubmit)="onSavePassword()">
+        <div class="flex flex-col mb-2">
+            <label for="password">Password</label>
+            <p-password
+                [toggleMask]="true"
+                [feedback]="false"
+                id="password"
+                placeholder="Password"
+                aria-describedby="password-help"
+                formControlName="password"
+            ></p-password>
+            <div class="h-5">
+                <small
+                    *ngIf="
+                        updatePasswordForm.get('password').invalid &&
+                        (updatePasswordForm.get('password').dirty || updatePasswordForm.get('password').touched)
+                    "
+                    id="password-help"
+                    class="p-error"
+                    ><div *ngIf="updatePasswordForm.get('password').errors?.required">Password is required.</div>
+                    <div *ngIf="updatePasswordForm.get('password').errors?.minlength">
+                        Password must be at least 4 characters long.
+                    </div>
+                </small>
+            </div>
+        </div>
+
+        <div class="flex w-full">
+            <div class="flex flex-col mb-4 w-full">
+                <label for="confirmPassword">Confirm password</label>
+                <p-password
+                    [toggleMask]="true"
+                    [feedback]="false"
+                    id="confirmPassword"
+                    placeholder="Confirm password"
+                    aria-describedby="confirm-password-help"
+                    formControlName="confirmPassword"
+                ></p-password>
+                <div class="h-5">
+                    <small
+                        *ngIf="
+                            updatePasswordForm.get('confirmPassword').invalid &&
+                            (updatePasswordForm.get('confirmPassword').dirty ||
+                                updatePasswordForm.get('confirmPassword').touched)
+                        "
+                        id="confirm-password-help"
+                        class="p-error"
+                        ><div *ngIf="updatePasswordForm.get('confirmPassword').errors?.required">
+                            Password confirmation is required.
+                        </div>
+                        <div *ngIf="updatePasswordForm.errors?.mismatch">Passwords are not the same</div>
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-end">
+            <button class="w-24 py-2 px-4 text-white rounded-md" [disabled]="updatePasswordForm.invalid" type="submit">
+                Save
+            </button>
+        </div>
+    </form>
+</ng-template>

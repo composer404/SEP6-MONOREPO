@@ -21,3 +21,8 @@ export class SignUpInput {
     @ApiProperty()
     avatar: string;
 }
+
+export class CreatedObjectResponse {
+    @ApiProperty()
+    id: string;
+}

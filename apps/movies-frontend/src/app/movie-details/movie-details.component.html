@@ -1,0 +1,109 @@
+<!-- ------------------------- MANAGEMENT SECTION -------------------------- -->
+
+<div>
+    <button (click)="addToToplist()">Add to toplist</button>
+</div>
+
+<!-- ------------------------ MOVIE DETAIL SECTION ------------------------- -->
+
+<p-card>
+    {{ movieDetails.title }}
+    <p-rating (click)="createRating()" [(ngModel)]="rating"></p-rating>
+    <p-card>
+        <p-image
+            src="https://image.tmdb.org/t/p/original/{{ movieDetails.poster_path }}"
+            alt="Image"
+            width="250"
+        ></p-image>
+    </p-card>
+</p-card>
+<p></p>
+<p-card>
+    Description:
+    <p></p>
+    {{ movieDetails.overview }}
+    <p>Language: {{ movieDetails.original_language }}</p>
+    <p>Votes: {{ movieDetails.vote_count }}</p>
+    <p>{{ movieDetails.revenue }}</p>
+</p-card>
+<P></P>
+<!-- <p-card *ngFor="let actor of credits.cast"> {{ actor.name }} </p-card> -->
+
+<p-accordion>
+    <!-- -------------------------------- CAST --------------------------------- -->
+
+    <p-accordionTab header="Cast">
+        <h5>Actor List</h5>
+        <div class="mb-3">
+            <p-button
+                type="button"
+                icon="pi pi-chevron-left"
+                (click)="prev()"
+                [disabled]="isFirstPage()"
+                styleClass="p-button-text"
+            ></p-button>
+            <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+            <p-button
+                type="button"
+                icon="pi pi-chevron-right"
+                (click)="next()"
+                [disabled]="isLastPage()"
+                styleClass="p-button-text"
+            ></p-button>
+        </div>
+        <p-table
+            [value]="credits.cast"
+            [paginator]="true"
+            [rows]="rows"
+            [showCurrentPageReport]="true"
+            [(first)]="first"
+            responsiveLayout="scroll"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            selectionMode="single"
+            dataKey="code"
+            [(selection)]="selectedCast"
+            (onRowSelect)="onCastDetails()"
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Name</th>
+                    <th>Popularity</th>
+                    <th>Original Language</th>
+                    <th>Department</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-actor>
+                <tr [pSelectableRow]="actor">
+                    <td>{{ actor.name }}</td>
+                    <td>{{ actor.popularity }}</td>
+                    <td>{{ actor.id }}</td>
+                    <td>{{ actor.known_for_department }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-accordionTab>
+
+    <!-- --------------------------- RATING SECTION ---------------------------- -->
+
+    <p-accordionTab header="Rating section"> Content 2 </p-accordionTab>
+
+    <!-- --------------------------- COMMENT SECTION --------------------------- -->
+
+    <p-accordionTab header="Comment section">
+        <div>
+            <input [(ngModel)]="commentText" type="text" />
+            <button (click)="addComment()">Confirm</button>
+
+            <ng-container *ngIf="localMovie">
+                <p-card class="card" *ngFor="let comment of comments">
+                    <app-comment-item-movie
+                        [comment]="comment"
+                        [userProfile]="userProfile"
+                        (onRemove)="removeComment($event)"
+                    ></app-comment-item-movie>
+                </p-card>
+            </ng-container>
+        </div>
+    </p-accordionTab>
+</p-accordion>

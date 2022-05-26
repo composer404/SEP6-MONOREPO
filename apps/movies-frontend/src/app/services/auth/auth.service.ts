@@ -1,17 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SignUpInput, Token, UserProfile } from '../../interfaces/interfaces';
-import { firstValueFrom } from 'rxjs';
+import { SEPApiCreatedObject, SignUpInput, Token, UserProfile } from '../../interfaces/interfaces';
+import { firstValueFrom, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LOCAL_API_SERVICES } from '../../interfaces/local-api-endpoints';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
     isLoggedIn = false;
+    loginSubject = new Subject<boolean>();
 
-    constructor(private httpClient: HttpClient) {}
+    constructor(private httpClient: HttpClient, private readonly router: Router) {}
 
     public getTokenValue(): string {
         return localStorage.getItem('token') as string;
@@ -27,6 +29,7 @@ export class AuthService {
 
         if (response.accessToken) {
             localStorage.setItem('token', response.accessToken);
+            this.loginSubject.next(true);
         }
         return response.accessToken;
     }
@@ -55,14 +58,29 @@ export class AuthService {
         return true;
     }
 
-    public async signup(body: SignUpInput): Promise<string> {
+    public async signup(body: SignUpInput): Promise<SEPApiCreatedObject> {
         return firstValueFrom(
-            this.httpClient.post<string | null>(`${environment.localApiUrl}${LOCAL_API_SERVICES.authRegistry}`, body),
+            this.httpClient.post<SEPApiCreatedObject>(
+                `${environment.localApiUrl}${LOCAL_API_SERVICES.authRegistry}`,
+                body,
+            ),
         );
+    }
+
+    public async isProfileOwner(id: string): Promise<boolean> {
+        const profile = await this.getProfile();
+
+        if (profile.id !== id) {
+            return false;
+        }
+
+        return true;
     }
 
     public logout(): void {
         this.isLoggedIn = false;
         localStorage.setItem(`token`, ``);
+        this.loginSubject.next(false);
+        void this.router.navigate([`login`]);
     }
 }

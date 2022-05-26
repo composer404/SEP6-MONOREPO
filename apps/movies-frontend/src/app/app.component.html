@@ -1,1 +1,20 @@
-<router-outlet></router-outlet>
+<p-toast></p-toast>
+<div class="bg-gray-200 pb-5 min-h-screen">
+    <div *ngIf="login">
+        <p-menubar [model]="menuItems">
+            <ng-template pTemplate="end">
+                <div class="flex items-center">
+                    <div class="mr-2 text-white">Hello {{ login }}!</div>
+                    <button
+                        (click)="logout()"
+                        pButton
+                        type="button"
+                        icon="pi pi-fw pi-power-off"
+                        iconPos="center"
+                    ></button>
+                </div>
+            </ng-template>
+        </p-menubar>
+    </div>
+    <router-outlet></router-outlet>
+</div>

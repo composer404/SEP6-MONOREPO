@@ -1,43 +1,27 @@
-<div class="card">
+<div class="card w-4/5 mx-auto">
     <input
         pInputText
         type="text"
         [(ngModel)]="searchVal"
-        (ngModelChange)="onTitleChange()"
+        (ngModelChange)="onTitleChange(1)"
         placeholder="Search by Title"
         class="form-control"
     />
-    <h5>Programmatic Control</h5>
-    <div class="mb-3">
-        <p-button
-            type="button"
-            icon="pi pi-chevron-left"
-            (click)="prev()"
-            [disabled]="isFirstPage()"
-            styleClass="p-button-text"
-        ></p-button>
-        <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
-        <p-button
-            type="button"
-            icon="pi pi-chevron-right"
-            (click)="next()"
-            [disabled]="isLastPage()"
-            styleClass="p-button-text"
-        ></p-button>
-    </div>
+    <h5>Movie List</h5>
     <p-table
         [value]="movies"
+        [lazy]="true"
+        (onLazyLoad)="loadMovies($event)"
         [paginator]="true"
-        [rows]="rows"
-        [showCurrentPageReport]="true"
-        [(first)]="first"
-        responsiveLayout="scroll"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [rowsPerPageOptions]="[10, 25, 50]"
-        selectionMode="single"
-        dataKey="code"
+        [rows]="20"
+        class="p-datatable-movies"
+        [totalRecords]="totalElements"
         [(selection)]="selectedMovie"
         (onRowSelect)="onDetails()"
+        paginatorPosition="both"
+        selectionMode="single"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
     >
         <ng-template pTemplate="header">
             <tr>
@@ -54,12 +38,6 @@
                 <td>{{ movies.original_language }}</td>
                 <td>{{ movies.vote_count }}</td>
             </tr>
-        </ng-template>
-        <ng-template pTemplate="paginatorleft">
-            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
-        </ng-template>
-        <ng-template pTemplate="paginatorright">
-            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
         </ng-template>
     </p-table>
 </div>

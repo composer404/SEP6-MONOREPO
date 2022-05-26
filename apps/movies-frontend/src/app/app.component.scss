@@ -1,0 +1,33 @@
+:host ::ng-deep .p-menubar {
+    background-color: #020202;
+}
+:host ::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-text {
+    color: white !important;
+}
+
+:host ::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:not(.p-disabled):hover {
+    background-color: #373636;
+}
+
+:host
+    ::ng-deep
+    .p-menubar
+    .p-menubar-root-list
+    > .p-menuitem
+    > .p-menuitem-link:not(.p-disabled):hover
+    .p-menuitem-icon {
+    color: white;
+}
+
+:host ::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-icon {
+    color: white;
+}
+
+:host ::ng-deep .p-button {
+    background-color: #6d6d6d;
+    border: 0 !important;
+}
+
+:host ::ng-deep .p-button:hover {
+    background-color: #373636;
+}

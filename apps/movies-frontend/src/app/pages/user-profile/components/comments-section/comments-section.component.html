@@ -1,0 +1,9 @@
+<ng-container *ngIf="comments && comments.length; else noComments">
+    <div class="mt-3" *ngFor="let comment of comments">
+        <app-comment-item [comment]="comment"></app-comment-item>
+    </div>
+</ng-container>
+<ng-template #noComments>
+    <div>No comments created</div>
+    <button *ngIf="isProfileOwner">Search for movie</button>
+</ng-template>

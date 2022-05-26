@@ -1,0 +1,66 @@
+<p-card>
+    {{ actorDetails.name }}
+</p-card>
+<p></p>
+<p-card>
+    Description:
+    <p></p>
+    {{ actorDetails.biography }}
+    <p>Language: {{ actorDetails.place_of_birth }}</p>
+    <p>Votes: {{ actorDetails.popularity }}</p>
+    <p-image
+        src="https://image.tmdb.org/t/p/original/{{ actorDetails.profile_path }}"
+        alt="Image"
+        width="250"
+    ></p-image>
+</p-card>
+<h5>Movie List</h5>
+<div class="mb-3">
+    <p-button
+        type="button"
+        icon="pi pi-chevron-left"
+        (click)="prev()"
+        [disabled]="isFirstPage()"
+        styleClass="p-button-text"
+    ></p-button>
+    <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+    <p-button
+        type="button"
+        icon="pi pi-chevron-right"
+        (click)="next()"
+        [disabled]="isLastPage()"
+        styleClass="p-button-text"
+    ></p-button>
+</div>
+<p-table
+    [value]="credits.cast"
+    [paginator]="true"
+    [rows]="rows"
+    [showCurrentPageReport]="true"
+    [(first)]="first"
+    responsiveLayout="scroll"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    selectionMode="single"
+>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Name</th>
+            <th>Popularity</th>
+            <th>Original Language</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-actor>
+        <tr [pSelectableRow]="actor">
+            <td>{{ actor.original_title }}</td>
+            <td>{{ actor.popularity }}</td>
+            <td>{{ actor.id }}</td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="paginatorleft">
+        <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+    </ng-template>
+    <ng-template pTemplate="paginatorright">
+        <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-table>

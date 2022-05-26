@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, TopList } from '@prisma/client';
-import { SEPMovieInput, SEPTopListInput } from '../../models';
+import { resolve } from 'path';
+import { CreatedObjectResponse, SEPMovieInput, SEPTopListInput } from '../../models';
 import { PrismaService } from '../../prisma';
 import { MoviesService } from '../movies';
 
@@ -18,6 +19,43 @@ export class TopListsService {
                 where: {
                     userId,
                 },
+                include: {
+                    movies: true,
+                },
+            })
+            .catch((err) => {
+                console.error(`[API]`, err);
+                return null;
+            });
+        if (!result) {
+            return null;
+        }
+        const promises = result.map((toplist) => {
+            return new Promise<void>((resolve) => {
+                toplist.movieLocalIds = toplist.movies.map((element) => {
+                    return element.id;
+                });
+                toplist.movieApiIds = toplist.movies.map((element) => {
+                    return element.apiId;
+                });
+                toplist.numberOfMovies = toplist.movies.length;
+                delete toplist.movies;
+                resolve();
+            });
+        });
+        await Promise.all(promises);
+        return result;
+    }
+
+    async getTopListsFullByUserId(userId: string): Promise<TopList[] | null> {
+        const result = await this.database
+            .findMany({
+                where: {
+                    userId,
+                },
+                include: {
+                    movies: true,
+                },
             })
             .catch((err) => {
                 console.error(`[API]`, err);
@@ -29,7 +67,7 @@ export class TopListsService {
         return result;
     }
 
-    async getTopListById(id: string): Promise<TopList | null> {
+    async getTopListFullById(id: string): Promise<TopList | null> {
         const result = await this.database
             .findFirst({
                 where: {
@@ -50,7 +88,25 @@ export class TopListsService {
         return result;
     }
 
-    async createNewTopList(userId: string, topListInput: SEPTopListInput): Promise<string | null> {
+    async getTopListById(id: string): Promise<TopList | null> {
+        const result = await this.database
+            .findFirst({
+                where: {
+                    id,
+                },
+            })
+            .catch((err) => {
+                console.error(`[API]`, err);
+                return null;
+            });
+
+        if (!result) {
+            return null;
+        }
+        return result;
+    }
+
+    async createNewTopList(userId: string, topListInput: SEPTopListInput): Promise<CreatedObjectResponse | null> {
         const created = await this.database
             .create({
                 data: {
@@ -66,7 +122,9 @@ export class TopListsService {
         if (!created) {
             return null;
         }
-        return created.id;
+        return {
+            id: created.id,
+        };
     }
 
     async deleteTopList(id: string, userId: string): Promise<boolean> {

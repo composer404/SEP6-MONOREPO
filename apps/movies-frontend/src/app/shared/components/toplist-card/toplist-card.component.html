@@ -1,0 +1,14 @@
+<p-card (click)="onClickEvent()" class="relative cursor-pointer">
+    <div class="test-md font-bold mb-2">{{ toplist.name }}</div>
+    <div>{{ toplist.description }}</div>
+    <div class="text-xs uppercase font-thin absolute inset-x-0 bottom-0 w-full text-right p-3">
+        Number of movies: {{ toplist.numberOfMovies }}
+    </div>
+    <div class="absolute inset-x-0 top-0 w-full text-right p-3">
+        <i
+            (click)="$event.stopPropagation(); onRemoveClick()"
+            class="pi pi-trash cursor-pointer"
+            style="font-size: 1rem"
+        ></i>
+    </div>
+</p-card>

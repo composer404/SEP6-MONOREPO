@@ -1,0 +1,37 @@
+<form [formGroup]="topListForm" (ngSubmit)="createToplist()">
+    <div class="m-10 gap-5">
+        <div class="flex flex-col gap-2">
+            <label for="name">Name</label>
+            <input formControlName="name" pInputText id="name" type="text" />
+            <small
+                *ngIf="
+                    topListForm.get('name').invalid &&
+                    (topListForm.get('name').dirty || topListForm.get('name').touched)
+                "
+                id="ranking-help"
+                class="p-error"
+                ><div *ngIf="topListForm.get('name').errors?.required">A name of the movie is required.</div>
+                <div *ngIf="topListForm.get('name').errors?.minlength">A title must be at least 1 character long.</div>
+            </small>
+            <div class="flex mt-2"></div>
+            <label for="description">Description</label>
+            <textarea formControlName="description" pInputTextarea [rows]="5" id="description" name="text"></textarea>
+            <small
+                *ngIf="
+                    topListForm.get('description').invalid &&
+                    (topListForm.get('description').dirty || topListForm.get('description').touched)
+                "
+                id="login-help"
+                class="p-error"
+                ><div *ngIf="topListForm.get('description').errors?.required">The description is required.</div>
+                <div *ngIf="topListForm.get('description').errors?.minlength">
+                    The description must be at least 10 characters long.
+                </div>
+            </small>
+        </div>
+        <div class="flex gap-2 mt-6">
+            <button class="py-2 px-4 text-white rounded-md" type="submit">Create</button>
+            <button class="py-2 px-4 text-white rounded-md" type="button" (click)="close()">Cancel</button>
+        </div>
+    </div>
+</form>

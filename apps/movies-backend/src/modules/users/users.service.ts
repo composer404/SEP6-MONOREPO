@@ -3,7 +3,7 @@ import * as argon2 from 'argon2';
 import { Injectable } from '@nestjs/common';
 import { Follows, Prisma, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma';
-import { SEPUser, SignUpInput, UserUpdateInput } from '../../models';
+import { CreatedObjectResponse, PasswordInput, SignUpInput, UserUpdateInput } from '../../models';
 import { CommentsService } from '../comments';
 import { RatingsService } from '../ratings';
 
@@ -31,7 +31,7 @@ export class UsersService {
         });
     }
 
-    async findUserById(id: string): Promise<SEPUser | null> {
+    async findUserById(id: string): Promise<User | null> {
         const prismaUser = await this.database
             .findFirst({
                 where: {
@@ -45,9 +45,11 @@ export class UsersService {
         if (!prismaUser) {
             return null;
         }
-        return this.createOutputUser(prismaUser);
+
+        delete prismaUser.password;
+        return prismaUser;
     }
-    async findUserByEmail(email: string): Promise<SEPUser | null> {
+    async findUserByEmail(email: string): Promise<User | null> {
         const prismaUser = await this.database
             .findFirst({
                 where: {
@@ -61,12 +63,13 @@ export class UsersService {
         if (!prismaUser) {
             return null;
         }
-        return this.createOutputUser(prismaUser);
+        delete prismaUser.password;
+        return prismaUser;
     }
 
     /* ----------------------------- CREATE USER ----------------------------- */
 
-    async createUser(input: SignUpInput): Promise<string | null> {
+    async createUser(input: SignUpInput): Promise<CreatedObjectResponse | null> {
         const prismaUser = await this.database
             .create({
                 data: {
@@ -83,10 +86,33 @@ export class UsersService {
             return null;
         }
 
-        return prismaUser.id;
+        return {
+            id: prismaUser.id,
+        };
     }
 
     /* ------------------------------- UPDATE USER ------------------------------ */
+
+    async updatePassword(userId: string, input: PasswordInput): Promise<boolean> {
+        const result = await this.database
+            .update({
+                where: {
+                    id: userId,
+                },
+                data: {
+                    password: await argon2.hash(input.password),
+                },
+            })
+            .catch((err) => {
+                console.log(`[API]`, err);
+                return false;
+            });
+
+        if (!result) {
+            return false;
+        }
+        return true;
+    }
 
     async updateUser(userId: string, input: UserUpdateInput): Promise<boolean> {
         const result = await this.database
@@ -96,7 +122,6 @@ export class UsersService {
                 },
                 data: {
                     ...input,
-                    password: await argon2.hash(input.password),
                 },
             })
             .catch((err) => {
@@ -189,28 +214,14 @@ export class UsersService {
         return true;
     }
 
-    async getFollowersForUser(userId: string): Promise<Follows[] | null> {
+    async getFollowersForUser(userId: string): Promise<User[] | null> {
         const result = await this.followsDb
             .findMany({
                 where: {
                     followingId: userId,
                 },
-            })
-            .catch((err) => {
-                console.log(`[API]`, err);
-                return null;
-            });
-        if (!result) {
-            return null;
-        }
-        return result;
-    }
-
-    async getFollowingForUser(userId: string): Promise<Follows[] | null> {
-        const result = await this.followsDb
-            .findMany({
-                where: {
-                    followerId: userId,
+                include: {
+                    follower: true,
                 },
             })
             .catch((err) => {
@@ -220,19 +231,73 @@ export class UsersService {
         if (!result) {
             return null;
         }
-        return result;
+
+        const promises = result.map((follows) => {
+            return new Promise<User>((resolve) => {
+                delete follows.follower.password;
+                resolve(follows.follower);
+            });
+        });
+
+        const users = await Promise.all(promises);
+        return users;
     }
 
-    private createOutputUser(prismaUser: User): SEPUser {
-        return {
-            id: prismaUser.id,
-            firstName: prismaUser.firstName,
-            login: prismaUser.login,
-            email: prismaUser.email,
-            lastName: prismaUser.lastName,
-            avatar: prismaUser.avatar,
-            createdAt: prismaUser.createdAt,
-            updatedAt: prismaUser.updatedAt,
-        };
+    async checkIfFollowing(userId: string, followingId: string): Promise<boolean> {
+        const result = await this.followsDb.findFirst({
+            where: {
+                followerId: userId,
+                followingId,
+            },
+        });
+
+        if (!result) {
+            return false;
+        }
+        return true;
+    }
+
+    async getFollowersNumberForUser(userId: string): Promise<number | null> {
+        const result = await this.getFollowersForUser(userId);
+        if (!result) {
+            return null;
+        }
+        return result.length;
+    }
+
+    async getFollowingForUser(userId: string): Promise<User[] | null> {
+        const result = await this.followsDb
+            .findMany({
+                where: {
+                    followerId: userId,
+                },
+                include: {
+                    following: true,
+                },
+            })
+            .catch((err) => {
+                console.log(`[API]`, err);
+                return null;
+            });
+        if (!result) {
+            return null;
+        }
+        const promises = result.map((follows) => {
+            return new Promise<User>((resolve) => {
+                delete follows.following.password;
+                resolve(follows.following);
+            });
+        });
+
+        const users = await Promise.all(promises);
+        return users;
+    }
+
+    async getFollowingNumberForUser(userId: string): Promise<number | null> {
+        const result = await this.getFollowingForUser(userId);
+        if (!result) {
+            return null;
+        }
+        return result.length;
     }
 }

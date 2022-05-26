@@ -1,0 +1,70 @@
+<div class="card">
+    <input
+        pInputText
+        type="text"
+        [(ngModel)]="searchActor"
+        (ngModelChange)="onNameChange()"
+        placeholder="Search by Name"
+        class="form-control"
+    />
+    <p></p>
+    <h5>Actor List</h5>
+    <div class="mb-3">
+        <p-button
+            type="button"
+            icon="pi pi-chevron-left"
+            (click)="prev()"
+            [disabled]="isFirstPage()"
+            styleClass="p-button-text"
+        ></p-button>
+        <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
+        <p-button
+            type="button"
+            icon="pi pi-chevron-right"
+            (click)="next()"
+            [disabled]="isLastPage()"
+            styleClass="p-button-text"
+        ></p-button>
+    </div>
+    <p-table
+        [value]="actors"
+        [paginator]="true"
+        [rows]="rows"
+        [showCurrentPageReport]="true"
+        [(first)]="first"
+        responsiveLayout="scroll"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        selectionMode="single"
+        dataKey="code"
+        [(selection)]="selectedActor"
+        (onRowSelect)="onActorDetails()"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Popularity</th>
+                <th>Original Language</th>
+                <th>Department</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-actors>
+            <tr [pSelectableRow]="actors">
+                <td>
+                    <img src="https://image.tmdb.org/t/p/original/{{ actors.profile_path }}" alt="Image" width="50" />
+                </td>
+                <td>{{ actors.name }}</td>
+                <td>{{ actors.popularity }}</td>
+                <td>{{ actors.id }}</td>
+                <td>{{ actors.known_for_department }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
+</div>
