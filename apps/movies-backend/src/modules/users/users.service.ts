@@ -3,7 +3,14 @@ import * as argon2 from 'argon2';
 import { Injectable } from '@nestjs/common';
 import { Follows, Prisma, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma';
-import { CreatedObjectResponse, PasswordInput, SignUpInput, UserUpdateInput } from '../../models';
+import {
+    CreatedObjectResponse,
+    ERROR_CODES,
+    PasswordInput,
+    PrismaErrorResponse,
+    SignUpInput,
+    UserUpdateInput,
+} from '../../models';
 import { CommentsService } from '../comments';
 import { RatingsService } from '../ratings';
 
@@ -69,7 +76,7 @@ export class UsersService {
 
     /* ----------------------------- CREATE USER ----------------------------- */
 
-    async createUser(input: SignUpInput): Promise<CreatedObjectResponse | null> {
+    async createUser(input: SignUpInput): Promise<CreatedObjectResponse | PrismaErrorResponse | null> {
         const prismaUser = await this.database
             .create({
                 data: {
@@ -79,8 +86,28 @@ export class UsersService {
             })
             .catch((err) => {
                 console.log(`[API]`, err);
+                if (err.code === `P2002` && err.meta.target[0] === `login`) {
+                    return ERROR_CODES.notUniqueLogin;
+                }
+
+                if (err.code === `P2002` && err.meta.target[0] === `email`) {
+                    return ERROR_CODES.notUniqueEmail;
+                }
+
                 return null;
             });
+
+        if (prismaUser === ERROR_CODES.notUniqueEmail) {
+            return {
+                code: ERROR_CODES.notUniqueEmail,
+            };
+        }
+
+        if (prismaUser === ERROR_CODES.notUniqueLogin) {
+            return {
+                code: ERROR_CODES.notUniqueLogin,
+            };
+        }
 
         if (!prismaUser) {
             return null;

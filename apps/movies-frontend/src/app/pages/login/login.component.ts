@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { MessageService } from 'primeng/api';
+import { SEP_ERROR_CODES } from '../../interfaces/interfaces';
+import { InfoService } from '../../services/info.service';
 
 @Component({
     selector: 'app-login',
@@ -10,9 +12,10 @@ import { MessageService } from 'primeng/api';
     styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-    public loginForm: FormGroup;
+    loginForm: FormGroup;
+    unauthorized: boolean;
 
-    constructor(private router: Router, private authService: AuthService, private messageService: MessageService) {}
+    constructor(private router: Router, private authService: AuthService, private infoService: InfoService) {}
 
     ngOnInit(): void {
         this.loginForm = new FormGroup({
@@ -21,42 +24,32 @@ export class LoginComponent implements OnInit {
         });
     }
 
-    public async onLogin() {
+    async onLogin() {
         const login = this.loginForm.get(`login`).value;
         const password = this.loginForm.get(`password`).value;
+        const response = await this.authService.login(login, password);
 
-        const token = await this.authService.login(login, password);
-
-        if (token) {
-            const profile = await this.authService.getProfile();
-            this.router.navigateByUrl(`/profile/${profile.id}`);
-            this.addSuccess();
+        if (response === SEP_ERROR_CODES.unauthorized) {
+            this.unauthorized = true;
             return;
         }
-        // this.showError();
-    }
 
-    public clear(): void {
-        this.messageService.clear();
+        if (response === SEP_ERROR_CODES.internal) {
+            this.infoService.error(`Cannot connect to the server. Try again later.`);
+            return;
+        }
+
+        const profile = await this.authService.getProfile();
+        this.router.navigateByUrl(`/profile/${profile.id}`);
     }
 
     onClickSignUp(): void {
-        this.router.navigateByUrl('/signup');
+        this.router.navigate(['signup']);
     }
 
-    private addSuccess(): void {
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'You have been logged in properly',
-        });
-    }
-
-    private addError(): void {
-        this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'You have not been logged in properly',
-        });
+    hideErrorMessage() {
+        if (this.unauthorized) {
+            this.unauthorized = false;
+        }
     }
 }

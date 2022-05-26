@@ -26,3 +26,13 @@ export class CreatedObjectResponse {
     @ApiProperty()
     id: string;
 }
+
+export enum ERROR_CODES {
+    notUniqueLogin = `notUniqueLogin`,
+    notUniqueEmail = `notUniqueEmail`,
+}
+
+export class PrismaErrorResponse {
+    @ApiProperty()
+    code: ERROR_CODES;
+}

@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { UsersService } from '../users';
-import { CreatedObjectResponse, SignUpInput } from '../../models';
+import { CreatedObjectResponse, PrismaErrorResponse, SignUpInput } from '../../models';
 
 @Injectable()
 export class AuthService {
@@ -43,7 +43,7 @@ export class AuthService {
         };
     }
 
-    async registry(userInput: SignUpInput): Promise<CreatedObjectResponse | null> {
+    async registry(userInput: SignUpInput): Promise<CreatedObjectResponse | PrismaErrorResponse | null> {
         return this.userService.createUser(userInput);
     }
 }

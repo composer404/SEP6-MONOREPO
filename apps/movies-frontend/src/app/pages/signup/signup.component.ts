@@ -2,48 +2,76 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
+import { API_ERROR_CODES } from '../../interfaces/interfaces';
+import { InfoService } from '../../services/info.service';
 
 @Component({
     selector: 'app-signup',
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.scss'],
-    providers: [MessageService],
 })
 export class SignupComponent implements OnInit {
-    public signupForm: FormGroup;
-    avatar: any;
-    msg = '';
+    signupForm: FormGroup;
+    items: MenuItem[];
+    activeIndex: number = 0;
 
-    constructor(
-        private router: Router,
-        private authService: AuthService,
-        private messageService: MessageService,
-        private primengConfig: PrimeNGConfig,
-    ) {}
+    firstStep: boolean = true;
+    secondStep: boolean;
+    thirdStep: boolean;
+
+    avatar: any;
+
+    constructor(private router: Router, private authService: AuthService, private infoService: InfoService) {}
 
     ngOnInit(): void {
-        this.primengConfig.ripple = true;
+        this.items = [
+            {
+                label: 'Login',
+                command: () => {
+                    this.activeIndex = 0;
+                    this.firstStep = true;
+
+                    this.thirdStep = false;
+                    this.secondStep = false;
+                },
+            },
+            {
+                label: 'Personal',
+                command: () => {
+                    this.activeIndex = 1;
+                    this.secondStep = true;
+
+                    this.thirdStep = false;
+                    this.firstStep = false;
+                },
+            },
+            {
+                label: 'Avatar',
+                command: () => {
+                    this.activeIndex = 2;
+                    this.thirdStep = true;
+
+                    this.firstStep = false;
+                    this.secondStep = false;
+                },
+            },
+        ];
+
         this.signupForm = new FormGroup({
             login: new FormControl(``, [Validators.required, Validators.minLength(4)]),
             email: new FormControl(``, [Validators.required]),
             password: new FormControl(``, [Validators.required, Validators.minLength(4)]),
             firstName: new FormControl(``),
             lastName: new FormControl(``),
-            avatar: new FormControl(``),
         });
     }
 
     selectFile(event: any) {
-        if (!event.target.files[0] || event.target.files[0].length == 0) {
-            this.msg = 'You must select an image';
-            return;
-        }
-
+        console.log(`event`, event);
         const mimeType = event.target.files[0].type;
 
         if (mimeType.match(/image\/*/) == null) {
-            this.msg = 'Only images are supported';
             return;
         }
 
@@ -51,7 +79,6 @@ export class SignupComponent implements OnInit {
         reader.readAsDataURL(event.target.files[0]);
 
         reader.onload = (_event) => {
-            this.msg = '';
             this.avatar = reader.result;
             console.log(this.avatar);
         };
@@ -67,31 +94,24 @@ export class SignupComponent implements OnInit {
             avatar: this.avatar,
         });
         console.log(`reponse`, response);
-        if (response?.id) {
-            void this.router.navigateByUrl(`/login`);
-            this.showSuccess();
+
+        if ((response as any)?.code === API_ERROR_CODES.notUniqueLogin) {
+            console.log(`HERER`);
+            this.infoService.error(`User with provided login already exists!`);
             return;
         }
-        this.showError();
-    }
 
-    public clear() {
-        this.messageService.clear();
-    }
+        if ((response as any)?.code === API_ERROR_CODES.notUniqueEmail) {
+            console.log(`HERER`);
+            this.infoService.error(`User with provided email already exists!`);
+            return;
+        }
 
-    showSuccess() {
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'You have been signed up properly',
-        });
-    }
-
-    showError() {
-        this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'You have not been signed up properly',
-        });
+        if (response?.id) {
+            this.infoService.success(`Account has been successfully created!`);
+            void this.router.navigateByUrl(`/login`);
+            return;
+        }
+        this.infoService.error(`Cannot connect to the server. Try again later.`);
     }
 }

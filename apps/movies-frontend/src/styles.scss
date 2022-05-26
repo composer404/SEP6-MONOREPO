@@ -84,6 +84,24 @@ h1 {
     text-align: center;
 }
 
+/* ---------------------------- BACKGROUND RULES ---------------------------- */
+
+.bg-primary {
+    background-color: #161623;
+}
+
+.bg-primary-dark {
+    background-color: #1e1f2c;
+}
+
+.bg-accent {
+    background-color: #ef223c;
+}
+
+.text-accent {
+    color: #ef223c;
+}
+
 .input-box {
     display: flex;
     flex-direction: column;
@@ -92,8 +110,8 @@ h1 {
 }
 
 label {
-  font-family: Ubuntu-Regular, serif;
-  color: grey;
+    font-family: Ubuntu-Regular, serif;
+    color: grey;
 }
 
 body .menu-item .p-menuitem-link {
