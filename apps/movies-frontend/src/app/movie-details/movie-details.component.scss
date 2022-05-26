@@ -16,3 +16,38 @@
     padding: 3px !important;
     margin: 0 !important;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 1px;
+    background-color: #ffff;
+    padding: 10px;
+}
+
+.grid-container > div {
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    padding: 800px 50;
+    font-size: 18px;
+    margin: 10px;
+}
+
+button {
+    background-color: #320b0b;
+}
+
+button:hover {
+    background-color: #430f0f;
+}
+
+.text {
+    color: #430f0f;
+    font-weight: bold;
+    font-family: FjallaOne, serif;
+}
+
+.textList {
+    color: #430f0f;
+    font-family: FjallaOne, serif;
+}

@@ -1,37 +1,21 @@
-<p-card>
-    {{ actorDetails.name }}
-</p-card>
-<p></p>
-<p-card>
-    Description:
+<div class="textList grid-container">
+    <div class="text">{{ actorDetails.name }}</div>
     <p></p>
-    {{ actorDetails.biography }}
-    <p>Language: {{ actorDetails.place_of_birth }}</p>
-    <p>Votes: {{ actorDetails.popularity }}</p>
-    <p-image
-        src="https://image.tmdb.org/t/p/original/{{ actorDetails.profile_path }}"
-        alt="Image"
-        width="250"
-    ></p-image>
-</p-card>
-<h5>Movie List</h5>
-<div class="mb-3">
-    <p-button
-        type="button"
-        icon="pi pi-chevron-left"
-        (click)="prev()"
-        [disabled]="isFirstPage()"
-        styleClass="p-button-text"
-    ></p-button>
-    <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
-    <p-button
-        type="button"
-        icon="pi pi-chevron-right"
-        (click)="next()"
-        [disabled]="isLastPage()"
-        styleClass="p-button-text"
-    ></p-button>
+    <p></p>
+    <img src="https://image.tmdb.org/t/p/original/{{ actorDetails.profile_path }}" alt="Image" width="250" />
+    <div style="text-align: left; font-family: FjallaOne, serif">
+        Description: {{ actorDetails.biography }}
+        <p></p>
+        Place of Birth: {{ actorDetails.place_of_birth }}
+        <p></p>
+        Popularity: {{ actorDetails.popularity }}
+    </div>
 </div>
+<p></p>
+<p></p>
+<p></p>
+<h1 class="text" style="text-align: center">Featured Movies</h1>
+<div class="mb-3"></div>
 <p-table
     [value]="credits.cast"
     [paginator]="true"
@@ -44,23 +28,21 @@
     selectionMode="single"
 >
     <ng-template pTemplate="header">
-        <tr>
-            <th>Name</th>
+        <tr class="textList">
+            <th>Image</th>
+            <th>Movie Name</th>
             <th>Popularity</th>
             <th>Original Language</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-actor>
-        <tr [pSelectableRow]="actor">
+        <tr [pSelectableRow]="actor" class="textList">
+            <td><img src="https://image.tmdb.org/t/p/original/{{ actor.poster_path }}" alt="Image" width="50" /></td>
             <td>{{ actor.original_title }}</td>
             <td>{{ actor.popularity }}</td>
-            <td>{{ actor.id }}</td>
+            <td>{{ actor.original_language }}</td>
         </tr>
     </ng-template>
-    <ng-template pTemplate="paginatorleft">
-        <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
-    </ng-template>
-    <ng-template pTemplate="paginatorright">
-        <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
-    </ng-template>
+    <ng-template pTemplate="paginatorleft"> </ng-template>
+    <ng-template pTemplate="paginatorright"> </ng-template>
 </p-table>

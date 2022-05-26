@@ -1,56 +1,35 @@
 <!-- ------------------------- MANAGEMENT SECTION -------------------------- -->
 
-<div>
-    <button (click)="addToToplist()">Add to toplist</button>
-</div>
-
 <!-- ------------------------ MOVIE DETAIL SECTION ------------------------- -->
 
-<p-card>
-    {{ movieDetails.title }}
-    <p-rating (click)="createRating()" [(ngModel)]="rating"></p-rating>
-    <p-card>
-        <p-image
-            src="https://image.tmdb.org/t/p/original/{{ movieDetails.poster_path }}"
-            alt="Image"
-            width="250"
-        ></p-image>
-    </p-card>
-</p-card>
-<p></p>
-<p-card>
-    Description:
+<div class="grid-container">
+    <h1 class="text">{{ movieDetails.title }}</h1>
     <p></p>
-    {{ movieDetails.overview }}
-    <p>Language: {{ movieDetails.original_language }}</p>
-    <p>Votes: {{ movieDetails.vote_count }}</p>
-    <p>{{ movieDetails.revenue }}</p>
-</p-card>
-<P></P>
-<!-- <p-card *ngFor="let actor of credits.cast"> {{ actor.name }} </p-card> -->
+    <p></p>
+    <div><img src="https://image.tmdb.org/t/p/original/{{ movieDetails.poster_path }}" alt="Image" width="250" /></div>
+    <div style="text-align: left; font-family: FjallaOne, serif">
+        Description: {{ movieDetails.overview }}
+        <p></p>
+        Language: {{ movieDetails.original_language }}
+        <p></p>
+        Votes: {{ movieDetails.vote_count }}
+    </div>
+    <p></p>
+    <div>
+        <p-rating (click)="createRating()" [(ngModel)]="rating" class=".grid-container"></p-rating>
+        <p></p>
+        <p></p>
+        <button class="w-3/4 text-gray-100 mb-2 h-10 rounded-md font-family: FjallaOne, serif" (click)="addToToplist()">
+            Add to toplist
+        </button>
+    </div>
+</div>
 
 <p-accordion>
     <!-- -------------------------------- CAST --------------------------------- -->
 
-    <p-accordionTab header="Cast">
-        <h5>Actor List</h5>
-        <div class="mb-3">
-            <p-button
-                type="button"
-                icon="pi pi-chevron-left"
-                (click)="prev()"
-                [disabled]="isFirstPage()"
-                styleClass="p-button-text"
-            ></p-button>
-            <p-button type="button" icon="pi pi-refresh" (click)="reset()" styleClass="p-button-text"></p-button>
-            <p-button
-                type="button"
-                icon="pi pi-chevron-right"
-                (click)="next()"
-                [disabled]="isLastPage()"
-                styleClass="p-button-text"
-            ></p-button>
-        </div>
+    <p-accordionTab header="Cast" class="text">
+        <h1 class="text" style="text-align: left">Actor List</h1>
         <p-table
             [value]="credits.cast"
             [paginator]="true"
@@ -64,20 +43,30 @@
             dataKey="code"
             [(selection)]="selectedCast"
             (onRowSelect)="onCastDetails()"
+            class="rounded-md"
         >
             <ng-template pTemplate="header">
-                <tr>
+                <tr class="textList">
+                    <th>Image</th>
                     <th>Name</th>
                     <th>Popularity</th>
-                    <th>Original Language</th>
+                    <th>Character</th>
                     <th>Department</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-actor>
-                <tr [pSelectableRow]="actor">
+                <tr [pSelectableRow]="actor" class="textList">
+                    <td>
+                        <img
+                            src="https://image.tmdb.org/t/p/original/{{ actor.profile_path }}"
+                            alt="Image"
+                            width="50"
+                        />
+                    </td>
+
                     <td>{{ actor.name }}</td>
                     <td>{{ actor.popularity }}</td>
-                    <td>{{ actor.id }}</td>
+                    <td>{{ actor.character }}</td>
                     <td>{{ actor.known_for_department }}</td>
                 </tr>
             </ng-template>
@@ -86,24 +75,24 @@
 
     <!-- --------------------------- RATING SECTION ---------------------------- -->
 
-    <p-accordionTab header="Rating section"> Content 2 </p-accordionTab>
+    <p-accordionTab header="Rating section" class="text">ffffff</p-accordionTab>
 
     <!-- --------------------------- COMMENT SECTION --------------------------- -->
 
-    <p-accordionTab header="Comment section">
-        <div>
-            <input [(ngModel)]="commentText" type="text" />
-            <button (click)="addComment()">Confirm</button>
-
-            <ng-container *ngIf="localMovie">
-                <p-card class="card" *ngFor="let comment of comments">
-                    <app-comment-item-movie
-                        [comment]="comment"
-                        [userProfile]="userProfile"
-                        (onRemove)="removeComment($event)"
-                    ></app-comment-item-movie>
-                </p-card>
-            </ng-container>
+    <p-accordionTab header="Comment section" class="text">
+        <div class="grid-container">
+            <input style="border-color: #320b0b; border-width: 1px" [(ngModel)]="commentText" type="text" />
+            <p></p>
+            <button (click)="addComment()" class="w-3/4 text-gray-100 mb-2 h-10 rounded-md">Confirm</button>
         </div>
+        <ng-container *ngIf="localMovie">
+            <p-card class="card" *ngFor="let comment of comments">
+                <app-comment-item-movie
+                    [comment]="comment"
+                    [userProfile]="userProfile"
+                    (onRemove)="removeComment($event)"
+                ></app-comment-item-movie>
+            </p-card>
+        </ng-container>
     </p-accordionTab>
 </p-accordion>

@@ -10,6 +10,26 @@
     padding: 0.5rem 0.5rem !important;
 }
 
+.text-dark-red {
+    color: #320b0b;
+}
+
+.input {
+    border-color: #320b0b;
+    border-width: 1px;
+}
+
+.text {
+    color: #430f0f;
+    font-weight: bold;
+    font-family: FjallaOne, serif;
+}
+
+.textList {
+    color: #430f0f;
+    font-family: FjallaOne, serif;
+}
+
 // :host ::ng-deep {
 //     .p-paginator {
 //         .p-paginator-current {
