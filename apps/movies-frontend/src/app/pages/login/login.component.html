@@ -1,51 +1,53 @@
 <div class="bg-[url('/assets/photos/background.png')] xl:w-screen xl:h-screen overflow-hidden flex justify-center items-center">
   <p-toast></p-toast>
-<div class="bg-white shadow-md hover:shadow-inner xl:w-1/2 border-2 p-10 mt-60 mb-60 rounded-md flex justify-center items-center">
-            <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-                <div class="flex flex-col gap-2 mb-6">
-                    <label for="login">Username</label>
-                    <input formControlName="login" pInputText id="login" type="text" />
-                    <small
-                        *ngIf="
+  <div class="border-2 m-24 bg-slate-200 mx-auto rounded-xl shadow-xl overflow-hidden">
+    <div class="md:flex">
+      <div class="md:shrink-0">
+        <img class="h-80 w-full object-cover md:h-full md:w-80" src="/assets/photos/spiderman.jpg" alt="Spiderman">
+      </div>
+      <div class="p-20">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <div class="flex flex-col gap-2 mb-6">
+            <label for="login">Username</label>
+            <input formControlName="login" pInputText id="login" type="text" />
+            <small
+              *ngIf="
                             loginForm.get('login').invalid &&
                             (loginForm.get('login').dirty || loginForm.get('login').touched)
                         "
-                        id="login-help"
-                        class="p-error"
-                        ><div *ngIf="loginForm.get('login').errors?.required">Login is required.</div>
-                        <div *ngIf="loginForm.get('login').errors?.minlength">
-                            Login must be at least 4 characters long.
-                        </div>
-                    </small>
-                </div>
-                <div class="flex gap-2 flex-col">
-                    <label for="password">Password</label>
-                    <input formControlName="password" pInputText id="password" type="password" />
-                    <small
-                        *ngIf="
+              id="login-help"
+              class="p-error"
+            ><div *ngIf="loginForm.get('login').errors?.required">Login is required.</div>
+              <div *ngIf="loginForm.get('login').errors?.minlength">
+                Login must be at least 4 characters long.
+              </div>
+            </small>
+          </div>
+          <div class="flex gap-2 flex-col">
+            <label for="password">Password</label>
+            <input formControlName="password" pInputText id="password" type="password" />
+            <small
+              *ngIf="
                             loginForm.get('password').invalid &&
                             (loginForm.get('password').dirty || loginForm.get('password').touched)
                         "
-                        id="password-help"
-                        class="p-error"
-                        ><div *ngIf="loginForm.get('password').errors?.required">Password is required</div>
-                        <div *ngIf="loginForm.get('password').errors?.minlength">
-                            Password must be at least 4 characters long.
-                        </div>
-                    </small>
-                </div>
-                <div class="mt-10">
-                    <p-button styleClass="w-72" [disabled]="loginForm.invalid" type="submit" label="Login"></p-button>
-                    <p-divider layout="vertical">
-                      <b>OR</b>
-                    </p-divider>
-                    <p-button
-                      (click)="onClickSignUp()"
-                      label="Sign In"
-                      icon="pi pi-user-plus"
-                      styleClass="w-72 p-button-success"
-                    ></p-button>
-                </div>
-            </form>
-</div>
+              id="password-help"
+              class="p-error"
+            ><div *ngIf="loginForm.get('password').errors?.required">Password is required</div>
+              <div *ngIf="loginForm.get('password').errors?.minlength">
+                Password must be at least 4 characters long.
+              </div>
+            </small>
+          </div>
+          <div class="flex flex-col mt-10">
+            <p-button styleClass="w-72" [disabled]="loginForm.invalid" type="submit" label="Login"></p-button>
+            <div class="flex mt-5 gap-2">
+              <p class="text-slate-500">Don't you have an account?</p>
+              <a class="text-blue-400" [routerLink]="['/signup']">Sign Up</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
