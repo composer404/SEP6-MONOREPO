@@ -84,16 +84,15 @@
             <input style="border-color: #320b0b; border-width: 1px" [(ngModel)]="commentText" type="text" />
             <p></p>
             <button (click)="addComment()" class="w-3/4 text-gray-100 mb-2 h-10 rounded-md">Confirm</button>
-
-            <ng-container *ngIf="localMovie">
-                <p-card class="card" *ngFor="let comment of comments">
-                    <app-comment-item-movie
-                        [comment]="comment"
-                        [userProfile]="userProfile"
-                        (onRemove)="removeComment($event)"
-                    ></app-comment-item-movie>
-                </p-card>
-            </ng-container>
         </div>
+        <ng-container *ngIf="localMovie">
+            <p-card class="card" *ngFor="let comment of comments">
+                <app-comment-item-movie
+                    [comment]="comment"
+                    [userProfile]="userProfile"
+                    (onRemove)="removeComment($event)"
+                ></app-comment-item-movie>
+            </p-card>
+        </ng-container>
     </p-accordionTab>
 </p-accordion>

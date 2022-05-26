@@ -6,8 +6,10 @@
         [(ngModel)]="searchVal"
         (ngModelChange)="onTitleChange(1)"
         placeholder="Search by Title"
-        class="form-control input"
+        class="form-control input textList"
     />
+    <p></p>
+    <p></p>
     <p-table
         [value]="movies"
         [lazy]="true"
@@ -24,15 +26,19 @@
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
     >
         <ng-template pTemplate="header">
-            <tr>
+            <tr class="textList">
+                <th>Image</th>
                 <th>Title</th>
                 <th>Popularity</th>
                 <th>Original Language</th>
-                <th>Vote Count</th>
+                <th>Votes</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-movies>
-            <tr [pSelectableRow]="movies">
+            <tr [pSelectableRow]="movies" class="textList">
+                <td>
+                    <img src="https://image.tmdb.org/t/p/original/{{ movies.poster_path }}" alt="Image" width="50" />
+                </td>
                 <td>{{ movies.title }}</td>
                 <td>{{ movies.popularity }}</td>
                 <td>{{ movies.original_language }}</td>
