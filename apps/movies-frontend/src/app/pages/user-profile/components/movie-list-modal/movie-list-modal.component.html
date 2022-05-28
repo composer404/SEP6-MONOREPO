@@ -1,0 +1,26 @@
+<div class="grid">
+    <ng-container *ngFor="let movie of movies">
+        <p-card
+            (click)="navigateToMovieView(movie.apiId)"
+            class="relative text-center m-4 cursor-pointer custom-height"
+        >
+            <div *ngIf="isProfileOwner" class="absolute top-0 right-0 p-1 mr-2">
+                <i
+                    (click)="$event.stopPropagation(); removeMovieFromToplist(movie.apiId)"
+                    class="pi pi-minus"
+                    style="font-size: 1rem"
+                ></i>
+            </div>
+            <div class="mb-2">
+                <img
+                    class="mx-auto border-4"
+                    src="https://image.tmdb.org/t/p/original/{{ movie.posterPath }}"
+                    width="150px"
+                />
+            </div>
+            <div class="font-semibold text-lg">
+                {{ movie.title }}
+            </div>
+        </p-card>
+    </ng-container>
+</div>

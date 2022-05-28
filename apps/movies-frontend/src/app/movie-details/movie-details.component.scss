@@ -1,0 +1,30 @@
+.card::ng-deep .p-card {
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px,
+        rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+    width: 30%;
+    padding: 0 !important;
+    // margin: 0 !important;
+    margin-bottom: 10px;
+}
+
+.card::ng-deep .p-card .p-card-body {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.card::ng-deep .p-card .p-card-body .p-card-content {
+    padding: 3px !important;
+    margin: 0 !important;
+}
+
+.star::ng-deep .p-rating .p-rating-icon.pi-star-fill {
+    color: #320b0b !important;
+}
+
+button {
+    background-color: #320b0b;
+}
+
+button:hover {
+    background-color: #430f0f;
+}

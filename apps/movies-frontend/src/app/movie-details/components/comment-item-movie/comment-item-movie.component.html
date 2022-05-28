@@ -1,0 +1,42 @@
+<div class="relative flex items-center p-2">
+    <div class="absolute top-0 right-0 mr-3 mt-1 text-xs font-thin">
+        {{ comment.createdAt | date: 'dd/MM/yyy HH:mm' }}
+        <span *ngIf="!checkIfUpdated()"
+            ><i>(Updated {{ comment.updatedAt | date: 'dd/MM/yyy HH:mm' }})</i></span
+        >
+    </div>
+    <ng-container *ngIf="!editMode; else buttonsEditMode">
+        <div *ngIf="userProfile.id == comment.authorId" class="absolute bottom-0 right-0 mr-3 mb-1">
+            <i (click)="editMode = true; editedText = comment.content" class="pi pi-pencil mr-1 cursor-pointer"></i>
+            <i (click)="showConfirmationDialog()" class="pi pi-trash cursor-pointer"></i>
+        </div>
+    </ng-container>
+    <div class="mr-3">
+        <p-avatar
+            (click)="navigateToUserProfile(comment.authorId)"
+            class="cursor-pointer"
+            [image]="comment.author.avatar ? comment.author.avatar : '../../../assets/photos/user.png'"
+            size="large"
+            shape="circle"
+        ></p-avatar>
+    </div>
+    <div>
+        <div class="font-semibold">
+            {{ comment.author.firstName }} {{ comment.author.lastName }} <i>({{ comment.author.login }})</i>
+        </div>
+        <div *ngIf="!editMode; else contentEditMode" class="font-thin">
+            {{ comment.content }}
+        </div>
+    </div>
+</div>
+
+<ng-template #contentEditMode>
+    <input [(ngModel)]="editedText" autofocus />
+</ng-template>
+
+<ng-template #buttonsEditMode>
+    <div class="absolute bottom-0 right-0 mr-3 mb-1">
+        <i (click)="saveComment()" class="pi pi-save mr-1 cursor-pointer"></i>
+        <i (click)="editMode = false" class="pi pi-times cursor-pointer"></i>
+    </div>
+</ng-template>

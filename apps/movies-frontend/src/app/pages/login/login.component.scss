@@ -1,0 +1,16 @@
+.password::ng-deep .p-password {
+    width: 100%;
+}
+
+.login {
+    background-color: transparent !important;
+    color: gray !important;
+    border-color: gray !important;
+}
+
+.password::ng-deep .p-password input {
+    width: 100%;
+    background-color: transparent;
+    color: gray;
+    border-color: gray;
+}

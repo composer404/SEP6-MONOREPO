@@ -1,0 +1,56 @@
+<div class="card w-4/5 mx-auto">
+    <h1 class="text" style="text-align: center">Movie List</h1>
+    <input
+        pInputText
+        type="text"
+        [(ngModel)]="searchVal"
+        (ngModelChange)="onTitleChange(1)"
+        placeholder="Search by Title"
+        class="form-control input textList"
+    />
+    <p></p>
+    <p></p>
+    <p-table
+        [value]="movies"
+        [lazy]="true"
+        (onLazyLoad)="loadMovies($event)"
+        [paginator]="true"
+        [rows]="20"
+        class="p-datatable-movies"
+        [totalRecords]="totalElements"
+        [(selection)]="selectedMovie"
+        (onRowSelect)="onDetails()"
+        paginatorPosition="both"
+        selectionMode="single"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+    >
+        <ng-template pTemplate="header">
+            <tr class="textList">
+                <th>Image</th>
+                <th>Title</th>
+                <th>Popularity</th>
+                <th>Original Language</th>
+                <th>Release date</th>
+                <th>Global rating</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-movies>
+            <tr [pSelectableRow]="movies" class="textList">
+                <td>
+                    <img
+                        src="https://image.tmdb.org/t/p/w500/{{ movies.poster_path }}"
+                        alt="Image"
+                        width="50"
+                        loading="lazy"
+                    />
+                </td>
+                <td>{{ movies.title }}</td>
+                <td>{{ movies.popularity }}</td>
+                <td>{{ movies.original_language | lang }}</td>
+                <td>{{ movies.release_date }}</td>
+                <td>{{ movies.vote_average }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

@@ -1,0 +1,126 @@
+<div *ngIf="actorDetails && credits" class="w-4/5 mx-auto pb-10">
+    <div class="flex mt-10 mb-10">
+        <div class="w-5/12 mr-4">
+            <img
+                class="border-4 border-gray-400 mx-auto"
+                src="https://image.tmdb.org/t/p/original/{{ actorDetails.profile_path }}"
+                alt="Image"
+                style="width: 300px; max-width: none"
+            />
+        </div>
+        <div style="text-align: left">
+            <div class="mb-3">
+                <div class="text-sm font-light">Name</div>
+                <div class="text-2xl font-semibold">
+                    {{ actorDetails.name || 'No data' }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="text-sm font-light">Biography</div>
+                <div class="text-md">
+                    {{ actorDetails.biography || 'No data' }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="text-sm font-light">Place of birth</div>
+                <div class="text-md">
+                    {{ actorDetails.place_of_birth || 'No data' }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="text-sm font-light">Birthday</div>
+                <div class="text-md">
+                    {{ actorDetails.birthday || 'No data' }}
+                </div>
+            </div>
+            <div *ngIf="actorDetails.deathday" class="mb-3">
+                <div class="text-sm font-light">Deathday</div>
+                <div class="text-md">
+                    {{ actorDetails.deathday || 'No data' }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p-accordion>
+        <p-accordionTab header="Featured Movies" class="text">
+            <p-table
+                [value]="credits.cast"
+                [paginator]="true"
+                [rows]="rows"
+                [showCurrentPageReport]="true"
+                [(first)]="first"
+                [(selection)]="selectedMovie"
+                (onRowSelect)="onMovieDetails()"
+                responsiveLayout="scroll"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                selectionMode="single"
+            >
+                <ng-template pTemplate="header">
+                    <tr class="textList">
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Popularity</th>
+                        <th>Original Language</th>
+                        <th>Release date</th>
+                        <th>Global rating</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-actor>
+                    <tr [pSelectableRow]="actor" class="textList">
+                        <td>
+                            <img src="https://image.tmdb.org/t/p/w500/{{ actor.poster_path }}" alt="Image" width="50" />
+                        </td>
+                        <td>{{ actor.title }}</td>
+                        <td>{{ actor.popularity }}</td>
+                        <td>{{ actor.original_language | lang }}</td>
+                        <td>{{ actor.release_date }}</td>
+                        <td>{{ actor.vote_average }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-accordionTab>
+        <p-accordionTab header="As crew memeber" class="text">
+            <p-table
+                [value]="credits.crew"
+                [paginator]="true"
+                [rows]="rows"
+                [showCurrentPageReport]="true"
+                [(first)]="first"
+                [(selection)]="selectedMovie"
+                (onRowSelect)="onMovieDetails()"
+                responsiveLayout="scroll"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                selectionMode="single"
+            >
+                <ng-template pTemplate="header">
+                    <tr class="textList">
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Popularity</th>
+                        <th>Original Language</th>
+                        <th>Release date</th>
+                        <th>Global rating</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-crew>
+                    <tr [pSelectableRow]="crew" class="textList">
+                        <td>
+                            <img src="https://image.tmdb.org/t/p/w500/{{ crew.poster_path }}" alt="Image" width="50" />
+                        </td>
+                        <td>{{ crew.title }}</td>
+                        <td>{{ crew.popularity }}</td>
+                        <td>{{ crew.original_language | lang }}</td>
+                        <td>{{ crew.release_date }}</td>
+                        <td>{{ crew.vote_average }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-accordionTab>
+    </p-accordion>
+    <ng-template #noImage>
+        <img src="../../assets/photos/user.png" style="width: 300px; max-width: none" />
+    </ng-template>
+</div>

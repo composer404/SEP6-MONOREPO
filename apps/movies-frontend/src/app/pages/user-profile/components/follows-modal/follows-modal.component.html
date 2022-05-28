@@ -1,0 +1,14 @@
+<ng-container *ngIf="follows">
+    <div *ngFor="let follow of follows" (click)="navigateToUserProfile(follow.id)" class="flex flex-row items-center p-5 rounded-md bg-gray-200 h-16 cursor-pointer">
+        <div class="w-1/6">
+            <img *ngIf="follow.avatar; else noAvatar" [src]="follow.avatar" />
+        </div>
+        <div class="w-5/6">
+            {{ follow.firstName }} {{ follow.lastName }} <i>({{ follow.login }})</i>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #noAvatar>
+    zasa
+</ng-template>

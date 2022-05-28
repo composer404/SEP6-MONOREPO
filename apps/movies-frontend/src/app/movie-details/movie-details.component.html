@@ -1,0 +1,242 @@
+<!-- ------------------------- MANAGEMENT SECTION -------------------------- -->
+
+<!-- ------------------------ MOVIE DETAIL SECTION ------------------------- -->
+<div *ngIf="movieDetails && credits" class="w-4/5 mx-auto pb-10">
+    <div class="flex mt-10 mb-10">
+        <div class="w-5/12 mr-4">
+            <img
+                class="border-4 border-gray-400 mx-auto"
+                src="https://image.tmdb.org/t/p/original/{{ movieDetails.poster_path }}"
+                alt="Image"
+                style="width: 300px; max-width: none"
+            />
+            <div class="text-center mt-2">
+                <p-rating
+                    (click)="createRating()"
+                    stars="10"
+                    class="star"
+                    [disabled]="ratingCreated ? true : false"
+                    [(ngModel)]="rating"
+                    [cancel]="false"
+                ></p-rating>
+                <button class="w-3/4 text-gray-100 mb-2 h-10 rounded-md mt-2" (click)="addToToplist()">
+                    Add to toplist
+                </button>
+            </div>
+        </div>
+        <div style="text-align: left">
+            <div class="mb-3">
+                <div class="text-sm font-light">Title</div>
+                <div class="text-2xl font-semibold">
+                    {{ movieDetails.title || 'No data' }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="text-sm font-light">Description</div>
+                <div class="text-md">
+                    {{ movieDetails.overview || 'No data' }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="text-sm font-light">Date</div>
+                <div class="text-md">
+                    {{ movieDetails.release_date || 'No data' }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="text-sm font-light">Director</div>
+                <div class="text-md" *ngFor="let director of getDirector()">
+                    {{ director.name }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="text-sm font-light">Global rating</div>
+                <div class="flex text-md items-center">
+                    <p-rating
+                        disabled="true"
+                        [(ngModel)]="movieDetails.vote_average"
+                        stars="10"
+                        class="star"
+                        [cancel]="false"
+                    ></p-rating>
+                    <div class="ml-2">
+                        <i>(Number of votes {{ movieDetails.vote_count }})</i>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="text-sm font-light">Platform rating</div>
+                <div class="flex text-md items-center">
+                    <p-rating
+                        disabled="true"
+                        [(ngModel)]="platformRatingAverage"
+                        stars="10"
+                        class="star"
+                        [cancel]="false"
+                    ></p-rating>
+                    <div class="ml-2">
+                        <i>(Number of votes {{ platformRatingVotes }})</i>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="text-sm font-light">Genres</div>
+                <div class="flex text-md items-center">
+                    <p-chip class="mr-2" *ngFor="let genre of movieDetails.genres" label="{{ genre.name }}"></p-chip>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p-accordion>
+        <!-- -------------------------------- CREW --------------------------------- -->
+
+        <p-accordionTab header="Crew" class="text">
+            <p-table
+                [value]="credits.crew"
+                [paginator]="true"
+                [rows]="rowsCrew"
+                [showCurrentPageReport]="true"
+                [(first)]="firstCrew"
+                responsiveLayout="scroll"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                class="rounded-md"
+            >
+                <ng-template pTemplate="header">
+                    <tr class="textList">
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Job</th>
+                        <th>Department</th>
+                        <th>Popularity</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-person>
+                    <tr [pSelectableRow]="person" class="textList">
+                        <td>
+                            <img
+                                *ngIf="person.profile_path; else noImage"
+                                src="https://image.tmdb.org/t/p/w500/{{ person.profile_path }}"
+                                alt="Image"
+                                width="50"
+                            />
+                        </td>
+
+                        <td>{{ person.name }}</td>
+                        <td>{{ person.job }}</td>
+                        <td>{{ person.department }}</td>
+                        <td>{{ person.popularity }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-accordionTab>
+
+        <!-- -------------------------------- CAST --------------------------------- -->
+
+        <p-accordionTab header="Cast" class="text">
+            <p-table
+                [value]="credits.cast"
+                [paginator]="true"
+                [rows]="rows"
+                [showCurrentPageReport]="true"
+                [(first)]="first"
+                responsiveLayout="scroll"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                selectionMode="single"
+                dataKey="code"
+                [(selection)]="selectedCast"
+                (onRowSelect)="onCastDetails()"
+                class="rounded-md"
+            >
+                <ng-template pTemplate="header">
+                    <tr class="textList">
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Popularity</th>
+                        <th>Character</th>
+                        <th>Department</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-actor>
+                    <tr [pSelectableRow]="actor" class="textList">
+                        <td>
+                            <img
+                                *ngIf="actor.profile_path; else noImage"
+                                src="https://image.tmdb.org/t/p/original/{{ actor.profile_path }}"
+                                alt="Image"
+                                width="50"
+                            />
+                        </td>
+
+                        <td>{{ actor.name }}</td>
+                        <td>{{ actor.popularity }}</td>
+                        <td>{{ actor.character }}</td>
+                        <td>{{ actor.known_for_department }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-accordionTab>
+
+        <!-- --------------------------- RATING SECTION ---------------------------- -->
+
+        <p-accordionTab header="Rating section" class="text">
+            <div *ngFor="let rating of ratings" class="relative flex items-center p-2 border-b">
+                <div class="absolute top-0 right-0 mr-3 mt-1 text-xs font-thin">
+                    {{ rating.createdAt | date: 'dd/MM/yyy HH:mm' }}
+                </div>
+                <div class="mr-3">
+                    <p-avatar
+                        (click)="navigateToUserProfile(rating.authorId)"
+                        class="cursor-pointer"
+                        [image]="rating.author.avatar ? rating.author.avatar : '../../assets/photos/user.png'"
+                        size="large"
+                        shape="circle"
+                    ></p-avatar>
+                </div>
+                <div>
+                    <div class="font-semibold">
+                        {{ rating.author.firstName }} {{ rating.author.lastName }} <i>({{ rating.author.login }})</i>
+                    </div>
+                    <div class="font-thin">
+                        <p-rating
+                            disabled="true"
+                            [(ngModel)]="rating.rating"
+                            stars="10"
+                            class="star"
+                            [cancel]="false"
+                        ></p-rating>
+                    </div>
+                </div>
+            </div>
+        </p-accordionTab>
+
+        <!-- --------------------------- COMMENT SECTION --------------------------- -->
+
+        <p-accordionTab header="Comment section" class="text">
+            <div class="flex h-10 mb-3">
+                <input
+                    style="border-color: #320b0b; border-width: 1px; padding: 0"
+                    [(ngModel)]="commentText"
+                    type="text"
+                    pInputText
+                />
+                <button (click)="addComment()" class="text-gray-100 mb-2 w-36 h-10 rounded-md ml-2">Confirm</button>
+            </div>
+            <ng-container *ngIf="localMovie">
+                <div class="border-b" *ngFor="let comment of comments">
+                    <app-comment-item-movie
+                        [comment]="comment"
+                        [userProfile]="userProfile"
+                        (onRemove)="removeComment($event)"
+                    ></app-comment-item-movie>
+                </div>
+            </ng-container>
+        </p-accordionTab>
+    </p-accordion>
+</div>
+
+<ng-template #noImage>
+    <img src="../../assets/photos/user.png" width="50" />
+</ng-template>
