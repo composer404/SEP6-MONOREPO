@@ -77,7 +77,6 @@ export class StatisticsSectionComponent {
         });
 
         Promise.all(promises);
-        console.log(resultsInMonthArray);
         return resultsInMonthArray;
     }
 }

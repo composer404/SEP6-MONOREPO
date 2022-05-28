@@ -8,7 +8,6 @@ export class InfoService {
     constructor(private messageService: MessageService) {}
 
     success(description: string): void {
-        console.log(`SUCCES MEESAGE`);
         this.messageService.add({
             severity: 'success',
             summary: 'Success',

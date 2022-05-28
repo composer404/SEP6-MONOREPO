@@ -26,7 +26,6 @@ export class AuthService {
                 password: password,
             }),
         ).catch((err) => {
-            console.log(err, err);
             return err;
         });
 
@@ -46,14 +45,12 @@ export class AuthService {
     }
 
     public async getProfile(): Promise<UserProfile> {
-        console.log(`HERE`);
         return firstValueFrom(
             this.httpClient.get<UserProfile>(`${environment.localApiUrl}${LOCAL_API_SERVICES.authProfile}`),
         );
     }
 
     public async validateUser(): Promise<boolean> {
-        console.log(`validate user`);
         const token = this.getTokenValue();
 
         if (!token) {

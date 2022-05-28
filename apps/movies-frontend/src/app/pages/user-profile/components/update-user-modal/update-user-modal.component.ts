@@ -32,7 +32,6 @@ export class UpdateUserModalComponent implements OnInit {
         this.initUpdatePasswordForm();
         this.initUpdateProfileForm();
 
-        console.log(`data`, this.config.data);
         const user: SEPUser = this.config.data;
         this.updateUserForm.patchValue({
             login: user.login,
@@ -62,7 +61,6 @@ export class UpdateUserModalComponent implements OnInit {
         reader.onload = (_event) => {
             this.msg = '';
             this.avatar = reader.result;
-            console.log(this.avatar);
         };
     }
 
