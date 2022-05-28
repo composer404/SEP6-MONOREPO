@@ -7,15 +7,23 @@ import { SEPRatingItemComponent } from './rating-item/rating-item.component';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
+import { LanguagePipe } from '../pipes/language.pipe';
 
 @NgModule({
     declarations: [
         SEPToplistCardComponent,
         SEPCommentItemComponent,
         SEPRatingItemComponent,
+        LanguagePipe,
         ConfirmationModalComponent,
     ],
     imports: [CommonModule, CardModule, RatingModule, FormsModule],
-    exports: [SEPToplistCardComponent, SEPCommentItemComponent, SEPRatingItemComponent, ConfirmationModalComponent],
+    exports: [
+        SEPToplistCardComponent,
+        SEPCommentItemComponent,
+        SEPRatingItemComponent,
+        ConfirmationModalComponent,
+        LanguagePipe,
+    ],
 })
 export class SEPSharedModule {}

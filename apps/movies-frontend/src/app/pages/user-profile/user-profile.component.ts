@@ -82,9 +82,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     }
 
     getNumberOfFollowers() {
-        console.log(`here`);
         const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.followersNumber}/${this.user.id}`;
-        console.log(url);
         this.subscriptions.push(
             this.httpClient.get<number | null>(url).subscribe((followers) => {
                 this.followersNumber = followers;
@@ -168,7 +166,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                 followingId: this.user.id,
             }),
         );
-        console.log(result);
         if (result) {
             this.isFollowing = true;
             ++this.followersNumber;
@@ -184,7 +181,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                 },
             }),
         );
-        console.log(result);
         if (result) {
             this.isFollowing = false;
             --this.followersNumber;

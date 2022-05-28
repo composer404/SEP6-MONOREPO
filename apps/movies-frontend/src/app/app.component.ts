@@ -61,22 +61,21 @@ export class AppComponent implements OnInit, OnDestroy {
                 label: 'Profile',
                 icon: 'pi pi-fw pi-user',
                 command: () => {
-                    console.log(`route`, `profile/${this.id}`);
                     this.router.navigate([`profile/${this.id}`]);
                 },
             },
             {
-                label: 'New toplist',
-                icon: 'pi pi-fw pi-plus',
-                command: () => {
-                    this.router.navigate([`ranking`]);
-                },
-            },
-            {
-                label: 'Search movies',
+                label: 'Search for movies',
                 icon: 'pi pi-fw pi-search',
                 command: () => {
                     this.router.navigate([`movie-list`]);
+                },
+            },
+            {
+                label: 'Search for actor',
+                icon: 'pi pi-fw pi-search',
+                command: () => {
+                    this.router.navigate([`movie-actors`]);
                 },
             },
         ];

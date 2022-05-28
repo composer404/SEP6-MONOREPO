@@ -35,7 +35,6 @@ export class FollowsModalComponent implements OnInit {
         const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.followers}/${userId}`;
         this.httpClient.get<SEPUser[] | null>(url).subscribe((followers) => {
             if (followers) {
-                console.log(`follower`, followers);
                 this.follows = followers;
             }
         });
@@ -45,7 +44,6 @@ export class FollowsModalComponent implements OnInit {
         const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.following}/${userId}`;
         this.httpClient.get<SEPUser[] | null>(url).subscribe((following) => {
             if (following) {
-                console.log(`follwoing`, following);
                 this.follows = following;
             }
         });

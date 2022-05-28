@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Rating } from '@prisma/client';
+import { CreatedObjectResponse } from '../../models';
 import { SEPRatingInput } from '../../models/ratings.model';
 import { PrismaService } from '../../prisma';
 import { MoviesService } from '../movies';
@@ -12,7 +13,7 @@ export class RatingsService {
         this.database = this.prismaService.rating;
     }
 
-    async addRatingToMovie(userId: string, input: SEPRatingInput): Promise<string | null> {
+    async addRatingToMovie(userId: string, input: SEPRatingInput): Promise<CreatedObjectResponse | null> {
         const foundMovie = await this.movieSerivce.getMovie(input.movie);
 
         const result = await this.database
@@ -31,7 +32,9 @@ export class RatingsService {
         if (!result) {
             return null;
         }
-        return result.id;
+        return {
+            id: result.id,
+        };
     }
 
     async getRatingsForUser(id: string): Promise<Rating[] | null> {
@@ -42,6 +45,26 @@ export class RatingsService {
                 },
                 include: {
                     movie: true,
+                },
+            })
+            .catch((err) => {
+                console.log(`[API]`, err);
+                return null;
+            });
+        if (!result) {
+            return null;
+        }
+        return result;
+    }
+
+    async getRatingsById(id: string): Promise<Rating | null> {
+        const result = await this.database
+            .findFirst({
+                where: {
+                    id,
+                },
+                include: {
+                    author: true,
                 },
             })
             .catch((err) => {

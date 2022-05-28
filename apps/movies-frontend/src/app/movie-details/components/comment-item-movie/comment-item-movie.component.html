@@ -15,7 +15,7 @@
         <p-avatar
             (click)="navigateToUserProfile(comment.authorId)"
             class="cursor-pointer"
-            [image]="comment.author.avatar"
+            [image]="comment.author.avatar ? comment.author.avatar : '../../../assets/photos/user.png'"
             size="large"
             shape="circle"
         ></p-avatar>

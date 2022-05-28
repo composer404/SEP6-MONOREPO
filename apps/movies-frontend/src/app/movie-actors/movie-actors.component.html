@@ -13,14 +13,14 @@
     <p-table
         [value]="actors"
         [paginator]="true"
-        [rows]="rows"
+        [rows]="20"
+        (onLazyLoad)="loadActors($event)"
+        [totalRecords]="totalElements"
+        [lazy]="true"
         [showCurrentPageReport]="true"
-        [(first)]="first"
-        responsiveLayout="scroll"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [rowsPerPageOptions]="[10, 25, 50]"
         selectionMode="single"
-        dataKey="code"
+        paginatorPosition="both"
         [(selection)]="selectedActor"
         (onRowSelect)="onActorDetails()"
     >
@@ -35,18 +35,21 @@
         <ng-template pTemplate="body" let-actors>
             <tr [pSelectableRow]="actors" class="textList">
                 <td>
-                    <img src="https://image.tmdb.org/t/p/original/{{ actors.profile_path }}" alt="Image" width="50" />
+                    <img
+                        *ngIf="actors.profile_path; else noImage"
+                        src="https://image.tmdb.org/t/p/w500/{{ actors.profile_path }}"
+                        alt="Image"
+                        width="50"
+                    />
                 </td>
                 <td>{{ actors.name }}</td>
                 <td>{{ actors.popularity }}</td>
                 <td>{{ actors.known_for_department }}</td>
             </tr>
         </ng-template>
-        <ng-template pTemplate="paginatorleft">
-            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
-        </ng-template>
-        <ng-template pTemplate="paginatorright">
-            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
-        </ng-template>
     </p-table>
 </div>
+
+<ng-template #noImage>
+    <img src="../../assets/photos/user.png" width="50" />
+</ng-template>

@@ -1,12 +1,15 @@
 :host ::ng-deep .p-menubar {
-    background-color: #020202;
+    background-color: #320b0b;
+    border: 0 !important;
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px,
+        rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
 }
 :host ::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-text {
     color: white !important;
 }
 
 :host ::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:not(.p-disabled):hover {
-    background-color: #373636;
+    background-color: #1e1f2c;
 }
 
 :host
@@ -24,10 +27,10 @@
 }
 
 :host ::ng-deep .p-button {
-    background-color: #6d6d6d;
+    background-color: #1e1f2c;
     border: 0 !important;
 }
 
 :host ::ng-deep .p-button:hover {
-    background-color: #373636;
+    background-color: #1e1f2c;
 }

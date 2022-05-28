@@ -68,7 +68,6 @@ export class SignupComponent implements OnInit {
     }
 
     selectFile(event: any) {
-        console.log(`event`, event);
         const mimeType = event.target.files[0].type;
 
         if (mimeType.match(/image\/*/) == null) {
@@ -80,7 +79,6 @@ export class SignupComponent implements OnInit {
 
         reader.onload = (_event) => {
             this.avatar = reader.result;
-            console.log(this.avatar);
         };
     }
 
@@ -93,16 +91,13 @@ export class SignupComponent implements OnInit {
             lastName: this.signupForm.get('lastName').value,
             avatar: this.avatar,
         });
-        console.log(`reponse`, response);
 
         if ((response as any)?.code === API_ERROR_CODES.notUniqueLogin) {
-            console.log(`HERER`);
             this.infoService.error(`User with provided login already exists!`);
             return;
         }
 
         if ((response as any)?.code === API_ERROR_CODES.notUniqueEmail) {
-            console.log(`HERER`);
             this.infoService.error(`User with provided email already exists!`);
             return;
         }

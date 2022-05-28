@@ -39,6 +39,7 @@ export class TopListSectionComponent implements OnDestroy {
 
     openCreateModal() {
         const ref = this.dialogService.open(CreateToplistModalComponent, {
+            header: `Create new toplist`,
             width: `40%`,
         });
 
