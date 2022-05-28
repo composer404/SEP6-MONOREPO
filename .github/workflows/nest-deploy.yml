@@ -2,7 +2,7 @@ name: NestJs deploy docker image on Google Cloud
 
 on:
   push:
-    branches: [  ]
+    branches: [ test ]
 
 jobs:
 
