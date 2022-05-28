@@ -37,7 +37,7 @@ jobs:
           run: docker push $IMAGE_NAME
 
         - name: Deloying NestJs Docker image
-          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --add-cloudsql-instances ${{ secrets.INSTANCE_CONNECTION_NAME }}  --region us-central1 --platform managed --port 3000
+          run: gcloud run deploy nest-service --image $IMAGE_NAME --add-cloudsql-instances ${{ secrets.INSTANCE_CONNECTION_NAME }}  --region us-central1 --platform managed --port 3000
 
         - name: Uploading Postgres Migrations
           run: npx prisma migrate deploy
