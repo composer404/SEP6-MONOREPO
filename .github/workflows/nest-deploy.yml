@@ -30,11 +30,14 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v2
 
-        - name: Build Docker image
+        - name: Building NestJs Docker Image
           run: docker build . -t $IMAGE_NAME --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg AUTH_JWT_SECRET=${{ secrets.AUTH_JWT_SECRET }} --build-arg AUTH_JWT_EXPIRES_IN=${{ secrets.AUTH_JWT_EXPIRES_IN }} --build-arg INSTANCE_CONNECTION_NAME=${{ secrets.INSTANCE_CONNECTION_NAME }}
 
-        - name: Push Docker image
+        - name: Pushing NestJs Docker Image
           run: docker push $IMAGE_NAME
 
-        - name: Deploy Docker image
+        - name: Deloying NestJs Docker image
           run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --add-cloudsql-instances ${{ secrets.INSTANCE_CONNECTION_NAME }}  --region us-central1 --platform managed --port 3000
+
+        - name: Uploading Postgres Migrations
+          run: npx prisma migrate deploy
