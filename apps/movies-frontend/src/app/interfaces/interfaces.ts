@@ -23,6 +23,16 @@ export enum SEP_FOLLOWS_TYPES {
     following = `following`,
 }
 
+export enum API_ERROR_CODES {
+    notUniqueLogin = `notUniqueLogin`,
+    notUniqueEmail = `notUniqueEmail`,
+}
+
+export enum SEP_ERROR_CODES {
+    unauthorized = `unauthorized`,
+    internal = `internal`,
+}
+
 export enum SEP_PROFILE_SECTIONS {
     toplists = `toplists`,
     comments = `comments`,

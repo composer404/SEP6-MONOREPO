@@ -78,10 +78,28 @@
     src: url('assets/fonts/Ubuntu-MediumItalic.ttf') format('truetype');
 }
 
-h1 {
-    font-family: FjallaOne, serif;
-    color: dimgrey;
-    text-align: center;
+// h1 {
+//     font-family: FjallaOne, serif;
+//     color: dimgrey;
+//     text-align: center;
+// }
+
+/* ---------------------------- BACKGROUND RULES ---------------------------- */
+
+.bg-primary {
+    background-color: #161623;
+}
+
+.bg-primary-dark {
+    background-color: #1e1f2c;
+}
+
+.bg-accent {
+    background-color: #ef223c;
+}
+
+.text-accent {
+    color: #ef223c;
 }
 
 .input-box {

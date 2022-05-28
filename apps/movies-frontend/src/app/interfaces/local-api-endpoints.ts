@@ -26,6 +26,7 @@ export enum LOCAL_API_SERVICES {
     /* --------------------------------- RATINGS -------------------------------- */
 
     ratings = `/ratings`,
+    ratingsFull = `/ratings/full`,
 
     /* --------------------------------- MOVIES --------------------------------- */
 

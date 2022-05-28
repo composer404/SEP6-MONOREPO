@@ -1,12 +1,10 @@
 import { API_RESOURCES, buildUrl } from '../shared/utils/api-config';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { SEPActors, SEPList, SEPMovie, SEPMovieDetails } from '../shared/interfaces/interfaces';
+import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { SEPActors, SEPList } from '../shared/interfaces/interfaces';
 
 import { HttpClient } from '@angular/common/http';
-import { PrimeNGConfig } from 'primeng/api';
-import { Table } from 'primeng/table';
-import { environment } from '../../environments/environment';
+import { LazyLoadEvent } from 'primeng/api';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -16,30 +14,30 @@ import { firstValueFrom } from 'rxjs';
 })
 export class MovieActorsComponent implements OnInit {
     actors: SEPActors[];
-    loading: boolean = true;
-    first = 0;
-    rows = 10;
+    totalElements: number;
     selectedActor: SEPActors;
     searchActor: string = '';
-    @ViewChild('dt') table: Table;
-    constructor(
-        private readonly httpClient: HttpClient,
-        private primengConfig: PrimeNGConfig,
 
-        private readonly route: ActivatedRoute,
-        private router: Router,
-    ) {}
+    constructor(private readonly httpClient: HttpClient, private router: Router) {}
 
-    ngOnInit(): void {
-        this.primengConfig.ripple = true;
-        void this.getActors();
-    }
+    ngOnInit(): void {}
 
-    async getActors(): Promise<void> {
+    async getPopularActors(page: number): Promise<void> {
         const url = buildUrl(API_RESOURCES.ACTOR);
-        const response = await firstValueFrom(this.httpClient.get<SEPList<SEPActors>>(url));
+        const response = await firstValueFrom(
+            this.httpClient.get<SEPList<SEPActors>>(url, {
+                params: {
+                    page,
+                },
+            }),
+        );
+
         this.actors = response.results;
-        console.log(response);
+        if (response.total_pages > 10000) {
+            this.totalElements = 10000;
+            return;
+        }
+        this.totalElements = response.total_pages;
     }
 
     async onNameChange(): Promise<void> {
@@ -52,36 +50,37 @@ export class MovieActorsComponent implements OnInit {
                     },
                 }),
             );
-            console.log(response);
             this.actors = response.results;
         }
     }
 
-    next() {
-        this.first = this.first + this.rows;
-    }
-
-    prev() {
-        this.first = this.first - this.rows;
-    }
-
-    reset() {
-        this.first = 0;
-    }
-
-    isLastPage(): boolean {
-        return this.actors ? this.first === this.actors.length - this.rows : true;
-    }
-
-    isFirstPage(): boolean {
-        return this.actors ? this.first === 0 : true;
-    }
-    onMovieChange(event) {
-        this.table.filter(event.value, 'movies', 'in');
-    }
-
     public async onActorDetails() {
-        console.log(this.selectedActor);
         this.router.navigateByUrl(`movie-actors/movie-actors-details/${this.selectedActor.id}`);
+    }
+
+    async onTitleChange(page: number): Promise<void> {
+        if (!this.searchActor) {
+            this.getPopularActors(1);
+            return;
+        }
+        const url = buildUrl(API_RESOURCES.SEARCHACTOR);
+        const response = await firstValueFrom(
+            this.httpClient.get<SEPList<SEPActors>>(url, {
+                params: {
+                    query: this.searchActor,
+                    page,
+                },
+            }),
+        );
+        this.actors = response.results;
+        this.totalElements = response.total_pages;
+    }
+
+    loadActors(event: LazyLoadEvent) {
+        if (this.searchActor.length) {
+            this.onTitleChange(event.first / event.rows + 1);
+            return;
+        }
+        this.getPopularActors(event.first / event.rows + 1);
     }
 }

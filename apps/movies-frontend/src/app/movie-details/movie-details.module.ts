@@ -15,6 +15,8 @@ import { AvatarModule } from 'primeng/avatar';
 import { CommentItemMovieComponent } from './components/comment-item-movie/comment-item-movie.component';
 import { SEPSharedModule } from '../shared/components/sep-shared.module';
 import { AccordionModule } from 'primeng/accordion';
+import { ChipModule } from 'primeng/chip';
+import { InputTextModule } from 'primeng/inputtext';
 
 const routes: Routes = [
     {
@@ -37,6 +39,8 @@ const routes: Routes = [
         AvatarModule,
         SEPSharedModule,
         AccordionModule,
+        InputTextModule,
+        ChipModule,
     ],
     providers: [],
 })

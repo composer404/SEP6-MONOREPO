@@ -59,7 +59,6 @@ export class CommentItemMovieComponent implements OnDestroy {
     async removeComment(): Promise<void> {
         const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.comments}/${this.comment.id}`;
         const response = await firstValueFrom(this.httpClient.delete<boolean>(url));
-        console.log(`remvoe reponse`, response);
         if (!response) {
             this.infoService.error(`Cannot remove comment. Try again later`);
             return;

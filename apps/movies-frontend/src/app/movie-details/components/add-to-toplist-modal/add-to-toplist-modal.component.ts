@@ -48,7 +48,6 @@ export class AddToToplistModalComponent implements OnInit, OnDestroy {
                 this.infoService.error('Cannot load user toplist. Try again later');
                 return;
             }
-            console.log(response);
             this.toplists = response;
         });
     }
@@ -62,7 +61,6 @@ export class AddToToplistModalComponent implements OnInit, OnDestroy {
                 posterPath: this.config.data.posterPath,
             }),
         );
-        console.log(reponse);
         if (!reponse) {
             this.infoService.error('Cannot add movie to the toplist. Try again later');
             return;

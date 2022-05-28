@@ -8,7 +8,6 @@ import { AuthService } from './services/auth/auth.service';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    providers: [MessageService],
 })
 export class AppComponent implements OnInit, OnDestroy {
     menuItems: MenuItem[];
@@ -35,9 +34,13 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     private async getUserProfle(): Promise<void> {
-        const profile = await this.authService.getProfile();
-        this.login = profile.login;
-        this.id = profile.id;
+        const validation = await this.authService.validateUser();
+        if (validation) {
+            const profile = await this.authService.getProfile();
+            this.login = profile.login;
+            this.id = profile.id;
+            return;
+        }
     }
 
     private subscribeForLoginEvents(): void {
@@ -58,22 +61,21 @@ export class AppComponent implements OnInit, OnDestroy {
                 label: 'Profile',
                 icon: 'pi pi-fw pi-user',
                 command: () => {
-                    console.log(`route`, `profile/${this.id}`);
                     this.router.navigate([`profile/${this.id}`]);
                 },
             },
             {
-                label: 'New toplist',
-                icon: 'pi pi-fw pi-plus',
-                command: () => {
-                    this.router.navigate([`ranking`]);
-                },
-            },
-            {
-                label: 'Search movies',
+                label: 'Search for movies',
                 icon: 'pi pi-fw pi-search',
                 command: () => {
                     this.router.navigate([`movie-list`]);
+                },
+            },
+            {
+                label: 'Search for actor',
+                icon: 'pi pi-fw pi-search',
+                command: () => {
+                    this.router.navigate([`movie-actors`]);
                 },
             },
         ];

@@ -10,6 +10,7 @@ import { RippleModule } from 'primeng/ripple';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
+import { PasswordModule } from 'primeng/password';
 import { MessageService } from 'primeng/api';
 
 const routes: Routes = [
@@ -31,6 +32,7 @@ const routes: Routes = [
         FormsModule,
         ReactiveFormsModule,
         ToastModule,
+        PasswordModule,
     ],
     providers: [MessageService],
 })

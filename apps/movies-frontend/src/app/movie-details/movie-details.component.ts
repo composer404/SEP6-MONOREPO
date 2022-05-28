@@ -14,16 +14,14 @@ import {
 
 import { HttpClient } from '@angular/common/http';
 import { LOCAL_API_SERVICES } from '../interfaces/local-api-endpoints';
-import { PrimeNGConfig } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { environment } from '../../environments/environment';
 import { firstValueFrom } from 'rxjs';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AddToToplistModalComponent } from './components/add-to-toplist-modal/add-to-toplist-modal.component';
-import { SEPApiCreatedObject, SEPComment, SEPDatabaseObject, UserProfile } from '../interfaces/interfaces';
+import { SEPApiCreatedObject, SEPComment, SEPRating, UserProfile } from '../interfaces/interfaces';
 import { InfoService } from '../services/info.service';
 import { AuthService } from '../services/auth/auth.service';
-
 @Component({
     selector: 'app-movie-details',
     templateUrl: './movie-details.component.html',
@@ -41,10 +39,18 @@ export class MovieDetailsComponent implements OnInit {
     credits: SEPCastList;
     actor: SEPCast[];
     selectedCast: SEPCast;
+
     first = 0;
     rows = 10;
-    selectedMovie: SEPMovie;
-    selectedActor: SEPActors;
+
+    firstCrew = 0;
+    rowsCrew = 10;
+    ratings: SEPRating[];
+
+    platformRatingAverage: number;
+    platformRatingVotes: number;
+    ratingCreated: boolean;
+
     rating: number;
     commentText: string;
 
@@ -66,76 +72,33 @@ export class MovieDetailsComponent implements OnInit {
 
         this.route.params.subscribe(async (params) => {
             await this.getDetails(params.id);
-            this.loadLocalMovie(params.id);
-        });
-        this.route.params.subscribe(async (params) => {
             await this.getActorMovies(params.id);
+            this.loadLocalMovie(params.id);
         });
     }
 
     public async getDetails(id: number): Promise<void> {
-        console.log(id);
         const firstPart = API_RESOURCES.DETAILS + `/${id}`;
         const url = `${buildUrl(firstPart as any)}`;
         const response = await firstValueFrom(this.httpClient.get<SEPMovieDetails>(url));
-        console.log(response);
         this.movieDetails = response;
     }
 
-    public async getActorMovies(id: number): Promise<void> {
+    async getActorMovies(id: number): Promise<void> {
         const firstPart = API_RESOURCES.DETAILS + `/${id}` + API_RESOURCES.CREDITS;
         const url = `${buildUrl(firstPart as any)}`;
         const response = await firstValueFrom(this.httpClient.get<SEPCastList>(url));
-        console.log(response);
         this.credits = response;
     }
 
-    createRating(): void {
-        this.httpClient
-            .post<{ id: string }>(`${environment.localApiUrl}${LOCAL_API_SERVICES.ratings}`, {
-                rating: this.rating,
-                movie: {
-                    apiId: this.movieDetails.id,
-                    title: this.movieDetails.title,
-                    posterPath: this.movieDetails.poster_path,
-                },
-            })
-            .subscribe((response) => {
-                if (!response?.id) {
-                    //error
-                    return;
-                }
-            });
+    getDirector() {
+        return this.credits.crew.filter((element) => {
+            return element.job === `Director`;
+        });
     }
 
-    next() {
-        this.first = this.first + this.rows;
-    }
-
-    prev() {
-        this.first = this.first - this.rows;
-    }
-
-    reset() {
-        this.first = 0;
-    }
-
-    isLastPage(): boolean {
-        return this.actor ? this.first === this.actor.length - this.rows : true;
-    }
-
-    isFirstPage(): boolean {
-        return this.actor ? this.first === 0 : true;
-    }
-    onMovieChange(event) {
-        this.table.filter(event.value, 'actor', 'in');
-    }
-
-    public async onCastDetails() {
-        console.log(this.selectedCast);
-        this.router.navigateByUrl(
-            `movie-details/${this.selectedCast.id}/movie-actors-details/${this.selectedActor.id}`,
-        );
+    async onCastDetails() {
+        this.router.navigate([`movie-actors/movie-actors-details/${this.selectedCast.id}`]);
     }
 
     private loadLocalMovie(apiId: number) {
@@ -144,8 +107,35 @@ export class MovieDetailsComponent implements OnInit {
             if (response) {
                 this.localMovie = response;
                 this.comments = response.comments;
+                this.ratings = response.ratings;
+                this.checkIfRating();
+                this.caluclatePlatformRatingAverage();
             }
         });
+    }
+
+    checkIfRating() {
+        this.ratings.forEach((rating) => {
+            if (rating.authorId === this.userProfile.id) {
+                this.ratingCreated = true;
+                this.rating = rating.rating;
+            }
+        });
+    }
+
+    caluclatePlatformRatingAverage() {
+        if (!this.ratings.length) {
+            this.platformRatingAverage = 0;
+            this.platformRatingVotes = 0;
+            return;
+        }
+
+        this.platformRatingVotes = this.ratings.length;
+        let average = 0;
+        this.ratings.forEach((rating) => {
+            average += rating.rating;
+        });
+        this.platformRatingAverage = average / this.platformRatingVotes;
     }
 
     addToToplist() {
@@ -177,7 +167,31 @@ export class MovieDetailsComponent implements OnInit {
             this.infoService.error(`Cannot create a comment. Try again later`);
             return;
         }
+        this.commentText = ``;
         this.loadCommentById(response.id);
+    }
+
+    async createRating(): Promise<void> {
+        if (this.ratingCreated) {
+            return;
+        }
+
+        const response = await firstValueFrom(
+            this.httpClient.post<{ id: string }>(`${environment.localApiUrl}${LOCAL_API_SERVICES.ratings}`, {
+                rating: this.rating,
+                movie: {
+                    apiId: this.movieDetails.id,
+                    title: this.movieDetails.title,
+                    posterPath: this.movieDetails.poster_path,
+                },
+            }),
+        );
+
+        if (!response) {
+            this.infoService.error(`Cannot create a rating. Try again later`);
+            return;
+        }
+        this.loadRatingById(response.id);
     }
 
     async removeComment(commentId: string): Promise<void> {
@@ -194,8 +208,28 @@ export class MovieDetailsComponent implements OnInit {
             this.infoService.error(`Cannot load a comment. Try again later`);
             return;
         }
-        console.log(response);
+        if (!this.comments) {
+            this.comments = [];
+        }
         this.comments.push(response);
+    }
+
+    async loadRatingById(ratingId: string): Promise<void> {
+        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.ratingsFull}/${ratingId}`;
+        const response = await firstValueFrom(this.httpClient.get<SEPRating>(url));
+
+        if (!response) {
+            this.infoService.error(`Cannot load a rating. Try again later`);
+            return;
+        }
+
+        if (!this.ratings) {
+            this.ratings = [];
+        }
+
+        this.ratings.push(response);
+        this.caluclatePlatformRatingAverage();
+        this.checkIfRating();
     }
 
     async getCommentById(id: string) {

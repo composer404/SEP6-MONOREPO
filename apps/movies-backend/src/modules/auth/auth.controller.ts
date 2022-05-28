@@ -1,5 +1,5 @@
 import { Controller, Post, UseGuards, Get, Body, Request } from '@nestjs/common';
-import { CreatedObjectResponse, SEPRequest, SignUpInput, UserOutput } from '../../models';
+import { CreatedObjectResponse, PrismaErrorResponse, SEPRequest, SignUpInput, UserOutput } from '../../models';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard, LocalAuthGuard } from './guards';
 
@@ -20,7 +20,7 @@ export class AuthController {
     }
 
     @Post('registry')
-    async registry(@Body() userInput: SignUpInput): Promise<CreatedObjectResponse | null> {
+    async registry(@Body() userInput: SignUpInput): Promise<CreatedObjectResponse | PrismaErrorResponse | null> {
         return this.authService.registry(userInput);
     }
 }

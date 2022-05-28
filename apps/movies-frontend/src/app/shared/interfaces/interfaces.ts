@@ -160,6 +160,7 @@ export interface SEPMedia {
 
 export interface SEPCastList {
     cast: SEPCast[];
+    crew: SEPCrew[];
     id: number;
 }
 
@@ -176,4 +177,18 @@ export interface SEPCast {
     original_name: string;
     popularity: number;
     profile_path: string | undefined;
+}
+
+export interface SEPCrew {
+    adult: false;
+    credit_id: string;
+    department: string;
+    gender: number;
+    id: number;
+    job: string;
+    known_for_department: string;
+    name: string;
+    original_name: string;
+    popularity: number;
+    profile_path: string;
 }

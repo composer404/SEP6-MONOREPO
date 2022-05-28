@@ -31,18 +31,25 @@
                 <th>Title</th>
                 <th>Popularity</th>
                 <th>Original Language</th>
-                <th>Votes</th>
+                <th>Release date</th>
+                <th>Global rating</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-movies>
             <tr [pSelectableRow]="movies" class="textList">
                 <td>
-                    <img src="https://image.tmdb.org/t/p/original/{{ movies.poster_path }}" alt="Image" width="50" />
+                    <img
+                        src="https://image.tmdb.org/t/p/w500/{{ movies.poster_path }}"
+                        alt="Image"
+                        width="50"
+                        loading="lazy"
+                    />
                 </td>
                 <td>{{ movies.title }}</td>
                 <td>{{ movies.popularity }}</td>
-                <td>{{ movies.original_language }}</td>
-                <td>{{ movies.vote_count }}</td>
+                <td>{{ movies.original_language | lang }}</td>
+                <td>{{ movies.release_date }}</td>
+                <td>{{ movies.vote_average }}</td>
             </tr>
         </ng-template>
     </p-table>

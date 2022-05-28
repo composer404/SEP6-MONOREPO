@@ -9,10 +9,12 @@ import { MovieListModule } from './movie-list/movie-list.module';
 import { NgModule } from '@angular/core';
 import { SignupModule } from './pages/signup/signup.module';
 import { UserProfileModule } from './pages/user-profile';
+import { LoginGuard } from './guard/login.guard';
 
 const routes: Routes = [
     {
         path: 'login',
+        canActivate: [LoginGuard],
         loadChildren: () => {
             return LoginModule;
         },
@@ -32,30 +34,35 @@ const routes: Routes = [
     },
     {
         path: 'movie-list',
+        canActivate: [AuthGuard],
         loadChildren: () => {
             return MovieListModule;
         },
     },
     {
         path: `movie-list/movie-details/:id`,
+        canActivate: [AuthGuard],
         loadChildren: () => {
             return MovieDetailsModule;
         },
     },
     {
         path: 'movie-actors',
+        canActivate: [AuthGuard],
         loadChildren: () => {
             return MovieActorsModule;
         },
     },
     {
         path: `movie-actors/movie-actors-details/:id`,
+        canActivate: [AuthGuard],
         loadChildren: () => {
             return MovieActorsDetailsModule;
         },
     },
     {
         path: `movie-list/movie-details/:id'/movie-actors-details/:id`,
+        canActivate: [AuthGuard],
         loadChildren: () => {
             return MovieActorsDetailsModule;
         },

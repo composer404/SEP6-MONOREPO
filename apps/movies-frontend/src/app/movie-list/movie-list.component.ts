@@ -39,10 +39,10 @@ export class MovieListComponent implements OnInit {
                 },
             }),
         );
-        console.log(response);
+
         this.movies = response.results;
-        if (response.total_pages > 5000) {
-            this.totalElements = 5000;
+        if (response.total_pages > 10000) {
+            this.totalElements = 10000;
             return;
         }
         this.totalElements = response.total_pages;
@@ -67,7 +67,6 @@ export class MovieListComponent implements OnInit {
     }
 
     loadMovies(event: LazyLoadEvent) {
-        console.log(`event`, event);
         if (this.searchVal.length) {
             this.onTitleChange(event.first / event.rows + 1);
             return;

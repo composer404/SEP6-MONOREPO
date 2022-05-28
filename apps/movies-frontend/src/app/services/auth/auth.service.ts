@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SEPApiCreatedObject, SignUpInput, Token, UserProfile } from '../../interfaces/interfaces';
-import { firstValueFrom, Subject } from 'rxjs';
+import { SEPApiCreatedObject, SEP_ERROR_CODES, SignUpInput, Token, UserProfile } from '../../interfaces/interfaces';
+import { firstValueFrom, iif, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LOCAL_API_SERVICES } from '../../interfaces/local-api-endpoints';
 import { Router } from '@angular/router';
@@ -25,7 +25,17 @@ export class AuthService {
                 login: username,
                 password: password,
             }),
-        );
+        ).catch((err) => {
+            return err;
+        });
+
+        if (response?.statusCode === 401) {
+            return SEP_ERROR_CODES.unauthorized;
+        }
+
+        if (response?.statusCode) {
+            return SEP_ERROR_CODES.internal;
+        }
 
         if (response.accessToken) {
             localStorage.setItem('token', response.accessToken);
