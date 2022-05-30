@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { MenuItem } from 'primeng/api';
 import { API_ERROR_CODES } from '../../interfaces/interfaces';
-import { InfoService } from '../../services/info.service';
+import { InfoService } from '../../services/api/info.service';
 
 @Component({
     selector: 'app-signup',

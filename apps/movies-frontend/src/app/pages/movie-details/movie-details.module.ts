@@ -10,13 +10,13 @@ import { MovieDetailsComponent } from './movie-details.component';
 import { NgModule } from '@angular/core';
 import { RatingModule } from 'primeng/rating';
 import { TableModule } from 'primeng/table';
-import { AddToToplistModalComponent } from './components/add-to-toplist-modal/add-to-toplist-modal.component';
 import { AvatarModule } from 'primeng/avatar';
-import { CommentItemMovieComponent } from './components/comment-item-movie/comment-item-movie.component';
-import { SEPSharedModule } from '../shared/components/sep-shared.module';
 import { AccordionModule } from 'primeng/accordion';
 import { ChipModule } from 'primeng/chip';
 import { InputTextModule } from 'primeng/inputtext';
+import { AddToToplistModalComponent } from './components/add-to-toplist-modal/add-to-toplist-modal.component';
+import { CommentItemMovieComponent } from './components/comment-item-movie/comment-item-movie.component';
+import { SEPSharedModule } from '../../shared/components/sep-shared.module';
 
 const routes: Routes = [
     {

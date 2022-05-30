@@ -123,7 +123,13 @@
                             />
                         </div>
                         <div class="flex flex-col mt-10 text-center">
-                            <button class="bg-accent py-2 text-white rounded-sm" type="submit">Create</button>
+                            <button
+                                [disabled]="signupForm.invalid"
+                                class="bg-accent py-2 text-white rounded-sm"
+                                type="submit"
+                            >
+                                Create
+                            </button>
                             <div class="flex mt-5 gap-2 mx-auto">
                                 <p class="text-gray-500 text-center">Have an account?</p>
                                 <a class="text-accent" [routerLink]="['/login']">Sign In</a>

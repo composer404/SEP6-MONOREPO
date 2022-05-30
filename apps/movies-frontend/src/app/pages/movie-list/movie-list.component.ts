@@ -1,13 +1,9 @@
-import { API_RESOURCES, buildUrl } from '../shared/utils/api-config';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { SEPActors, SEPList, SEPMovie, SEPMovieDetails } from '../shared/interfaces/interfaces';
+import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { SEPMovie } from '../../shared/interfaces/interfaces';
 
-import { HttpClient } from '@angular/common/http';
-import { LazyLoadEvent, PrimeNGConfig } from 'primeng/api';
-import { Table } from 'primeng/table';
-import { environment } from '../../environments/environment';
-import { firstValueFrom } from 'rxjs';
+import { LazyLoadEvent } from 'primeng/api';
+import { MoviesService } from '../../services/api/movies.service';
 
 @Component({
     selector: 'app-movie-list',
@@ -23,22 +19,13 @@ export class MovieListComponent implements OnInit {
     selectedMovie: SEPMovie;
     externalIds: Object = {};
 
-    @ViewChild('dt') table: Table;
-
-    constructor(private router: Router, private readonly httpClient: HttpClient) {}
+    constructor(private router: Router, private readonly movieService: MoviesService) {}
     searchVal: string = '';
 
     ngOnInit(): void {}
 
     async getPopularMovies(page: number): Promise<void> {
-        const url = buildUrl(API_RESOURCES.POPULAR);
-        const response = await firstValueFrom(
-            this.httpClient.get<SEPList<SEPMovie>>(url, {
-                params: {
-                    page,
-                },
-            }),
-        );
+        const response = await this.movieService.getPopularMovies(page);
 
         this.movies = response.results;
         if (response.total_pages > 10000) {
@@ -53,15 +40,7 @@ export class MovieListComponent implements OnInit {
             this.getPopularMovies(1);
             return;
         }
-        const url = buildUrl(API_RESOURCES.SEARCH);
-        const response = await firstValueFrom(
-            this.httpClient.get<SEPList<SEPMovie>>(url, {
-                params: {
-                    query: this.searchVal,
-                    page,
-                },
-            }),
-        );
+        const response = await this.movieService.getMoviesByTitle(page, this.searchVal);
         this.movies = response.results;
         this.totalElements = response.total_pages;
     }

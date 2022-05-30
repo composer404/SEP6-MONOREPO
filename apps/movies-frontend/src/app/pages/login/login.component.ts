@@ -2,9 +2,8 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
-import { MessageService } from 'primeng/api';
 import { SEP_ERROR_CODES } from '../../interfaces/interfaces';
-import { InfoService } from '../../services/info.service';
+import { InfoService } from '../../services/api/info.service';
 
 @Component({
     selector: 'app-login',
@@ -25,6 +24,10 @@ export class LoginComponent implements OnInit {
     }
 
     async onLogin() {
+        if (this.loginForm.invalid) {
+            return false;
+        }
+
         const login = this.loginForm.get(`login`).value;
         const password = this.loginForm.get(`password`).value;
         const response = await this.authService.login(login, password);
