@@ -10,6 +10,7 @@ import { NgModule } from '@angular/core';
 import { SignupModule } from './pages/signup/signup.module';
 import { UserProfileModule } from './pages/user-profile';
 import { LoginGuard } from './guard/login.guard';
+import {HomeModule} from "./pages/home/home.module";
 
 const routes: Routes = [
     {
@@ -18,6 +19,12 @@ const routes: Routes = [
         loadChildren: () => {
             return LoginModule;
         },
+    },
+    {
+      path: 'home',
+      loadChildren: () => {
+        return HomeModule;
+      },
     },
     {
         path: 'signup',
@@ -69,7 +76,7 @@ const routes: Routes = [
     },
     {
         path: '**',
-        redirectTo: 'login',
+        redirectTo: 'home',
     },
 ];
 
