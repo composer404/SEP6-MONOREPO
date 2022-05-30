@@ -1,7 +1,7 @@
-import { API_RESOURCES, buildUrl } from '../shared/utils/api-config';
+import { API_RESOURCES, buildUrl } from '../../shared/utils/api-config';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { SEPActors, SEPList } from '../shared/interfaces/interfaces';
+import { SEPActors, SEPList } from '../../shared/interfaces/interfaces';
 
 import { HttpClient } from '@angular/common/http';
 import { LazyLoadEvent } from 'primeng/api';

@@ -1,6 +1,6 @@
-import { API_IMAGE_SIZE, API_RESOURCES, buildImageUrl, buildUrl } from '../shared/utils/api-config';
+import { API_IMAGE_SIZE, API_RESOURCES, buildImageUrl, buildUrl } from '../../shared/utils/api-config';
 import { Component, OnInit } from '@angular/core';
-import { SEPActorsDetails, SEPCast, SEPCastList, SEPMovie } from '../shared/interfaces/interfaces';
+import { SEPActorsDetails, SEPCast, SEPCastList, SEPMovie } from '../../shared/interfaces/interfaces';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';

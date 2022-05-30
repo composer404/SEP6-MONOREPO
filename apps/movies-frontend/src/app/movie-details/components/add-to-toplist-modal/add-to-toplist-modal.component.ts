@@ -7,6 +7,7 @@ import { environment } from '../../../../environments/environment';
 import { SEPToplist, SEP_USER_ACTIONS } from '../../../interfaces/interfaces';
 import { LOCAL_API_SERVICES } from '../../../interfaces/local-api-endpoints';
 import { InfoService } from '../../../services/info.service';
+import { MoviesService } from '../../../services/movies.service';
 
 @Component({
     selector: 'app-add-to-toplist-modal',
@@ -23,7 +24,7 @@ export class AddToToplistModalComponent implements OnInit, OnDestroy {
         public ref: DynamicDialogRef,
         public config: DynamicDialogConfig,
         private infoService: InfoService,
-        private messageService: MessageService,
+        private readonly moviesService: MoviesService,
     ) {}
 
     ngOnInit(): void {
@@ -53,14 +54,7 @@ export class AddToToplistModalComponent implements OnInit, OnDestroy {
     }
 
     async addToToplist(toplistId: string): Promise<void> {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.topList}/${toplistId}/movie/add`;
-        const reponse = await firstValueFrom(
-            this.httpClient.put<boolean>(url, {
-                apiId: this.config.data.movieApiId,
-                title: this.config.data.title,
-                posterPath: this.config.data.posterPath,
-            }),
-        );
+        const reponse = await this.moviesService.addToToplist(toplistId, this.config);
         if (!reponse) {
             this.infoService.error('Cannot add movie to the toplist. Try again later');
             return;

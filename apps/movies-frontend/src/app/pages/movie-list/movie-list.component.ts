@@ -1,12 +1,12 @@
-import { API_RESOURCES, buildUrl } from '../shared/utils/api-config';
+import { API_RESOURCES, buildUrl } from '../../shared/utils/api-config';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SEPActors, SEPList, SEPMovie, SEPMovieDetails } from '../shared/interfaces/interfaces';
+import { SEPActors, SEPList, SEPMovie, SEPMovieDetails } from '../../shared/interfaces/interfaces';
 
 import { HttpClient } from '@angular/common/http';
 import { LazyLoadEvent, PrimeNGConfig } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { firstValueFrom } from 'rxjs';
 
 @Component({

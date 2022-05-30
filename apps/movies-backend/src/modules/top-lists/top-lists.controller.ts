@@ -20,11 +20,13 @@ export class TopListsController {
         return this.topListsService.deleteTopList(params.id, req.user.id);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async getTopList(@Param() params): Promise<TopList> {
         return this.topListsService.getTopListById(params.id);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('full/:id')
     async getTopListFull(@Param() params): Promise<TopList> {
         return this.topListsService.getTopListFullById(params.id);
@@ -36,21 +38,25 @@ export class TopListsController {
         return this.topListsService.getTopListsByUserId(req.user.id);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('user/:id')
     async getTopListsByUser(@Param() params): Promise<TopList[]> {
         return this.topListsService.getTopListsByUserId(params.id);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('full/user/:id')
     async getTopListsFullByUser(@Param() params): Promise<TopList[]> {
         return this.topListsService.getTopListsFullByUserId(params.id);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(':id/movie/add')
     async addMovieToTopList(@Param() params, @Body() input: SEPMovieInput): Promise<boolean> {
         return this.topListsService.addMovieToTopList(params.id, input);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(':id/movie/:apiId/remove')
     async removeMovieToTopList(@Param() params): Promise<boolean> {
         return this.topListsService.removeMovieFromTopList(params.id, params.apiId);
