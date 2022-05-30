@@ -1,9 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { firstValueFrom, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
     SEPComment,
     SEPRating,
@@ -12,9 +11,11 @@ import {
     SEP_FOLLOWS_TYPES,
     SEP_PROFILE_SECTIONS,
 } from 'src/app/interfaces/interfaces';
-import { LOCAL_API_SERVICES } from 'src/app/interfaces/local-api-endpoints';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { environment } from 'src/environments/environment';
+import { CommentsService } from '../../services/api/comments.service';
+import { RatingService } from '../../services/api/ratings.service';
+import { ToplistService } from '../../services/api/toplist.service';
+import { UserService } from '../../services/api/user.service';
 import { FollowsModalComponent } from './components/follows-modal/follows-modal.component';
 import { UpdateUserModalComponent } from './components/update-user-modal/update-user-modal.component';
 
@@ -44,7 +45,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         private readonly dialogService: DialogService,
         private readonly authService: AuthService,
         private readonly route: ActivatedRoute,
-        private readonly httpClient: HttpClient,
+        private readonly userService: UserService,
+        private readonly ratingService: RatingService,
+        private readonly commnetService: CommentsService,
+        private readonly toplistSerivice: ToplistService,
     ) {}
 
     ngOnInit(): void {
@@ -55,7 +59,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
                 if (!this.isProfileOwner) {
                     await this.checkIsFollowing(params.id);
                 }
-                this.getClientById(params.id);
+                void this.getClientById(params.id);
             }
         });
     }
@@ -65,69 +69,47 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         });
     }
 
-    getClientById(id: string) {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.users}/${id}`;
-        this.subscriptions.push(
-            this.httpClient.get<SEPUser>(url).subscribe((user) => {
-                if (user) {
-                    this.user = user;
-                    this.getNumberOfFollowers();
-                    this.getNumberOfFollowing();
-                    this.getToplistForUser();
-                    this.getCommentsForUser();
-                    this.getRatingsForUser();
-                }
-            }),
-        );
+    async getClientById(id: string) {
+        const response = await this.userService.getClientById(id);
+        if (response) {
+            this.user = response;
+            void this.getNumberOfFollowers();
+            void this.getNumberOfFollowing();
+            void this.getToplistForUser();
+            void this.getCommentsForUser();
+            void this.getRatingsForUser();
+        }
     }
 
-    getNumberOfFollowers() {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.followersNumber}/${this.user.id}`;
-        this.subscriptions.push(
-            this.httpClient.get<number | null>(url).subscribe((followers) => {
-                this.followersNumber = followers;
-            }),
-        );
+    async getNumberOfFollowers() {
+        const response = await this.userService.getNumberOfFollowers(this.user.id);
+        this.followersNumber = response;
     }
 
-    getNumberOfFollowing() {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.followingNumber}/${this.user.id}`;
-        this.httpClient.get<number | null>(url).subscribe((following) => {
-            this.followingNumber = following;
-        });
+    async getNumberOfFollowing() {
+        const response = await this.userService.getNumberOfFollowing(this.user.id);
+        this.followingNumber = response;
     }
 
-    getToplistForUser() {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.toplistUser}/${this.user.id}`;
-        this.subscriptions.push(
-            this.httpClient.get<SEPToplist[] | null>(url).subscribe((toplists) => {
-                if (toplists) {
-                    this.toplists = toplists;
-                }
-            }),
-        );
+    async getToplistForUser() {
+        const response = await this.toplistSerivice.getToplistForUser(this.user.id);
+        if (response) {
+            this.toplists = response;
+        }
     }
 
     async getRatingsForUser(): Promise<void> {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.ratings}/${this.user.id}`;
-        this.subscriptions.push(
-            this.httpClient.get<SEPRating[] | null>(url).subscribe((ratings) => {
-                if (ratings) {
-                    this.ratings = ratings;
-                }
-            }),
-        );
+        const response = await this.ratingService.getRatingsForUser(this.user.id);
+        if (response) {
+            this.ratings = response;
+        }
     }
 
     async getCommentsForUser(): Promise<void> {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.comments}/${this.user.id}`;
-        this.subscriptions.push(
-            this.httpClient.get<SEPComment[] | null>(url).subscribe((comments) => {
-                if (comments) {
-                    this.comments = comments;
-                }
-            }),
-        );
+        const response = await this.commnetService.getCommentsForUser(this.user.id);
+        if (response) {
+            this.comments = response;
+        }
     }
 
     onRemoveToplist(id: string): void {
@@ -154,34 +136,21 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     }
 
     async checkIsFollowing(userId: string): Promise<void> {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.checkFollowing}/${userId}`;
-        const result = await firstValueFrom(this.httpClient.get<boolean>(url));
-        this.isFollowing = result;
+        const reponse = await this.userService.checkIsFollowing(userId);
+        this.isFollowing = reponse;
     }
 
     async followUser(): Promise<void> {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.follow}`;
-        const result = await firstValueFrom(
-            this.httpClient.post<boolean>(url, {
-                followingId: this.user.id,
-            }),
-        );
-        if (result) {
+        const response = await this.userService.followUser(this.user.id);
+        if (response) {
             this.isFollowing = true;
             ++this.followersNumber;
         }
     }
 
     async unfollowUser(): Promise<void> {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.follow}`;
-        const result = await firstValueFrom(
-            this.httpClient.delete<boolean>(url, {
-                body: {
-                    followingId: this.user.id,
-                },
-            }),
-        );
-        if (result) {
+        const reponse = await this.userService.unfollowUser(this.user.id);
+        if (reponse) {
             this.isFollowing = false;
             --this.followersNumber;
         }

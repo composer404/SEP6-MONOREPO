@@ -1,27 +1,17 @@
-import { API_RESOURCES, buildUrl } from '../shared/utils/api-config';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-    SEPActors,
-    SEPCast,
-    SEPCastList,
-    SEPCredits,
-    SEPList,
-    SEPMovie,
-    SEPMovieDetails,
-} from '../shared/interfaces/interfaces';
+import { Component, OnInit } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
-import { LOCAL_API_SERVICES } from '../interfaces/local-api-endpoints';
-import { Table } from 'primeng/table';
-import { environment } from '../../environments/environment';
-import { firstValueFrom } from 'rxjs';
 import { DialogService } from 'primeng/dynamicdialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SEPComment, UserProfile, SEPRating } from '../../interfaces/interfaces';
+import { AuthService } from '../../services/auth/auth.service';
+import { SEPMovieDetails, SEPMovie, SEPCastList, SEPCast } from '../../shared/interfaces/interfaces';
 import { AddToToplistModalComponent } from './components/add-to-toplist-modal/add-to-toplist-modal.component';
-import { SEPApiCreatedObject, SEPComment, SEPRating, UserProfile } from '../interfaces/interfaces';
-import { InfoService } from '../services/info.service';
-import { AuthService } from '../services/auth/auth.service';
+import { ActorsService } from '../../services/api/actors.service';
+import { CommentsService } from '../../services/api/comments.service';
+import { InfoService } from '../../services/api/info.service';
+import { MoviesService } from '../../services/api/movies.service';
+import { RatingService } from '../../services/api/ratings.service';
+
 @Component({
     selector: 'app-movie-details',
     templateUrl: './movie-details.component.html',
@@ -35,7 +25,6 @@ export class MovieDetailsComponent implements OnInit {
     userProfile: UserProfile;
     isProfileOwner: boolean;
 
-    loading: boolean = true;
     credits: SEPCastList;
     actor: SEPCast[];
     selectedCast: SEPCast;
@@ -54,15 +43,16 @@ export class MovieDetailsComponent implements OnInit {
     rating: number;
     commentText: string;
 
-    @ViewChild('dt') table: Table;
-
     constructor(
-        private readonly httpClient: HttpClient,
         private readonly route: ActivatedRoute,
         private readonly dialogService: DialogService,
-        private router: Router,
-        private infoService: InfoService,
-        private authService: AuthService,
+        private readonly router: Router,
+        private readonly infoService: InfoService,
+        private readonly authService: AuthService,
+        private readonly ratingsService: RatingService,
+        private readonly commentsService: CommentsService,
+        private readonly movieService: MoviesService,
+        private readonly actorService: ActorsService,
     ) {}
     searchVal: string = '';
 
@@ -77,17 +67,13 @@ export class MovieDetailsComponent implements OnInit {
         });
     }
 
-    public async getDetails(id: number): Promise<void> {
-        const firstPart = API_RESOURCES.DETAILS + `/${id}`;
-        const url = `${buildUrl(firstPart as any)}`;
-        const response = await firstValueFrom(this.httpClient.get<SEPMovieDetails>(url));
+    async getDetails(id: number): Promise<void> {
+        const response = await this.movieService.getDetails(id);
         this.movieDetails = response;
     }
 
     async getActorMovies(id: number): Promise<void> {
-        const firstPart = API_RESOURCES.DETAILS + `/${id}` + API_RESOURCES.CREDITS;
-        const url = `${buildUrl(firstPart as any)}`;
-        const response = await firstValueFrom(this.httpClient.get<SEPCastList>(url));
+        const response = await this.actorService.getActorMovies(id);
         this.credits = response;
     }
 
@@ -101,17 +87,15 @@ export class MovieDetailsComponent implements OnInit {
         this.router.navigate([`movie-actors/movie-actors-details/${this.selectedCast.id}`]);
     }
 
-    private loadLocalMovie(apiId: number) {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.movies}/${apiId}`;
-        this.httpClient.get<SEPMovie | undefined>(url).subscribe((response) => {
-            if (response) {
-                this.localMovie = response;
-                this.comments = response.comments;
-                this.ratings = response.ratings;
-                this.checkIfRating();
-                this.caluclatePlatformRatingAverage();
-            }
-        });
+    private async loadLocalMovie(apiId: number): Promise<void> {
+        const response = await this.movieService.loadLocalMovie(apiId);
+        if (response) {
+            this.localMovie = response;
+            this.comments = response.comments;
+            this.ratings = response.ratings;
+            this.checkIfRating();
+            this.caluclatePlatformRatingAverage();
+        }
     }
 
     checkIfRating() {
@@ -151,17 +135,11 @@ export class MovieDetailsComponent implements OnInit {
     }
 
     async addComment(): Promise<void> {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.comments}`;
-        const response = await firstValueFrom(
-            this.httpClient.post<SEPApiCreatedObject>(url, {
-                content: this.commentText,
-                movie: {
-                    apiId: this.movieDetails.id,
-                    title: this.movieDetails.title,
-                    posterPath: this.movieDetails.poster_path,
-                },
-            }),
-        );
+        const response = await this.commentsService.createComment(this.commentText, {
+            apiId: this.movieDetails.id,
+            title: this.movieDetails.title,
+            posterPath: this.movieDetails.poster_path,
+        });
 
         if (!response) {
             this.infoService.error(`Cannot create a comment. Try again later`);
@@ -176,16 +154,11 @@ export class MovieDetailsComponent implements OnInit {
             return;
         }
 
-        const response = await firstValueFrom(
-            this.httpClient.post<{ id: string }>(`${environment.localApiUrl}${LOCAL_API_SERVICES.ratings}`, {
-                rating: this.rating,
-                movie: {
-                    apiId: this.movieDetails.id,
-                    title: this.movieDetails.title,
-                    posterPath: this.movieDetails.poster_path,
-                },
-            }),
-        );
+        const response = await this.ratingsService.createRating(this.rating, {
+            apiId: this.movieDetails.id,
+            title: this.movieDetails.title,
+            posterPath: this.movieDetails.poster_path,
+        });
 
         if (!response) {
             this.infoService.error(`Cannot create a rating. Try again later`);
@@ -201,8 +174,7 @@ export class MovieDetailsComponent implements OnInit {
     }
 
     async loadCommentById(commentId: string): Promise<void> {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.commentsFull}/${commentId}`;
-        const response = await firstValueFrom(this.httpClient.get<SEPComment>(url));
+        const response = await this.commentsService.loadCommentById(commentId);
 
         if (!response) {
             this.infoService.error(`Cannot load a comment. Try again later`);
@@ -215,8 +187,7 @@ export class MovieDetailsComponent implements OnInit {
     }
 
     async loadRatingById(ratingId: string): Promise<void> {
-        const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.ratingsFull}/${ratingId}`;
-        const response = await firstValueFrom(this.httpClient.get<SEPRating>(url));
+        const response = await this.ratingsService.loadRatingById(ratingId);
 
         if (!response) {
             this.infoService.error(`Cannot load a rating. Try again later`);

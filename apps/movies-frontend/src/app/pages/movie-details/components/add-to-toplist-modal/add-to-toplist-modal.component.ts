@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { firstValueFrom, Subscription } from 'rxjs';
-import { environment } from '../../../../environments/environment';
-import { SEPToplist, SEP_USER_ACTIONS } from '../../../interfaces/interfaces';
-import { LOCAL_API_SERVICES } from '../../../interfaces/local-api-endpoints';
-import { InfoService } from '../../../services/info.service';
-import { MoviesService } from '../../../services/movies.service';
+import { environment } from '../../../../../environments/environment';
+import { SEPToplist, SEP_USER_ACTIONS } from '../../../../interfaces/interfaces';
+import { LOCAL_API_SERVICES } from '../../../../interfaces/local-api-endpoints';
+import { InfoService } from '../../../../services/api/info.service';
+import { MoviesService } from '../../../../services/api/movies.service';
 
 @Component({
     selector: 'app-add-to-toplist-modal',
@@ -23,7 +22,7 @@ export class AddToToplistModalComponent implements OnInit, OnDestroy {
         private readonly httpClient: HttpClient,
         public ref: DynamicDialogRef,
         public config: DynamicDialogConfig,
-        private infoService: InfoService,
+        private readonly infoService: InfoService,
         private readonly moviesService: MoviesService,
     ) {}
 
