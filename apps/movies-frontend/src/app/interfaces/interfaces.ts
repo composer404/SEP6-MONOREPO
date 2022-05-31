@@ -60,12 +60,6 @@ export interface SEPUser {
     avatar: string;
 }
 
-export interface SEPDatabaseObject<T> {
-    (arg: T): T;
-    createdAt: string;
-    updatedAt: string;
-}
-
 export interface SEPComment {
     id?: string;
     authorId?: string;

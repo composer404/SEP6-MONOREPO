@@ -39,6 +39,7 @@
             <tr [pSelectableRow]="movies" class="textList">
                 <td>
                     <img
+                        *ngIf="movies.poster_path; else noMovieImage"
                         src="https://image.tmdb.org/t/p/w500/{{ movies.poster_path }}"
                         alt="Image"
                         width="50"
@@ -54,3 +55,7 @@
         </ng-template>
     </p-table>
 </div>
+
+<ng-template #noImage>
+    <img src="../../../assets/photos/clapper.png" width="50" />
+</ng-template>

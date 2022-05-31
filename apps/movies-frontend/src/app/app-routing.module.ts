@@ -2,14 +2,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './guard/auth.guard';
 import { LoginModule } from './pages/login/login.module';
-import { MovieActorsDetailsModule } from './movie-actors-details/movie-actors-details.module';
-import { MovieActorsModule } from './movie-actors/movie-actors.module';
-import { MovieDetailsModule } from './movie-details/movie-details.module';
-import { MovieListModule } from './movie-list/movie-list.module';
+import { MovieActorsDetailsModule } from './pages/movie-actors-details/movie-actors-details.module';
+import { MovieActorsModule } from './pages/movie-actors/movie-actors.module';
+import { MovieListModule } from './pages/movie-list/movie-list.module';
 import { NgModule } from '@angular/core';
 import { SignupModule } from './pages/signup/signup.module';
 import { UserProfileModule } from './pages/user-profile';
 import { LoginGuard } from './guard/login.guard';
+import { MovieDetailsModule } from './pages/movie-details/movie-details.module';
 
 const routes: Routes = [
     {

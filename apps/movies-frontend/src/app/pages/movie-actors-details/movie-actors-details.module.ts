@@ -8,7 +8,7 @@ import { MovieActorsDetailsComponent } from './movie-actors-details.component';
 import { NgModule } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { AccordionModule } from 'primeng/accordion';
-import { SEPSharedModule } from '../shared/components/sep-shared.module';
+import { SEPSharedModule } from '../../shared/components/sep-shared.module';
 
 const routes: Routes = [
     {

@@ -3,11 +3,11 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 import { Router } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
 import { firstValueFrom, Subscription } from 'rxjs';
-import { environment } from '../../../../environments/environment';
-import { SEPComment, SEP_USER_ACTIONS, UserProfile } from '../../../interfaces/interfaces';
-import { LOCAL_API_SERVICES } from '../../../interfaces/local-api-endpoints';
-import { InfoService } from '../../../services/info.service';
-import { ConfirmationModalComponent } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
+import { environment } from '../../../../../environments/environment';
+import { SEPComment, UserProfile, SEP_USER_ACTIONS } from '../../../../interfaces/interfaces';
+import { LOCAL_API_SERVICES } from '../../../../interfaces/local-api-endpoints';
+import { InfoService } from '../../../../services/api/info.service';
+import { ConfirmationModalComponent } from '../../../../shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-comment-item-movie',
@@ -36,9 +36,9 @@ export class CommentItemMovieComponent implements OnDestroy {
 
     constructor(
         private readonly httpClient: HttpClient,
-        private infoService: InfoService,
+        private readonly infoService: InfoService,
         private readonly router: Router,
-        private dialogService: DialogService,
+        private readonly dialogService: DialogService,
     ) {}
 
     showConfirmationDialog() {

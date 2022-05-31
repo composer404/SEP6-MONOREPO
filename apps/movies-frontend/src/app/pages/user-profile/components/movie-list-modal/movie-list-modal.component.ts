@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
-import { SEPToplist, SEPToplistDetails } from '../../../../interfaces/interfaces';
+import { SEPToplistDetails } from '../../../../interfaces/interfaces';
 import { LOCAL_API_SERVICES } from '../../../../interfaces/local-api-endpoints';
+import { InfoService } from '../../../../services/api/info.service';
 import { AuthService } from '../../../../services/auth/auth.service';
-import { InfoService } from '../../../../services/info.service';
 import { SEPMovie } from '../../../../shared/interfaces/interfaces';
 
 @Component({
@@ -26,7 +26,6 @@ export class MovieListModalComponent implements OnInit, OnDestroy {
         public ref: DynamicDialogRef,
         public config: DynamicDialogConfig,
         private readonly infoService: InfoService,
-        private readonly authService: AuthService,
     ) {}
 
     ngOnInit(): void {
@@ -57,7 +56,7 @@ export class MovieListModalComponent implements OnInit, OnDestroy {
         void this.router.navigate([`movie-list/movie-details/${movieApiId}`]);
     }
 
-    async removeMovieFromToplist(apiId: string): Promise<void> {
+    async removeMovieFromToplist(apiId: number): Promise<void> {
         const url = `${environment.localApiUrl}${LOCAL_API_SERVICES.topList}/${this.config.data.toplistId}/movie/${apiId}/remove`;
         const reponse = await firstValueFrom(this.httpClient.put<boolean>(url, {}));
 

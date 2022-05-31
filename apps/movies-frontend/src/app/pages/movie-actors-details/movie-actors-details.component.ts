@@ -1,10 +1,8 @@
-import { API_IMAGE_SIZE, API_RESOURCES, buildImageUrl, buildUrl } from '../shared/utils/api-config';
 import { Component, OnInit } from '@angular/core';
-import { SEPActorsDetails, SEPCast, SEPCastList, SEPMovie } from '../shared/interfaces/interfaces';
+import { SEPActorsDetails, SEPCastList, SEPMovie } from '../../shared/interfaces/interfaces';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { ActorsService } from '../../services/api/actors.service';
 
 @Component({
     selector: 'app-movie-actors-details',
@@ -22,9 +20,9 @@ export class MovieActorsDetailsComponent implements OnInit {
     rows = 10;
 
     constructor(
-        private readonly httpClient: HttpClient,
         private readonly route: ActivatedRoute,
         private readonly router: Router,
+        private readonly actorsService: ActorsService,
     ) {}
 
     ngOnInit(): void {
@@ -35,16 +33,12 @@ export class MovieActorsDetailsComponent implements OnInit {
     }
 
     async getActorsDetails(id: number): Promise<void> {
-        const firstPart = API_RESOURCES.ACTORDETAILS + `/${id}`;
-        const url = `${buildUrl(firstPart as any)}`;
-        const response = await firstValueFrom(this.httpClient.get<SEPActorsDetails>(url));
+        const response = await this.actorsService.getActorsDetails(id);
         this.actorDetails = response;
     }
 
     async getMoviesByActor(id: number): Promise<void> {
-        const firstPart = API_RESOURCES.ACTORDETAILS + `/${id}` + API_RESOURCES.MOVIECREDITS;
-        const url = `${buildUrl(firstPart as any)}`;
-        const response = await firstValueFrom(this.httpClient.get<SEPCastList>(url));
+        const response = await this.actorsService.getMoviesByActor(id);
         this.credits = response;
     }
 

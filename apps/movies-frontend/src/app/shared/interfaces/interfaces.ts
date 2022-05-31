@@ -3,13 +3,19 @@ import { SEPComment, SEPRating } from '../../interfaces/interfaces';
 
 export interface SEPMovie {
     id: number;
-    apiId: string;
+    apiId: number;
     title: string;
     posterPath: string;
     updatedAt: string;
     comments: SEPComment[];
     ratings: SEPRating[];
     createdAt: string;
+}
+
+export interface SEPMovieShort {
+    apiId: number;
+    title: string;
+    posterPath: string;
 }
 
 export interface SEPList<T> {

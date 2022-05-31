@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MovieListComponent } from './movie-list.component';
 import { NgModule } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { SEPSharedModule } from '../shared/components/sep-shared.module';
+import { SEPSharedModule } from '../../shared/components/sep-shared.module';
 
 const routes: Routes = [
     {

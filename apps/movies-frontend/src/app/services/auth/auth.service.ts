@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SEPApiCreatedObject, SEP_ERROR_CODES, SignUpInput, Token, UserProfile } from '../../interfaces/interfaces';
-import { firstValueFrom, iif, Subject } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LOCAL_API_SERVICES } from '../../interfaces/local-api-endpoints';
 import { Router } from '@angular/router';
